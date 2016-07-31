@@ -1,0 +1,4 @@
+# Ignore sessions
+/sessions/**
+# Ignore Visual Studio Code files
+/.vscode/**

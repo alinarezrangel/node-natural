@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" class="color-everblack">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Natural - login</title>
+		<link href="/generation/css/generation.css" rel="stylesheet" />
+		<link href="/generation/css/pallete_basics.css" rel="stylesheet" />
+		<link href="/style.css" rel="stylesheet" />
+		<script src="/generation/js/generation.js" type="text/javascript"></script>
+		<link rel="icon" type="text/svg+xml" href="/images/logicon.svg" />
+	</head>
+	<body class="color-everblack flexible center no-wrap direction-column justify-space-around">
+		<main class="container" style="width: 50%; height: 50%; margin: auto;">
+			<header class="flexible center text-color-evergreen" style="margin-bottom: 64px">
+				<h1>Servidor Natural</h1>
+				<h2>Administra tu distro embebida</h2>
+			</header>
+			<form class="form border bs-1 border-color-earth padding-16" action="/login" method="post">
+				<label class="label margin-4" for="username">Nombre de usuario</label>
+				<input class="input" id="username" name="username" value="" type="text" />
+				<label class="label margin-4" for="password">Contraseña</label>
+				<input class="input" id="password" name="password" value="" type="password" />
+				<input class="input button color-dark-grey width-block" type="submit" name="submit" value="Iniciar" />
+			</form>
+			<noscript class="container border bs-1 border-color-dark-red padding-16 color-light-red">
+				<h2>Advertencia</h2>
+				<p>
+					Natural <strong>necesita</strong> JavaScript habilitado para funcionar.
+				</p>
+			</noscript>
+			<div class="container">
+				<a href="/logout">Cerrar sesión (por seguridad)</a> |
+				<a href="#">Página oficial de Natural</a>
+			</div>
+		</main>
+	</body>
+</html>

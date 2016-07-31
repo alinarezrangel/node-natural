@@ -1,0 +1,71 @@
+/* ******************************************************************
+***********************************
+*** Natural: A remote desktop for embed systems.
+*** By Alejandro Linarez Rangel.
+*** Stylesheet.
+***********************************
+****************************************************************** */
+
+.block {
+	display: inline-block;
+	border-radius: 5px;
+}
+
+.absbottom {
+	position: absolute;
+	z-index: 1;
+	width: 100%;
+	height: calc(100% - 59px);
+	margin: 0px !important;
+	padding: 0px !important;
+	box-sizing: border-box;
+	display: flex;
+	background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.item {
+	display: inline-block;
+	cursor: pointer;
+	padding: 8px;
+	border: 1px solid white;
+	background-color: black;
+}
+.item:hover {
+	background-color: white;
+	color: black;
+}
+
+.background {
+	background-color: #00aaff;
+	background: url("/images/background-def.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+	background-size: contain;
+}
+
+.contextmenu {
+	display: none;
+	border-radius: 7px;
+	position: absolute;
+	top: 80px;
+	left: 20px;
+	z-index: 100;
+}
+
+.contextmenu::before {
+	content: " ";
+	display: block;
+	position: absolute;
+	border: 20px solid transparent;
+	position: absolute;
+	top: -40px;
+	left: 0px;
+	width: 0px;
+	height: 0px;
+	border-bottom-color: #DEEAEE;
+}
+
+.border-round {
+	border-radius: 5px;
+}

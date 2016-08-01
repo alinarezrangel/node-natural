@@ -21,6 +21,7 @@
 	box-sizing: border-box;
 	display: flex;
 	background-color: rgba(0, 0, 0, 0.7) !important;
+	box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 1);
 }
 
 .item {
@@ -64,6 +65,10 @@
 	width: 0px;
 	height: 0px;
 	border-bottom-color: #DEEAEE;
+}
+
+.link, .cursor {
+	cursor: pointer, auto;
 }
 
 .border-round {

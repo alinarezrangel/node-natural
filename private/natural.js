@@ -32,7 +32,7 @@ NaturalSocket.on("ready", function(data) // Cuando el servidor pueda manejar nue
 {
 	console.log("loaded socket");
 	NaturalLoadNext();
-	$.get("token", {}, function(data, status, xhr) // Obtén el socket por AJAX
+	$.get("/token", {}, function(data, status, xhr) // Obtén el socket por AJAX
 	{
 		if((status == "success") && (data != "none"))
 		{
@@ -41,8 +41,10 @@ NaturalSocket.on("ready", function(data) // Cuando el servidor pueda manejar nue
 			NaturalSocket.on("authenticated", function(data) // E intenta autenticar
 			{
 				var valid = data.valid || false;
+				console.log("Is valid: " + valid);
 				if(valid)
 				{
+					console.log("hello server?");
 					NaturalSocket.emit("hello", {});
 					NaturalSocket.on("world", function(data)
 					{

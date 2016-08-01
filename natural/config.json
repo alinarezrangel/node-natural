@@ -1,0 +1,29 @@
+{
+	"desktopManager": "NDesktop",
+	"availablesDesktopManagers": [
+		{
+			"name": "NDesktop",
+			"version": "1.0.0",
+			"file": "desktop",
+			"description": "The default desktop manager of Natural"
+		},
+		{
+			"name": "Pure",
+			"version": "1.0.0",
+			"file": "pure",
+			"description": "A GNOME 3 styled desktop manager (in source, NPure)"
+		},
+		{
+			"name": "Aqua",
+			"version": "1.0.0",
+			"file": "aqua",
+			"description": "A JOS Aqua styled desktop manager (in source, JAqua)"
+		},
+		{
+			"name": "Tree",
+			"version": "1.0.0",
+			"file": "tree",
+			"description": "A Cinnamon styled desktop manager"
+		}
+	]
+}

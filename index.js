@@ -18,11 +18,12 @@ var session = require('express-session');
 var FileStore = require('session-file-store')(session);
 var fs = require("fs");
 var crypto = require("crypto");
+var child_proccess = require("child_process");
+var userid = require("userid");
 
-var natural = __dirname + "/natural"; // Directorio con los datos de la instalacion.
-// Actualmente no hay nada, pero se reserva por motivos semánticos y de compatibilidad:
-// antes (Natural v0.0.1) se validaban los usuarios con el archivo /natural/shadow
-// en vez de /etc/shadow, pero luego fue eliminado a favor del modulo passwd-linux
+var natural = __dirname + "/natural"; // Directorio con los datos de la instalacion y configuración.
+
+var configuration = JSON.parse(fs.readFileSync(natural + "/config.json", "utf8"));
 
 var validTokens = []; // Tokens válidos
 // Valores min y max del número aleatorio del token.
@@ -83,11 +84,30 @@ function MakeNewtoken(id)
 	var st = Math.round(Math.random() * (R.b - R.a)) + R.a;
 	var et = Math.round(Math.random() * (R.b - R.a)) + R.a;
 	var sid = id.toString();
+	var timestamp = Date.now();
 	sid = AdjustToN(sid, 40, " ");
 	st = AdjustToN(st + "", 5, "0");
 	et = AdjustToN(et + "", 5, "0");
+	timestamp = AdjustToN(timestamp + "", 15, "0");
 	//console.log("Maked " + st + "" + sid + "" + et);
-	return SHA256crypt(st + "" + sid + "" + et);
+	return SHA256crypt(timestamp + "" + st + "" + sid + "" + et);
+}
+
+/*
+Extrae el nombre de usuario desde un token
+*/
+function GetUserFromToken(token)
+{
+	var decrypted = SHA256decrypt(token);
+	// El token es:
+	// tttttttttttttttsssssuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuueeeee
+	// Donde: t = timestamp
+	// s = Start random number
+	// u = username
+	// e = End random number
+	var username = decrypted.substr(20, 40);
+	//console.log("Decrypted " + username.trim());
+	return username.trim();
 }
 
 /*
@@ -101,9 +121,10 @@ function GetTokenFromUser(username)
 	for(i = 0; i < j; i++)
 	{
 		//console.log("at " + i + ": " + validTokens[i] + "; " + SHA256decrypt(validTokens[i]));
-		var decr = SHA256decrypt(validTokens[i]).substr(5, 40);
-		if(decr.trim() == username)
+		var decr = GetUserFromToken(validTokens[i]);
+		if(decr == username)
 		{
+			//console.log("successful");
 			return validTokens[i];
 		}
 	}
@@ -113,19 +134,181 @@ function GetTokenFromUser(username)
 /*
 Valida un token.
 */
-function validate(token)
+function ValidateToken(token)
 {
-	return validTokens.indexOf(token) > 0;
+	//console.log("validating " + token + " is:");
+	//console.log(validTokens.indexOf(token) >= 0);
+	return validTokens.indexOf(token) >= 0;
+}
+
+/*
+Determina si el usuario user esta en el grupo group.
+callback es de la forma (err, bool is_in_group) => void
+*/
+function IsUserInGroup(user, group, callback)
+{
+	fs.readFile("/etc/group", "utf8", function(err, data)
+	{
+		if(err)
+		{
+			console.error(err);
+			callback(err);
+			return;
+		}
+		var lines = data.split("\n");
+		var i = 0;
+		var j = lines.length;
+		for(i = 0; i < j; i++)
+		{
+			var line = lines[i];
+			var fl = line.split(":");
+			var groupname = fl[0];
+			if(groupname == group)
+			{
+				var users = fl[3].split(",");
+				var w = 0;
+				var t = users.length;
+				for(w = 0; w < t; w++)
+				{
+					var cuser = users[w];
+					if(cuser == user)
+					{
+						callback(null, true); // Se encontro el usuario y si esta en el grupo
+						return;
+					}
+				}
+				callback(null, false); // Se encontro el grupo, pero el usuario no estaba alli
+				return;
+			}
+		}
+		callback(null, false); // No se encontro el grupo
+	});
+}
+
+/*
+Determina si el usuario username puede realizar la accion d en el directorio o archivo dirorfile.
+callback es de la forma (err, bool the_user_can) => void
+*/
+function UserCan(d, username, dirorfile, callback)
+{
+	var useregex = /^[a-z][a-zA-Z0-9_\-]*$/g;
+	username = username.toString() + "";
+	if(username.match(useregex) == null)
+	{
+		callback(new Error("The user not match the uregex"));
+		return false;
+	}
+	var dirgroup = fs.stat(dirorfile, function(err, stats)
+	{
+		if(err)
+		{
+			console.error(err);
+			callback(err);
+			return;
+		}
+		d = 0 + d;
+		var ownerCan = stats["mode"] & (d * 100);
+		var groupCan = stats["mode"] & (d * 10);
+		var othersCan = stats["mode"] & d;
+		var gid = stats["gid"];
+		var uid = stats["uid"];
+		if(othersCan)
+		{
+			callback(null, true);
+			return;
+		}
+		if(username == userid.username(uid))
+		{
+			// I am the owner
+			callback(null, true);
+			return;
+		}
+		IsUserInGroup(username, userid.groupname(gid), function(err, isin)
+		{
+			if(err)
+			{
+				console.error(err);
+				callback(err);
+				return;
+			}
+			callback(null, isin);
+		})
+	});
+}
+
+/*
+Determina si el usuario puede leer un archivo o directorio.
+Equivalente a UseCan(4, username, dirorfile, callback)
+*/
+function UserCanRead(username, dirorfile, callback)
+{
+	UserCan(4, username, dirorfile, callback)
+}
+
+/*
+Determina si el usuario puede escribir en un archivo o directorio.
+Equivalente a UseCan(2, username, dirorfile, callback)
+*/
+function UserCanWrite(username, dirorfile, callback)
+{
+	UserCan(2, username, dirorfile, callback)
+}
+
+/*
+Determina si el usuario puede ejecutar un archivo o directorio.
+Equivalente a UseCan(1, username, dirorfile, callback)
+*/
+function UserCanExec(username, dirorfile, callback)
+{
+	UserCan(1, username, dirorfile, callback)
 }
 
 /*
 Inicializa la API de socket.
 */
-function initSocket(socket)
+function initSocket(socket, token)
 {
 	socket.on("hello", function(data)
 	{
+		//console.log("On hello");
 		socket.emit("world", {});
+	});
+	socket.on("ls", function(data)
+	{
+		var token = data.token || "";
+		var path = data.cwd || "/";
+		var pid = data.pid || 0;
+		if(ValidateToken(token))
+		{
+			if(UserCanRead(GetUserFromToken(token), path, function(err, can)
+			{
+				if(err)
+				{
+					console.error(err);
+					socket.emit("error", {code: 500, msg: "Internal Server Error", pid: pid});
+					return;
+				}
+				if(!can)
+				{
+					socket.emit("error", {code: 403, msg: "Unauthorized", pid: pid});
+					return;
+				}
+				fs.readdir(path, "utf8", function(err, files)
+				{
+					if(err)
+					{
+						console.error(err);
+						socket.emit("failure", {task: "ls", pid: pid});
+						return;
+					}
+					socket.emit("ls-out", {files: files, pid: pid});
+				});
+			}));
+		}
+		else
+		{
+			socket.emit("authenticated", {valid: false, pid: pid});
+		}
 	});
 }
 
@@ -273,19 +456,30 @@ app.get("/private/:resource", function(req, res) // Acceso a recursos privados.
 
 io.on("connection", function(socket) // Sistema de autenticación de sockets.
 {
-	var token = "";
+	var gtoken = "";
 	socket.emit("ready", {});
 	socket.on("authenticate", function(data)
 	{
 		var token = data.token || "";
-		if(validTokens.indexOf(token) < 0)
+		if(!ValidateToken(token))
 		{
 			socket.emit("authenticated", {valid: false});
 		}
 		else
 		{
 			socket.emit("authenticated", {valid: true});
-			initSocket(socket);
+			gtoken = token;
+			initSocket(socket, token);
 		}
+	});
+	socket.on("disconnect", function()
+	{
+		var index = validTokens.indexOf(gtoken);
+		if(index < 0)
+		{
+			console.error("Invalid token [" + gtoken + "] for logout, EIGNORED");
+			return;
+		}
+		validTokens.splice(index, 1);
 	});
 });

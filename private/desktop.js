@@ -27,20 +27,21 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 	+ `resized`: Cuando la ventana cambia de tamaño
 	+ `stackeable`: Cuando la ventana se puede mover
 	+ `fixeable`: Cuando la ventana no se puede mover
-	+ `quit`: Cuando se cierra la ventana
+	+ `exit`: Cuando se cierra la ventana
 	+ `opened`: Cuando se abre la ventana
 	*/
 	var wind = document.createElement("div");
-	wind.className = "window color-white no-margin no-padding overflow-auto";
+	wind.className = "window color-white no-margin no-padding overflow-hide";
 	wind.style.width = "300px";
 	wind.style.height = "300px";
 	wind.style.position = "absolute";
 	wind.id = "window_" + name + "_" + NDesktopGWID;
+	$(wind).data("mousedown", "false");
+	$(wind).data("movable", "true");
+	$(wind).data("pid", NDesktopGWID + "");
 	NDesktopGWID += 1; // GWID es para evitar el problema del JOS.
 	contenthtml(wind); // contenthtml debe ser una funcion
 	document.getElementById("main").appendChild(wind);
-	$(wind).data("mousedown", "false");
-	$(wind).data("movable", "true");
 	wind.addEventListener("mousedown", function()
 	{
 		if($(this).data("movable") == "true")
@@ -87,7 +88,7 @@ function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 	var header = document.createElement("header"); // Barra superior
 	header.className = "container padding-16 no-margin color-dark-grey window-heading";
 	var content = document.createElement("div"); // Contenido
-	content.className = "container padding-4 no-margin window-content";
+	content.className = "container padding-4 no-margin window-content overflow-auto";
 	var stackeableButton = document.createElement("img"); // Boton para mover la ventana
 	stackeableButton.className = "padding-1 margin-1 color-dark-grey border";
 	stackeableButton.width = 25;
@@ -211,6 +212,48 @@ function NDesktopGetBody(window)
 {
 	return $("#" + window.id + " > div.window-content").get(0);
 }
+
+// Cierra la ventana
+function NDesktopCloseWindow(window)
+{
+	NDesktopEmitEvent("exit", window, {});
+	$(window).remove();
+}
+
+// Agrega un manejador de eventos a la ventana
+// El handler puede pedir un argumento: el evento
+function NDesktopAddEventListener(window, eventname, handler)
+{
+	window.addEventListener(name, handler);
+}
+
+/* Definimos la Natural Minimal Graphical API (NMG API) */
+
+// Crear una ventana
+function NGraphCreateWindow(name, title)
+{
+	return NDesktopOpenWindow(name, title, NDesktopDefaultWindowLayout(title));
+}
+
+// Obtener su cuerpo (area donde puede ingresar sus porpios elementos)
+function NGraphGetWindowBody(window)
+{
+	return NDesktopGetBody(window);
+}
+
+// Cerramos la ventana
+function NGraphDestroyWindow(window)
+{
+	NDesktopCloseWindow(window);
+}
+
+// Agrega un manejador de eventos a la ventana
+function NGraphWindowAddEventListener(window, eventname, handler)
+{
+	NDesktopAddEventListener(window, eventname, handler);
+}
+
+/* Fin de la MNG API */
 
 window.addEventListener("load", function() // Cuando el DOM carge
 {

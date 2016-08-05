@@ -29,7 +29,7 @@ var validTokens = []; // Tokens válidos
 // Valores min y max del número aleatorio del token.
 var R = {
 	"a": 0,
-	"b": 90000
+	"b": 900000
 };
 // Contraseña para generar los tokens
 var password = "dDfnDn5gn4";

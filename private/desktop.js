@@ -127,7 +127,7 @@ function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 	var header = document.createElement("header"); // Barra superior
 	header.className = "container padding-16 no-margin color-dark-grey window-heading";
 	var content = document.createElement("div"); // Contenido
-	content.className = "container padding-16 no-margin window-content overflow-auto width-block height-block";
+	content.className = "container padding-16 no-margin window-content overflow-auto";
 	var stackeableButton = document.createElement("img"); // Boton para mover la ventana
 	stackeableButton.className = "padding-1 margin-1 color-dark-grey";
 	stackeableButton.width = 25;
@@ -217,8 +217,16 @@ function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 		$(window).data("iconified", "false"); // Si esta minimizada
 		window.appendChild(header); // Agregamos nuestro layout
 		window.appendChild(content);
-		content.style.overflow = "auto"; // Para evitar que el texto se muestre afuera de la ventana
+		window.style.display = "inline-flex";
+		window.style.flexDirection = "column";
+		header.style.flex = "0 0 auto";
+		content.style.flex = "1 1 auto";
+		content.style.position = "relative";
+		content.style.overflow = "auto";
+		content.style.width = "100%";
+		content.style.height = "100%";
 		window.style.resize = "both"; // la ventana debe ser Resizeable
+		//window.style.overflow = "auto";
 	};
 }
 

@@ -273,6 +273,47 @@ function initSocket(socket, token)
 		//console.log("On hello");
 		socket.emit("world", {});
 	});
+	socket.on("import", function(data)
+	{
+		var token = data.token || "";
+		var path = data.cwd || "/";
+		var pid = data.pid || 0;
+		if(ValidateToken(token))
+		{
+			if(path.startsWith("$NATURAL"))
+			{
+				path = natural + path.slice(path.indexOf("$NATURAL") + 8);
+			}
+			UserCanRead(GetUserFromToken(token), path, function(err, can)
+			{
+				if(err)
+				{
+					console.error(err);
+					socket.emit("error", {task: "import", code: 500, msg: "Internal Server Error", pid: pid});
+					return;
+				}
+				if(!can)
+				{
+					socket.emit("error", {task: "import", code: 403, msg: "Unauthorized", pid: pid});
+					return;
+				}
+				fs.readFile(path, "utf8", function(err, data)
+				{
+					if(err)
+					{
+						console.error(err);
+						socket.emit("error", {task: "import", code: 500, msg: "Internal Server Error", pid: pid});
+						return;
+					}
+					socket.emit("response", {task: "import", pid: pid, response: data});
+				});
+			});
+		}
+		else
+		{
+			socket.emit("authenticated", {task: "import", valid: false, pid: pid});
+		}
+	});
 	socket.on("ls", function(data)
 	{
 		var token = data.token || "";
@@ -280,20 +321,24 @@ function initSocket(socket, token)
 		var pid = data.pid || 0;
 		if(ValidateToken(token))
 		{
-			if(UserCanRead(GetUserFromToken(token), path, function(err, can)
+			if(path.startsWith("$NATURAL"))
+			{
+				path = natural + path.slice(path.indexOf("$NATURAL") + 8);
+			}
+			UserCanRead(GetUserFromToken(token), path, function(err, can)
 			{
 				if(err)
 				{
 					console.error(err);
-					socket.emit("error", {code: 500, msg: "Internal Server Error", pid: pid});
+					socket.emit("error", {task: "ls", code: 500, msg: "Internal Server Error", pid: pid});
 					return;
 				}
 				if(!can)
 				{
-					socket.emit("error", {code: 403, msg: "Unauthorized", pid: pid});
+					socket.emit("error", {task: "ls", code: 403, msg: "Unauthorized", pid: pid});
 					return;
 				}
-				fs.readdir(path, "utf8", function(err, files)
+				fs.readdir(path, function(err, files)
 				{
 					if(err)
 					{
@@ -301,13 +346,13 @@ function initSocket(socket, token)
 						socket.emit("failure", {task: "ls", pid: pid});
 						return;
 					}
-					socket.emit("ls-out", {files: files, pid: pid});
+					socket.emit("response", {task: "ls", files: files, pid: pid});
 				});
-			}));
+			});
 		}
 		else
 		{
-			socket.emit("authenticated", {valid: false, pid: pid});
+			socket.emit("authenticated", {task: "ls", valid: false, pid: pid});
 		}
 	});
 }
@@ -444,13 +489,55 @@ app.get("/token", function(req, res) // Devuelve el token de seguridad, sideñad
 
 app.get("/private/:resource", function(req, res) // Acceso a recursos privados.
 {
-	if(req.session.logged)
+	if((req.session) && (req.session.logged))
 	{
 		res.sendFile(__dirname + "/private/" + req.params.resource);
 	}
 	else
 	{
 		res.redirect("/");
+	}
+});
+
+app.get("/filesystem/:type", function(req, res)
+{
+	if((req.session) && (req.session.logged))
+	{
+		if(req.params["type"] == "application")
+		{
+			var file = req.query.file || "";
+			var token = GetTokenFromUser(req.session.username);
+			UserCanRead(GetUserFromToken(token), natural + "/bin/" + file, function(err, can)
+			{
+				if(err)
+				{
+					console.error(err);
+					res.send("");
+					return;
+				}
+				if(can)
+				{
+					fs.readFile(natural + "/bin/" + file, "utf8", function(err, data)
+					{
+						if(err)
+						{
+							console.error(err);
+							res.send("");
+							return;
+						}
+						res.send(data);
+					});
+				}
+			});
+		}
+		else
+		{
+			res.send("");
+		}
+	}
+	else
+	{
+		res.send("");
 	}
 });
 

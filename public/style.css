@@ -13,7 +13,7 @@
 
 .absbottom {
 	position: absolute;
-	z-index: 1;
+	z-index: 100;
 	width: 100%;
 	height: calc(100% - 59px);
 	margin: 0px !important;
@@ -73,4 +73,32 @@
 
 .border-round {
 	border-radius: 5px;
+}
+
+.applogo {
+	background-color: rgba(0, 0, 0, 0.5);
+	box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 1);
+	cursor: pointer !important;
+	display: inline-block;
+}
+
+.treeview {
+	box-sizing: border-box;
+	display: block;
+	cursor: auto;
+	overflow: auto;
+	padding: 8px;
+	margin: 4px;
+}
+
+.treenode {
+	display: block;
+	cursor: pointer;
+	margin-left: 8px;
+	padding: 4px 8px;
+	cursor: pointer;
+}
+
+.treenode-hover:hover {
+	background-color: #CCC;
 }

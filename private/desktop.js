@@ -567,6 +567,7 @@ NaturalOnLoadevent = function()
 window.addEventListener("load", function() // Cuando el DOM carge
 {
 	$("#appmenu").hide(); // Oculta el menu del sistema (al presionar el boton hogar se muestra)
+	$("#appshow").hide(); // Oculta el menu de aplicaciones (al presionar la tecla aplicaciones se muestra)
 	// Del core
 	// Debemos mostrar los errores
 	NDesktopErrorInterval = setInterval(function()
@@ -598,11 +599,6 @@ window.addEventListener("load", function() // Cuando el DOM carge
 	{
 		NDesktopOpenApplication("findapps");
 	});
-	$(document).contextmenu(function() // Cuando se intente hacer click derecho.
-	{
-		$("#contextmenu").slideToggle("slow");
-		return false;
-	});
 	$("#cxtm_exit").click(function() // Cuando se cierre el meno de contexto desde el mismo
 	{
 		$("#contextmenu").slideUp("slow");
@@ -613,6 +609,30 @@ window.addEventListener("load", function() // Cuando el DOM carge
 		document.body.style.mozUserSelect = "all";
 		document.body.style.webkitUserSelect = "all";
 		document.body.style.msUserSelect = "all";
+	});
+	$(document).contextmenu(function() // Cuando se intente hacer click derecho.
+	{
+		$("#contextmenu").slideToggle("slow");
+		return false;
+	});
+	$(document).keydown(function(ev)
+	{
+		var key = ev.keyCode || ev.which;
+		// Common key shortcuts
+		if((ev.altKey || ev.ctrlKey || ev.metaKey) && (key == 90)) // Ctrl|Alt|Meta+Z
+		{
+			// Open home tab
+			$("#appmenu").slideToggle("slow");
+		}
+		if((ev.altKey || ev.ctrlKey || ev.metaKey) && (key == 72)) // Ctrl|Alt|Meta+H
+		{
+			// Open (Show All Apps)
+			NDesktopOpenApplication("apps");
+		}
+		if(ev.altKey || ev.ctrlKey || ev.metaKey)
+		{
+			ev.preventDefault();
+		}
 	});
 	console.log("loaded events");
 	NaturalLoadNext();

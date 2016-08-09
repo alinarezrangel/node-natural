@@ -19,7 +19,8 @@ var FileStore = require('session-file-store')(session);
 var fs = require("fs");
 var crypto = require("crypto");
 var child_proccess = require("child_process");
-var userid = require("userid");
+//var userid = require("userid");
+var ip = require("ip");
 
 var natural = __dirname + "/natural"; // Directorio con los datos de la instalacion y configuración.
 
@@ -33,6 +34,49 @@ var R = {
 };
 // Contraseña para generar los tokens
 var password = "dDfnDn5gn4";
+
+/*
+Devuelve el nombre de usuario del userid especificado.
+Para ello el lee /etc/passwd
+*/
+function GetUsernameFromUserID(userid)
+{
+	var etcpasswd = fs.readFileSync("/etc/passwd", "utf8");
+	var lines = etcpasswd.split("\n");
+	var i = 0;
+	var j = 0;
+	var s1 = lines.length;
+	for(i = 0; i < s1; i++)
+	{
+		var line = lines[i].split(":");
+		if(line[2] == userid)
+		{
+			return line[0];
+		}
+	}
+	return "";
+}
+
+/*
+Devuelve el nombre de un grupo en base a su groupid
+*/
+function GetGroupnameFromGroupID(groupid)
+{
+	var etcgroup = fs.readFileSync("/etc/group", "utf8");
+	var lines = etcgroup.split("\n");
+	var i = 0;
+	var j = 0;
+	var s1 = lines.length;
+	for(i = 0; i < s1; i++)
+	{
+		var line = lines[i].split(":");
+		if(line[2] == groupid)
+		{
+			return line[0];
+		}
+	}
+	return "";
+}
 
 /*
 Creo que el nombre es bastante semántico: encripta un texto con SHA256.
@@ -217,13 +261,13 @@ function UserCan(d, username, dirorfile, callback)
 			callback(null, true);
 			return;
 		}
-		if(username == userid.username(uid))
+		if(username == GetUsernameFromUserID(uid))
 		{
 			// I am the owner
 			callback(null, true);
 			return;
 		}
-		IsUserInGroup(username, userid.groupname(gid), function(err, isin)
+		IsUserInGroup(username, GetGroupnameFromGroupID(gid), function(err, isin)
 		{
 			if(err)
 			{
@@ -357,6 +401,8 @@ function initSocket(socket, token)
 	});
 }
 
+//io.set("origins", "http://" + ip.address() + ":4567/");
+
 app.use(bodyParser.urlencoded({extended: true})); // POST data
 app.use(express.static("public")); // directorio estatico
 app.use(session({
@@ -377,12 +423,15 @@ app.use(session({
 }));
 app.use(function(req, res, next) // CSP headers
 {
+	var myip = ip.address();
 	res.setHeader("Strict-Transport-Security", "max-age=31536000 ; includeSubDomains");
 	res.setHeader("X-XSS-Protection", "0");
 	res.setHeader("X-Frame-Options", "deny");
-	res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; connect-src 'self' ws://localhost:4567/ wss://localhost:4567/");
+	res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; connect-src 'self' ws://" + myip + ":4567/ wss://" + myip + ":4567/");
 	return next();
 });
+
+console.log("The server is running at port 4567");
 
 server.listen(4567); // Puerto predeterminado, se puede cambiar si también cambia el puerto
 // en el cliente.

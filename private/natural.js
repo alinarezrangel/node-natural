@@ -6,7 +6,7 @@
 ***********************************
 ****************************************************************** */
 
-var NaturalSocket = io.connect("http://localhost:4567"); // Socket hacia el servidor
+var NaturalSocket = io(); // Socket hacia el servidor
 var NaturalLoadingIndex = 1; // Indice de carga, nada más para actualizar la imagen y
 // poseer registro del índice actual.
 var NaturalToken = ""; // Token de seguridad

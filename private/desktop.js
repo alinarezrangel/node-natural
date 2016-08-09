@@ -571,9 +571,10 @@ window.addEventListener("load", function() // Cuando el DOM carge
 	// Debemos mostrar los errores
 	NDesktopErrorInterval = setInterval(function()
 	{
-		if(NaturalError.length >= 0)
+		if(NaturalError.length > 0)
 		{
 			$("#intro").css({zIndex: 0, position: "absolute"});
+			NaturalError.splice(0, 1);
 			NDesktopOpenApplication("splashScreen");
 		}
 	}, 1000);
@@ -599,12 +600,12 @@ window.addEventListener("load", function() // Cuando el DOM carge
 	});
 	$(document).contextmenu(function() // Cuando se intente hacer click derecho.
 	{
-		$("#contextmenu").fadeToggle("slow");
+		$("#contextmenu").slideToggle("slow");
 		return false;
 	});
 	$("#cxtm_exit").click(function() // Cuando se cierre el meno de contexto desde el mismo
 	{
-		$("#contextmenu").fadeOut("slow");
+		$("#contextmenu").slideUp("slow");
 	});
 	$("#cxtm_select").click(function() // Habilitar la seleccion global de texto
 	{

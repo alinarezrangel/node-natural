@@ -45,16 +45,21 @@
 	background-size: contain;
 }
 
+.iblock {
+	display: inline-block !important;
+}
+
 .contextmenu {
 	display: none;
-	border-radius: 7px;
 	position: absolute;
-	top: 80px;
-	left: 20px;
+	top: 59px;
+	left: 0px;
+	height: calc(100% - 59px);
+	width: 30%;
 	z-index: 100;
 }
 
-.contextmenu::before {
+/* .contextmenu::before {
 	content: " ";
 	display: block;
 	position: absolute;
@@ -65,7 +70,7 @@
 	width: 0px;
 	height: 0px;
 	border-bottom-color: #DEEAEE;
-}
+} */
 
 .link, .cursor {
 	cursor: pointer, auto;

@@ -87,14 +87,12 @@
 	function AddFileToArea(area, img, name)
 	{
 		var file = document.createElement("div");
-		file.className = "border bs-2 margin-8 padding-8 applogo";
-		file.style.width = "120px";
-		file.style.height = "120px";
+		file.className = "border bs-2 margin-8 padding-8 color-black iblock";
 		var image = document.createElement("img");
 		image.src = img;
 		image.style.display = "block";
-		image.width = 100;
-		image.height = 100;
+		image.width = 64;
+		image.height = 64;
 		var text = document.createElement("span");
 		text.appendChild(document.createTextNode(name));
 		file.appendChild(image);

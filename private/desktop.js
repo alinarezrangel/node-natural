@@ -10,6 +10,7 @@ var NDesktopGWID = 1;
 var NDesktopApplications = [];
 var NDesktopMaxZIndex = 1;
 var NDesktopErrorInterval = -1;
+var NDesktopUsingFont = true;
 
 function NDesktopMakeTextTag(tag, text) // Construye un elemento del DOM tag y lo rellena con el texto text
 {
@@ -128,26 +129,45 @@ function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 	header.className = "container padding-16 no-margin color-dark-grey window-heading";
 	var content = document.createElement("div"); // Contenido
 	content.className = "container padding-16 no-margin window-content overflow-auto";
-	var stackeableButton = document.createElement("img"); // Boton para mover la ventana
-	stackeableButton.className = "padding-1 margin-1 color-dark-grey";
-	stackeableButton.style.cursor = "pointer";
-	stackeableButton.width = 25;
-	stackeableButton.height = 25;
-	stackeableButton.src = "/images/misc/stackeableButton.svg";
-	stackeableButton.style.marginRight = 30;
-	var deiconifyButton = document.createElement("img"); // Boton para maximizar o desminimizar
-	deiconifyButton.className = "padding-1 margin-1 color-dark-grey";
-	deiconifyButton.style.cursor = "pointer";
-	deiconifyButton.width = 25;
-	deiconifyButton.height = 25;
-	deiconifyButton.src = "/images/misc/deiconifyButton.svg";
-	deiconifyButton.style.marginRight = 30;
-	var exitButton = document.createElement("img"); // Boton para cerrar la ventana
-	exitButton.className = "padding-1 margin-1 color-dark-grey";
-	exitButton.style.cursor = "pointer";
-	exitButton.width = 25;
-	exitButton.height = 25;
-	exitButton.src = "/images/misc/exitButton.svg";
+	var stackeableButton = null, deiconifyButton = null, exitButton = null;
+	if(!NDesktopUsingFont)
+	{
+		stackeableButton = document.createElement("img"); // Boton para mover la ventana
+		stackeableButton.className = "padding-1 margin-1 color-dark-grey";
+		stackeableButton.style.cursor = "pointer";
+		stackeableButton.width = 25;
+		stackeableButton.height = 25;
+		stackeableButton.src = "/images/misc/stackeableButton.svg";
+		stackeableButton.style.marginRight = 30;
+		deiconifyButton = document.createElement("img"); // Boton para maximizar o desminimizar
+		deiconifyButton.className = "padding-1 margin-1 color-dark-grey";
+		deiconifyButton.style.cursor = "pointer";
+		deiconifyButton.width = 25;
+		deiconifyButton.height = 25;
+		deiconifyButton.src = "/images/misc/deiconifyButton.svg";
+		deiconifyButton.style.marginRight = 30;
+		exitButton = document.createElement("img"); // Boton para cerrar la ventana
+		exitButton.className = "padding-1 margin-1 color-dark-grey";
+		exitButton.style.cursor = "pointer";
+		exitButton.width = 25;
+		exitButton.height = 25;
+		exitButton.src = "/images/misc/exitButton.svg";
+	}
+	else
+	{
+		stackeableButton = document.createElement("span");
+		stackeableButton.className = "padding-1 margin-1 text-ultra-big color-dark-grey nic";
+		stackeableButton.style.cursor = "pointer";
+		stackeableButton.appendChild(document.createTextNode("x")); // Natural Icon Set: x => stackable-icon
+		deiconifyButton = document.createElement("span");
+		deiconifyButton.className = "padding-1 margin-1 text-ultra-big color-dark-grey nic";
+		deiconifyButton.style.cursor = "pointer";
+		deiconifyButton.appendChild(document.createTextNode("l")); // Natural Icon Set: l => maximize-icon
+		exitButton = document.createElement("span");
+		exitButton.className = "padding-1 margin-1 text-ultra-big color-dark-grey text-color-red nic";
+		exitButton.style.cursor = "pointer";
+		exitButton.appendChild(document.createTextNode("e")); // Natural Icon Set: e => times-icon
+	}
 	var buttonArea = document.createElement("div"); // Area que contiene los botones
 	buttonArea.className = "box";
 	buttonArea.style.cssFloat = "right";

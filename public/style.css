@@ -6,6 +6,19 @@
 ***********************************
 ****************************************************************** */
 
+@font-face {
+	font-family: "NaturalIconSet";
+	src: url('natural-icon-set.woff') format('woff');
+}
+
+.nic {
+	-moz-user-select: none !important;
+	-webkit-user-select: none !important;
+	-ms-user-select: none !important;
+	user-select: none !important;
+	font-family: "NaturalIconSet", Verdana, Geneva, Tahoma, sans-serif !important;
+}
+
 .block {
 	display: inline-block;
 	border-radius: 5px;
@@ -124,5 +137,4 @@
 
 #main {
 	display: relative;
-	z-index: 1000;
 }

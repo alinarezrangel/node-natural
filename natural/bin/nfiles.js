@@ -51,7 +51,7 @@
 		child(treenode);
 		treenode.addEventListener("click", function(ev)
 		{
-			onclick(ev);
+			onclick(this, ev);
 		});
 		return treenode;
 	}
@@ -69,11 +69,12 @@
 			treenode.appendChild(cnt);
 		};
 	}
-	function Explode(pathexploded, treenode)
+	function Explode(pathexploded, treenode, onclick)
 	{
-		var subnode = MakeTreeNode(treenode, MakeTreeNodeChild("/images/misc/icons/dir.svg", pathexploded[0]), function() {});
+		var subnode = MakeTreeNode(treenode, MakeTreeNodeChild("/images/misc/icons/dir.svg", pathexploded[0]), onclick);
+		subnode.dataset.innerText = pathexploded[0];
 		if(pathexploded.length > 1)
-			Explode(pathexploded.slice(1), subnode);
+			Explode(pathexploded.slice(1), subnode, onclick);
 		treenode.appendChild(subnode);
 	}
 	function ShowModal(title, text)
@@ -114,7 +115,11 @@
 		var structureArea = document.createElement("div");
 		structureArea.className = "f1 o2 container color-grey border border-color-everred bs-2";
 		var treeView = MakeTreeView();
-		Explode(NGraphLoadDataFromWindow(window, "path").split("/"), treeView);
+		Explode(NGraphLoadDataFromWindow(window, "path").split("/"), treeView, function(self, ev)
+		{
+			var text = self.dataset.innerText;
+			//
+		});
 		structureArea.appendChild(treeView);
 		NaturalListDir(NGraphLoadDataFromWindow(window, "path"), mypid, function(err, files)
 		{

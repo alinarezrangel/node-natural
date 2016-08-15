@@ -15,6 +15,40 @@ var NaturalOnLoadevent = function(){}; // Para los manejadores de escritorio
 var NaturalExports = {}; // Datos de un modulo o aplicacion despues de ser importado
 var NaturalSocketEvents = []; // Los eventos para respuestas del socket,
 // recuerda que los resultados
+// Mapa clave-valor para el NaturalIconSet
+var NaturalIconSetMap = {
+	"bars": "a",
+	"openquote": "b",
+	"closequote": "c",
+	"dir": "d",
+	"times": "e",
+	"iconify": "f",
+	"deiconify": "g",
+	"cube": "h",
+	"dash": "i",
+	"minus": "j",
+	"plus": "k",
+	"maximize": "l",
+	"bareright": "m",
+	"bareleft": "n",
+	"baretop": "ñ",
+	"barebottom": "o",
+	"alert-triangle": "p",
+	"load-3-4": "q",
+	"load-2-4": "r",
+	"load-1-4": "s",
+	"loadboard-dotted": "t",
+	"loadboard-arrowed": "u",
+	"loadboard-dotted-up": "v",
+	"loadboard-arrowed-up": "w",
+	"stackeable": "x",
+	"stackeable-up": "y",
+	"stackeable-down": "z",
+	"natural-logicon": "A",
+	"natural-syslog": "B",
+	"natural-logicon-up": "C",
+	"natural-syslog-up": "D"
+};
 
 // Se llama cuando ya se cargo el sistema por completo.
 function NaturalOnLoaded()

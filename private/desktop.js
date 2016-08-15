@@ -158,15 +158,15 @@ function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 		stackeableButton = document.createElement("span");
 		stackeableButton.className = "padding-1 margin-1 text-ultra-big color-dark-grey nic";
 		stackeableButton.style.cursor = "pointer";
-		stackeableButton.appendChild(document.createTextNode("x")); // Natural Icon Set: x => stackable-icon
+		stackeableButton.appendChild(document.createTextNode(NaturalIconSetMap["stackeable"]));
 		deiconifyButton = document.createElement("span");
 		deiconifyButton.className = "padding-1 margin-1 text-ultra-big color-dark-grey nic";
 		deiconifyButton.style.cursor = "pointer";
-		deiconifyButton.appendChild(document.createTextNode("l")); // Natural Icon Set: l => maximize-icon
+		deiconifyButton.appendChild(document.createTextNode(NaturalIconSetMap["maximize"]));
 		exitButton = document.createElement("span");
 		exitButton.className = "padding-1 margin-1 text-ultra-big color-dark-grey text-color-red nic";
 		exitButton.style.cursor = "pointer";
-		exitButton.appendChild(document.createTextNode("e")); // Natural Icon Set: e => times-icon
+		exitButton.appendChild(document.createTextNode(NaturalIconSetMap["times"]));
 	}
 	var buttonArea = document.createElement("div"); // Area que contiene los botones
 	buttonArea.className = "box";

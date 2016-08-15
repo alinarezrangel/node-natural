@@ -47,7 +47,41 @@ var NaturalIconSetMap = {
 	"natural-logicon": "A",
 	"natural-syslog": "B",
 	"natural-logicon-up": "C",
-	"natural-syslog-up": "D"
+	"natural-syslog-up": "D",
+	"star": "E",
+	"git": "F",
+	"picture": "G",
+	"message": "H",
+	"message-dotted": "I",
+	"messages": "J",
+	"loadboard": "K",
+	"pencil": "L",
+	"writing": "M",
+	"joining": "N",
+	"book": "Ñ",
+	"spliting": "O",
+	"expand": "P",
+	"contract": "Q",
+	"dots-void-h": "R",
+	"dots-void-v": "S",
+	"dots-h": "T",
+	"dots-v": "U",
+	"triangle-right": "V",
+	"double-bars-v": "W",
+	"rectangle": "X",
+	"circle": "Y",
+	"pentagon": "Z",
+	"eye": "0",
+	"deny": "1",
+	"info": "2",
+	"unchecked-box": "3",
+	"checked-box": "4",
+	"gear-void": "5",
+	"gear": "6",
+	"infocircle": "7",
+	"trash": "8",
+	"trash-mini": "9",
+	"book-mini": "."
 };
 
 // Se llama cuando ya se cargo el sistema por completo.
@@ -202,14 +236,17 @@ function NaturalLoadPrograms()
 		for(i = 0; i < j; i++)
 		{
 			var file = files[i];
-			var scriptTag = document.createElement("script");
-			scriptTag.src = "/filesystem/application?file=" + encodeURI(file.filename);
-			scriptTag.addEventListener("load", function()
+			if(!file.isDirectory)
 			{
-				var manifest = JSON.parse(JSON.stringify(NaturalExports));
-				console.log("Loaded manifest from " + $(this).attr("src") + ": the appname is " + manifest.appname);
-			});
-			document.body.appendChild(scriptTag);
+				var scriptTag = document.createElement("script");
+				scriptTag.src = "/filesystem/application?file=" + encodeURI(file.filename);
+				scriptTag.addEventListener("load", function()
+				{
+					var manifest = JSON.parse(JSON.stringify(NaturalExports));
+					console.log("Loaded manifest from " + $(this).attr("src") + ": the appname is " + manifest.appname);
+				});
+				document.body.appendChild(scriptTag);
+			}
 		}
 	});
 }

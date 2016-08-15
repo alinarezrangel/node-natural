@@ -1,4 +1,13 @@
 # Ignore sessions
 /sessions/**
+
 # Ignore Visual Studio Code files
 /.vscode/**
+
+# Ignore logs
+*.log
+
+# Ignore node modules
+# You need execute npm install before move the source to
+# the embbed system
+node_modules/

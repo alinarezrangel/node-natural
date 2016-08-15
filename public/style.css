@@ -107,3 +107,22 @@
 .treenode-hover:hover {
 	background-color: #CCC;
 }
+
+.user-can-select {
+	-moz-user-select: all;
+	-webkit-user-select: all;
+	-ms-user-select: all;
+	user-select: all;
+}
+
+.user-cant-select {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#main {
+	display: relative;
+	z-index: 1000;
+}

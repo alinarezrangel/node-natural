@@ -95,7 +95,7 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 		{
 			var left = $(this).data("clickX");
 			var top = $(this).data("clickY");
-			this.style.top = (ev.clientY - top) + "px";
+			this.style.top = Math.max(ev.clientY - top, 56) + "px";
 			this.style.left = (ev.clientX - left) + "px";
 			this.style.cursor = "move";
 			//$(this).data("clickX", ev.clientX + "");

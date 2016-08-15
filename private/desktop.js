@@ -130,18 +130,21 @@ function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 	content.className = "container padding-16 no-margin window-content overflow-auto";
 	var stackeableButton = document.createElement("img"); // Boton para mover la ventana
 	stackeableButton.className = "padding-1 margin-1 color-dark-grey";
+	stackeableButton.style.cursor = "pointer";
 	stackeableButton.width = 25;
 	stackeableButton.height = 25;
 	stackeableButton.src = "/images/misc/stackeableButton.svg";
 	stackeableButton.style.marginRight = 30;
 	var deiconifyButton = document.createElement("img"); // Boton para maximizar o desminimizar
 	deiconifyButton.className = "padding-1 margin-1 color-dark-grey";
+	deiconifyButton.style.cursor = "pointer";
 	deiconifyButton.width = 25;
 	deiconifyButton.height = 25;
 	deiconifyButton.src = "/images/misc/deiconifyButton.svg";
 	deiconifyButton.style.marginRight = 30;
 	var exitButton = document.createElement("img"); // Boton para cerrar la ventana
 	exitButton.className = "padding-1 margin-1 color-dark-grey";
+	exitButton.style.cursor = "pointer";
 	exitButton.width = 25;
 	exitButton.height = 25;
 	exitButton.src = "/images/misc/exitButton.svg";
@@ -155,6 +158,12 @@ function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 	var ttl = document.createElement("h2"); // Título de la ventana
 	ttl.appendChild(document.createTextNode(title));
 	header.appendChild(ttl);
+	header.style.flex = "0 0 auto";
+	content.style.flex = "1 1 auto";
+	content.style.position = "relative";
+	content.style.overflow = "auto";
+	content.style.width = "100%";
+	content.style.height = "100%";
 	return function(window) // funcion que inicializa la ventana
 	{
 		window.className += "border border-round"; // la redondeamos un poco
@@ -219,12 +228,6 @@ function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 		window.appendChild(content);
 		window.style.display = "inline-flex";
 		window.style.flexDirection = "column";
-		header.style.flex = "0 0 auto";
-		content.style.flex = "1 1 auto";
-		content.style.position = "relative";
-		content.style.overflow = "auto";
-		content.style.width = "100%";
-		content.style.height = "100%";
 		window.style.resize = "both"; // la ventana debe ser Resizeable
 		//window.style.overflow = "auto";
 	};

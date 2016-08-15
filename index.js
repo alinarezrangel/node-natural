@@ -105,6 +105,10 @@ function initSocket(socket, token)
 					socket.emit("error", {task: "ls", code: 403, msg: "Unauthorized", pid: pid});
 					return;
 				}
+				if(path.charAt(path.length - 1) != "/")
+				{
+					path += "/";
+				}
 				fs.readdir(path, function(err, files)
 				{
 					if(err)
@@ -117,9 +121,10 @@ function initSocket(socket, token)
 					for(i = 0; i < files.length; i++)
 					{
 						var filename = files[i];
+						var stats = fs.lstatSync(path + filename);
 						files[i] = {
 							"filename": filename,
-							"isDirectory": false
+							"isDirectory": stats.isDirectory()
 						};
 					}
 					socket.emit("response", {task: "ls", files: files, pid: pid});

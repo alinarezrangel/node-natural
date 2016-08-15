@@ -130,7 +130,12 @@
 			for(i = 0; i < j; i++)
 			{
 				var file = files[i];
-				AddFileToArea(fileArea, "/images/misc/icons/file.svg", file.filename);
+				var icon = "/images/misc/icons/file.svg";
+				if(file.isDirectory)
+				{
+					icon = "/images/misc/icons/dir.svg";
+				}
+				AddFileToArea(fileArea, icon, file.filename);
 			}
 		});
 		layout.appendChild(fileArea);

@@ -583,6 +583,10 @@ window.addEventListener("load", function() // Cuando el DOM carge
 	{
 		$("#appmenu").slideToggle("slow");
 	});
+	$("#apps_show").click(function()
+	{
+		$("#appshow").slideToggle("slow");
+	});
 	$("#config, #cxtm_config").click(function() // Cuando se abra la ventana de configuración
 	{
 		NDesktopOpenApplication("config");
@@ -619,12 +623,17 @@ window.addEventListener("load", function() // Cuando el DOM carge
 	{
 		var key = ev.keyCode || ev.which;
 		// Common key shortcuts
-		if((ev.altKey || ev.ctrlKey || ev.metaKey) && (key == 90)) // Ctrl|Alt|Meta+Z
+		if((ev.altKey || ev.ctrlKey || ev.metaKey) && (key == 77)) // Ctrl|Alt|Meta+M
 		{
 			// Open home tab
 			$("#appmenu").slideToggle("slow");
 		}
-		if((ev.altKey || ev.ctrlKey || ev.metaKey) && (key == 72)) // Ctrl|Alt|Meta+H
+		if((ev.altKey || ev.ctrlKey || ev.metaKey) && (key == 66)) // Ctrl|Alt|Meta+B
+		{
+			// Open home tab
+			$("#appshow").slideToggle("slow");
+		}
+		if((ev.altKey || ev.ctrlKey || ev.metaKey) && (key == 86)) // Ctrl|Alt|Meta+V
 		{
 			// Open (Show All Apps)
 			NDesktopOpenApplication("apps");

@@ -88,6 +88,7 @@
 	{
 		var file = document.createElement("div");
 		file.className = "border bs-2 margin-8 padding-8 color-black iblock";
+		file.style.cursor = "pointer";
 		var image = document.createElement("img");
 		image.src = img;
 		image.style.display = "block";
@@ -103,11 +104,13 @@
 	{
 		var window = NGraphCreateWindow("nfiles", "NFiles");
 		var mypid = NGraphLoadDataFromWindow(window, "pid");
-		NGraphStoraDataInWindow(window, "path", "/home/alinarez/MEGA/MEGAsync/PRogramacion-nuevo/nodejs/natural-server");
+		NGraphStoraDataInWindow(window, "path", "/");
 		var layout = document.createElement("section");
 		layout.className = "flexible direction-row justify-start align-stretch no-wrap width-block height-block";
 		var fileArea = document.createElement("div");
-		fileArea.className = "f3 o1 container color-light-grey";
+		fileArea.className = "f3 o1 container color-light-grey overflow-auto";
+		fileArea.style.maxWidth = "80%";
+		fileArea.style.maxHeight = "100%";
 		var structureArea = document.createElement("div");
 		structureArea.className = "f1 o2 container color-grey border border-color-everred bs-2";
 		var treeView = MakeTreeView();
@@ -127,7 +130,7 @@
 			for(i = 0; i < j; i++)
 			{
 				var file = files[i];
-				AddFileToArea(fileArea, "/images/misc/icons/file.svg", file);
+				AddFileToArea(fileArea, "/images/misc/icons/file.svg", file.filename);
 			}
 		});
 		layout.appendChild(fileArea);

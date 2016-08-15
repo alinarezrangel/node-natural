@@ -25,5 +25,9 @@
 			"file": "tree",
 			"description": "A Cinnamon styled desktop manager"
 		}
-	]
+	],
+	"naturalVersion": "1.0.0",
+	"codeName": "Araguaney",
+	"buildNth": 1,
+	"publicHash": "none"
 }

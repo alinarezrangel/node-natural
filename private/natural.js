@@ -169,7 +169,7 @@ function NaturalLoadPrograms()
 		{
 			var file = files[i];
 			var scriptTag = document.createElement("script");
-			scriptTag.src = "/filesystem/application?file=" + encodeURI(file);
+			scriptTag.src = "/filesystem/application?file=" + encodeURI(file.filename);
 			scriptTag.addEventListener("load", function()
 			{
 				var manifest = JSON.parse(JSON.stringify(NaturalExports));

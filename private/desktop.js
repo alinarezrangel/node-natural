@@ -126,9 +126,9 @@ function NDesktopEmitEvents(name, targets, data) // Emite un evento personalizad
 function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 {
 	var header = document.createElement("header"); // Barra superior
-	header.className = "container padding-16 no-margin color-dark-grey window-heading";
+	header.className = "container padding-4 no-margin color-dark-grey window-heading";
 	var content = document.createElement("div"); // Contenido
-	content.className = "container padding-16 no-margin window-content overflow-auto";
+	content.className = "container padding-4 no-margin window-content overflow-auto";
 	var stackeableButton = null, deiconifyButton = null, exitButton = null;
 	if(!NDesktopUsingFont)
 	{

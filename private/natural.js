@@ -6,7 +6,7 @@
 ***********************************
 ****************************************************************** */
 
-var NaturalSocket = io(); // Socket hacia el servidor
+var NaturalSocket = io.connect(window.location.origin); // Socket hacia el servidor
 var NaturalLoadingIndex = 1; // Indice de carga, nada más para actualizar la imagen y
 // poseer registro del índice actual.
 var NaturalToken = ""; // Token de seguridad
@@ -93,14 +93,20 @@ function NaturalOnLoaded()
 		var task = data.task || "";
 		var pid = data.pid || "";
 		var ev = NaturalCallTaskfromQueue(task, pid, true);
-		ev.handler(null, data);
+		if(ev !== null)
+			ev.handler(null, data);
+		else
+			console.log("Unexpected response at " + JSON.stringify(data));
 	});
 	NaturalSocket.on("error", function(data)
 	{
 		var task = data.task || "";
 		var pid = data.pid || "";
 		var ev = NaturalCallTaskfromQueue(task, pid, true);
-		ev.handler(data, null);
+		if(ev !== null)
+			ev.handler(data, null);
+		else
+			console.error("Unexpected error at " + JSON.stringify(data));
 	});
 	NaturalOnLoadevent();
 }

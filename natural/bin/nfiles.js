@@ -85,10 +85,10 @@
 		modal.appendChild(text);
 		return modal;
 	}
-	function AddFileToArea(area, img, name)
+	function AddFileToArea(area, img, name, onclick)
 	{
 		var file = document.createElement("div");
-		file.className = "border bs-2 margin-8 padding-8 color-black iblock";
+		file.className = "border bs-2 margin-8 padding-8 iblock";
 		file.style.cursor = "pointer";
 		var image = document.createElement("img");
 		image.src = img;
@@ -100,6 +100,7 @@
 		file.appendChild(image);
 		file.appendChild(text);
 		area.appendChild(file);
+		area.addEventListener("click", onclick);
 	}
 	NGraphCreateApplication("nfiles", "NFiles", function()
 	{
@@ -115,34 +116,46 @@
 		var structureArea = document.createElement("div");
 		structureArea.className = "f1 o2 container color-grey border border-color-everred bs-2";
 		var treeView = MakeTreeView();
-		Explode(NGraphLoadDataFromWindow(window, "path").split("/"), treeView, function(self, ev)
+		var changedir = function()
 		{
-			var text = self.dataset.innerText;
-			//
-		});
-		structureArea.appendChild(treeView);
-		NaturalListDir(NGraphLoadDataFromWindow(window, "path"), mypid, function(err, files)
-		{
-			if(err)
+			Explode(NGraphLoadDataFromWindow(window, "path").split("/"), treeView, function(self, ev)
 			{
-				ShowModal("Algo va mal!", "Algún error inesperado sucedio mientras se leia el directorio. Asegurate de detenr los permisos necesarios para la acción");
-				return;
-			}
-			var i = 0;
-			var j = files.length;
-			while(fileArea.firstChild)
-				fileArea.removeChild(fileArea.firstChild);
-			for(i = 0; i < j; i++)
+				var text = self.dataset.innerText;
+			});
+			structureArea.appendChild(treeView);
+			NaturalListDir(NGraphLoadDataFromWindow(window, "path"), mypid, function(err, files)
 			{
-				var file = files[i];
-				var icon = "/images/misc/icons/file.svg";
-				if(file.isDirectory)
+				if(err)
 				{
-					icon = "/images/misc/icons/dir.svg";
+					ShowModal("Algo va mal!", "Algún error inesperado sucedio mientras se leia el directorio. Asegurate de detenr los permisos necesarios para la acción");
+					return;
 				}
-				AddFileToArea(fileArea, icon, file.filename);
-			}
-		});
+				var i = 0;
+				var j = files.length;
+				while(fileArea.firstChild)
+					fileArea.removeChild(fileArea.firstChild);
+				for(i = 0; i < j; i++)
+				{
+					var file = files[i];
+					var icon = "/images/misc/icons/file.svg";
+					if(file.isDirectory)
+					{
+						icon = "/images/misc/icons/dir.svg";
+					}
+					AddFileToArea(fileArea, icon, file.filename, function(file, ev)
+					{
+						var path = NGraphLoadDataFromWindow(window, "path");
+						if(file.isDirectory)
+						{
+							NGraphStoraDataInWindow(window, "path", path + file.filename + "/");
+							alert(path + file.filename + "/");
+							changedir();
+						}
+					}.bind(this, file));
+				}
+			});
+		};
+		changedir();
 		layout.appendChild(fileArea);
 		layout.appendChild(structureArea);
 		NGraphGetWindowBody(window).appendChild(layout);

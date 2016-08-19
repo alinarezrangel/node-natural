@@ -37,6 +37,7 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 	*/
 	var wind = document.createElement("div");
 	wind.className = "window color-white no-margin no-padding overflow-hide border border-color-black";
+	wind.style.boxShadow = "10px 10px 40px 1px #000";
 	wind.style.width = "300px";
 	wind.style.height = "300px";
 	wind.style.position = "absolute";
@@ -75,6 +76,7 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 			$(this).data("mousedown", "true");
 			$(this).data("clickX", (ev.clientX - $(this).offset().left) + "");
 			$(this).data("clickY", (ev.clientY - $(this).offset().top) + "");
+			ev.preventDefault();
 			//console.log("At " + (ev.clientX - $(this).offset().left) + "px, " + (ev.clientY - $(this).offset().top) + "px (X,Y)");
 		}
 	});
@@ -88,6 +90,7 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 			document.body.style.msUserSelect = "all";
 			$(this).data("mousedown", "false");
 			this.style.cursor = "auto";
+			ev.preventDefault();
 		}
 	});
 	wind.addEventListener("mousemove", function(ev)
@@ -99,6 +102,7 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 			this.style.top = Math.max(ev.clientY - top, 56) + "px";
 			this.style.left = (ev.clientX - left) + "px";
 			this.style.cursor = "move";
+			ev.preventDefault();
 			//$(this).data("clickX", ev.clientX + "");
 			//$(this).data("clickY", ev.clientY + "");
 		}
@@ -126,28 +130,28 @@ function NDesktopEmitEvents(name, targets, data) // Emite un evento personalizad
 function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 {
 	var header = document.createElement("header"); // Barra superior
-	header.className = "container padding-4 no-margin color-dark-grey window-heading";
+	header.className = "container padding-4 no-margin color-light-grey window-heading";
 	var content = document.createElement("div"); // Contenido
 	content.className = "container padding-4 no-margin window-content overflow-auto";
 	var stackeableButton = null, deiconifyButton = null, exitButton = null;
 	if(!NDesktopUsingFont)
 	{
 		stackeableButton = document.createElement("img"); // Boton para mover la ventana
-		stackeableButton.className = "padding-1 margin-1 color-dark-grey";
+		stackeableButton.className = "padding-1 margin-1";
 		stackeableButton.style.cursor = "pointer";
 		stackeableButton.width = 25;
 		stackeableButton.height = 25;
 		stackeableButton.src = "/images/misc/stackeableButton.svg";
 		stackeableButton.style.marginRight = 30;
 		deiconifyButton = document.createElement("img"); // Boton para maximizar o desminimizar
-		deiconifyButton.className = "padding-1 margin-1 color-dark-grey";
+		deiconifyButton.className = "padding-1 margin-1";
 		deiconifyButton.style.cursor = "pointer";
 		deiconifyButton.width = 25;
 		deiconifyButton.height = 25;
 		deiconifyButton.src = "/images/misc/deiconifyButton.svg";
 		deiconifyButton.style.marginRight = 30;
 		exitButton = document.createElement("img"); // Boton para cerrar la ventana
-		exitButton.className = "padding-1 margin-1 color-dark-grey";
+		exitButton.className = "padding-1 margin-1";
 		exitButton.style.cursor = "pointer";
 		exitButton.width = 25;
 		exitButton.height = 25;
@@ -156,15 +160,15 @@ function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 	else
 	{
 		stackeableButton = document.createElement("span");
-		stackeableButton.className = "padding-1 margin-1 text-ultra-big color-dark-grey nic";
+		stackeableButton.className = "padding-1 margin-1 text-ultra-big nic";
 		stackeableButton.style.cursor = "pointer";
 		stackeableButton.appendChild(document.createTextNode(NaturalIconSetMap["stackeable"]));
 		deiconifyButton = document.createElement("span");
-		deiconifyButton.className = "padding-1 margin-1 text-ultra-big color-dark-grey nic";
+		deiconifyButton.className = "padding-1 margin-1 text-ultra-big nic";
 		deiconifyButton.style.cursor = "pointer";
 		deiconifyButton.appendChild(document.createTextNode(NaturalIconSetMap["maximize"]));
 		exitButton = document.createElement("span");
-		exitButton.className = "padding-1 margin-1 text-ultra-big color-dark-grey text-color-red nic";
+		exitButton.className = "padding-1 margin-1 text-ultra-big text-color-red nic";
 		exitButton.style.cursor = "pointer";
 		exitButton.appendChild(document.createTextNode(NaturalIconSetMap["times"]));
 	}

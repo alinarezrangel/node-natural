@@ -48,8 +48,7 @@
 		var treenode = document.createElement("div");
 		treenode.className = "treenode treenode-hover";
 		parent.classList.remove("treenode-hover");
-		child(treenode);
-		treenode.addEventListener("click", function(ev)
+		child(treenode).addEventListener("click", function(ev)
 		{
 			onclick(this, ev);
 		});
@@ -67,6 +66,7 @@
 			cnt.appendChild(img);
 			cnt.appendChild(document.createTextNode(text));
 			treenode.appendChild(cnt);
+			return cnt;
 		};
 	}
 	function Explode(pathexploded, treenode, onclick)
@@ -99,8 +99,8 @@
 		text.appendChild(document.createTextNode(name));
 		file.appendChild(image);
 		file.appendChild(text);
+		file.addEventListener("click", onclick);
 		area.appendChild(file);
-		area.addEventListener("click", onclick);
 	}
 	NGraphCreateApplication("nfiles", "NFiles", function()
 	{
@@ -112,17 +112,26 @@
 		var fileArea = document.createElement("div");
 		fileArea.className = "f3 o1 container color-light-grey overflow-auto";
 		fileArea.style.maxWidth = "80%";
-		fileArea.style.maxHeight = "100%";
+		fileArea.style.height = "100%";
 		var structureArea = document.createElement("div");
 		structureArea.className = "f1 o2 container color-grey border border-color-everred bs-2";
 		var treeView = MakeTreeView();
+		structureArea.appendChild(treeView);
 		var changedir = function()
 		{
+			while(treeView.firstChild)
+				treeView.removeChild(treeView.firstChild);
 			Explode(NGraphLoadDataFromWindow(window, "path").split("/"), treeView, function(self, ev)
 			{
 				var text = self.dataset.innerText;
+				var path = NGraphLoadDataFromWindow(window, "path").split("/");
+				var i = path.indexOf(text);
+				var newpath = path.slice(0, i - 1).join("/");
+				//alert(newpath);
+				NGraphStoraDataInWindow(window, "path", newpath + "/");
+				//alert(path + file.filename + "/");
+				changedir();
 			});
-			structureArea.appendChild(treeView);
 			NaturalListDir(NGraphLoadDataFromWindow(window, "path"), mypid, function(err, files)
 			{
 				if(err)
@@ -148,7 +157,7 @@
 						if(file.isDirectory)
 						{
 							NGraphStoraDataInWindow(window, "path", path + file.filename + "/");
-							alert(path + file.filename + "/");
+							//alert(path + file.filename + "/");
 							changedir();
 						}
 					}.bind(this, file));

@@ -37,7 +37,7 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 	*/
 	var wind = document.createElement("div");
 	wind.className = "window color-white no-margin no-padding overflow-hide border border-color-black";
-	wind.style.boxShadow = "10px 10px 40px 1px #000";
+	wind.style.boxShadow = "10px 10px 71px 0px rgba(0, 0, 0, 0.3)";
 	wind.style.width = "300px";
 	wind.style.height = "300px";
 	wind.style.position = "absolute";
@@ -588,7 +588,25 @@ NDesktopMakeApplication("findapps", "NAppFinder", function()
 NaturalOnLoadevent = function()
 {
 	clearInterval(NDesktopErrorInterval);
-	NaturalLoadPrograms();
+	NaturalLoadPrograms(function(appname, manifest)
+	{
+		var apps = $("#appshow").get(0);
+		var div = document.createElement("div");
+		var text = document.createElement("span");
+		text.appendChild(document.createTextNode(appname));
+		div.className = "item";
+		div.style.display = "inline-flex";
+		div.style.width = "110px";
+		div.style.height = "110px";
+		text.style.margin = "auto";
+		div.addEventListener("click", function()
+		{
+			NDesktopOpenApplication(manifest.appid);
+			$("#appshow").slideToggle();
+		});
+		div.appendChild(text);
+		apps.appendChild(div);
+	});
 };
 
 window.addEventListener("load", function() // Cuando el DOM carge
@@ -654,19 +672,24 @@ window.addEventListener("load", function() // Cuando el DOM carge
 		{
 			// Open home tab
 			$("#appmenu").slideToggle("slow");
+			ev.preventDefault();
+		}
+		if((ev.altKey || ev.ctrlKey || ev.metaKey) && (key == 78)) // Ctrl|Alt|Meta+N
+		{
+			// Open home tab
+			$("#appmenu").slideToggle("slow");
+			ev.preventDefault();
 		}
 		if((ev.altKey || ev.ctrlKey || ev.metaKey) && (key == 66)) // Ctrl|Alt|Meta+B
 		{
 			// Open home tab
 			$("#appshow").slideToggle("slow");
+			ev.preventDefault();
 		}
 		if((ev.altKey || ev.ctrlKey || ev.metaKey) && (key == 86)) // Ctrl|Alt|Meta+V
 		{
 			// Open (Show All Apps)
 			NDesktopOpenApplication("apps");
-		}
-		if(ev.altKey || ev.ctrlKey || ev.metaKey)
-		{
 			ev.preventDefault();
 		}
 	});

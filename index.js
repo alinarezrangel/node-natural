@@ -94,6 +94,7 @@ function initSocket(socket, token)
 			}
 			group.UserCanRead(tokens.GetUserFromToken(token), path, function(err, can)
 			{
+				console.log("Trying to read all files and directories in " + path);
 				if(err)
 				{
 					console.error(err);

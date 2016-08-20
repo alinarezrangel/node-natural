@@ -86,7 +86,7 @@
 } */
 
 .link, .cursor {
-	cursor: pointer, auto;
+	cursor: pointer;
 }
 
 .border-round {

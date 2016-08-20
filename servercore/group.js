@@ -101,8 +101,9 @@ function UserCan(d, username, dirorfile, callback)
 	username = username.toString() + "";
 	if(username.match(useregex) == null)
 	{
+		console.error("The user not match the uregex");
 		callback(new Error("The user not match the uregex"));
-		return false;
+		return;
 	}
 	var dirgroup = fs.stat(dirorfile, function(err, stats)
 	{

@@ -107,6 +107,12 @@
 		var window = NGraphCreateWindow("nfiles", "NFiles");
 		var mypid = NGraphLoadDataFromWindow(window, "pid");
 		NGraphStoraDataInWindow(window, "path", "/");
+		var toolbar = document.createElement("div");
+		toolbar.className = "navigation color-light-aqua";
+		var dirUpLink = document.createElement("span");
+		dirUpLink.className = "link";
+		dirUpLink.appendChild(document.createTextNode("Subir un directorio"));
+		toolbar.appendChild(dirUpLink);
 		var layout = document.createElement("section");
 		layout.className = "flexible direction-row justify-start align-stretch no-wrap width-block height-block";
 		var fileArea = document.createElement("div");
@@ -124,13 +130,6 @@
 			Explode(NGraphLoadDataFromWindow(window, "path").split("/"), treeView, function(self, ev)
 			{
 				var text = self.dataset.innerText;
-				var path = NGraphLoadDataFromWindow(window, "path").split("/");
-				var i = path.indexOf(text);
-				var newpath = path.slice(0, i - 1).join("/");
-				//alert(newpath);
-				NGraphStoraDataInWindow(window, "path", newpath + "/");
-				//alert(path + file.filename + "/");
-				changedir();
 			});
 			NaturalListDir(NGraphLoadDataFromWindow(window, "path"), mypid, function(err, files)
 			{
@@ -164,9 +163,23 @@
 				}
 			});
 		};
+		var dirUp = function()
+		{
+			var path = NGraphLoadDataFromWindow(window, "path").split("/");
+			var newpath = path.slice(0, path.length - 2).join("/");
+			//alert(newpath);
+			NGraphStoraDataInWindow(window, "path", newpath + "/");
+			//alert(path + file.filename + "/");
+			changedir();
+		};
+		dirUpLink.addEventListener("click", function(ev)
+		{
+			dirUp();
+		});
 		changedir();
 		layout.appendChild(fileArea);
 		layout.appendChild(structureArea);
+		NGraphGetWindowBody(window).appendChild(toolbar);
 		NGraphGetWindowBody(window).appendChild(layout);
 	});
 }());

@@ -98,7 +98,7 @@ function NaturalOnLoaded()
 		else
 			console.log("Unexpected response at " + JSON.stringify(data));
 	});
-	NaturalSocket.on("error", function(data)
+	NaturalSocket.on("error-response", function(data)
 	{
 		var task = data.task || "";
 		var pid = data.pid || "";

@@ -56,12 +56,12 @@ function initSocket(socket, token)
 				if(err)
 				{
 					console.error(err);
-					socket.emit("error", {task: "import", code: 500, msg: "Internal Server Error", pid: pid});
+					socket.emit("error-response", {task: "import", code: 500, msg: "Internal Server Error", pid: pid});
 					return;
 				}
 				if(!can)
 				{
-					socket.emit("error", {task: "import", code: 403, msg: "Unauthorized", pid: pid});
+					socket.emit("error-response", {task: "import", code: 403, msg: "Unauthorized", pid: pid});
 					return;
 				}
 				fs.readFile(path, "utf8", function(err, data)
@@ -69,7 +69,7 @@ function initSocket(socket, token)
 					if(err)
 					{
 						console.error(err);
-						socket.emit("error", {task: "import", code: 500, msg: "Internal Server Error", pid: pid});
+						socket.emit("error-response", {task: "import", code: 500, msg: "Internal Server Error", pid: pid});
 						return;
 					}
 					socket.emit("response", {task: "import", pid: pid, response: data});
@@ -98,12 +98,13 @@ function initSocket(socket, token)
 				if(err)
 				{
 					console.error(err);
-					socket.emit("error", {task: "ls", code: 500, msg: "Internal Server Error", pid: pid});
+					socket.emit("error-response", {task: "ls", code: 500, msg: "Internal Server Error", pid: pid});
 					return;
 				}
 				if(!can)
 				{
-					socket.emit("error", {task: "ls", code: 403, msg: "Unauthorized", pid: pid});
+					console.error("Unauthorized");
+					socket.emit("error-response", {task: "ls", code: 403, msg: "Unauthorized", pid: pid});
 					return;
 				}
 				if(path.charAt(path.length - 1) != "/")

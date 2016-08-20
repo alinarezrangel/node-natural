@@ -80,9 +80,9 @@
 	function ShowModal(title, text)
 	{
 		var modal = NGraphCreateWindow("nfiles", "NFiles - Modal - " + title);
-		var text = document.createElement("p");
-		text.appendChild(document.createTextNode(text));
-		modal.appendChild(text);
+		var textel = document.createElement("p");
+		textel.appendChild(document.createTextNode(text));
+		NGraphGetWindowBody(modal).appendChild(textel);
 		return modal;
 	}
 	function AddFileToArea(area, img, name, onclick)

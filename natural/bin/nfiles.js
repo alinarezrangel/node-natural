@@ -135,7 +135,7 @@
 			{
 				if(err)
 				{
-					ShowModal("Algo va mal!", "Algún error inesperado sucedio mientras se leia el directorio. Asegurate de detenr los permisos necesarios para la acción");
+					ShowModal("Algo va mal!", "Algún error inesperado sucedio mientras se leia el directorio. Asegurate de tener los permisos necesarios para la acción");
 					return;
 				}
 				var i = 0;

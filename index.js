@@ -25,6 +25,7 @@ var ip = require("ip");
 var group = require("./servercore/group");
 var sha256 = require("./servercore/sha256");
 var tokens = require("./servercore/tokens");
+var framewrapper = require("./servercore/framewrapper");
 
 var natural = __dirname + "/natural"; // Directorio con los datos de la instalacion y configuración.
 
@@ -170,6 +171,7 @@ app.use(function(req, res, next) // CSP headers
 	res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; connect-src 'self' ws: wss:");
 	return next();
 });
+app.use("/embed/web/", framewrapper);
 
 console.log("The server is running at port 4567");
 

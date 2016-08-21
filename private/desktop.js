@@ -48,6 +48,10 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 	$(wind).data("clickX", "0");
 	$(wind).data("clickY", "0");
 	$(wind).data("pid", NDesktopGWID + "");
+	$(wind).data("defaultWidth", "300");
+	$(wind).data("defaultHeight", "300");
+	$(wind).data("defaultTop", "0");
+	$(wind).data("defaultLeft", "0");
 	NDesktopGWID += 1; // GWID es para evitar el problema del JOS.
 	contenthtml(wind); // contenthtml debe ser una funcion
 	document.getElementById("main").appendChild(wind);
@@ -77,6 +81,7 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 			$(this).data("clickX", (ev.clientX - $(this).offset().left) + "");
 			$(this).data("clickY", (ev.clientY - $(this).offset().top) + "");
 			ev.preventDefault();
+			return false;
 			//console.log("At " + (ev.clientX - $(this).offset().left) + "px, " + (ev.clientY - $(this).offset().top) + "px (X,Y)");
 		}
 	});
@@ -91,6 +96,7 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 			$(this).data("mousedown", "false");
 			this.style.cursor = "auto";
 			ev.preventDefault();
+			return false;
 		}
 	});
 	wind.addEventListener("mousemove", function(ev)
@@ -99,10 +105,13 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 		{
 			var left = $(this).data("clickX");
 			var top = $(this).data("clickY");
+			$(this).data("defaultTop", Math.max(ev.clientY - top, 56) + "");
+			$(this).data("defaultLeft", (ev.clientX - left) + "");
 			this.style.top = Math.max(ev.clientY - top, 56) + "px";
 			this.style.left = (ev.clientX - left) + "px";
 			this.style.cursor = "move";
 			ev.preventDefault();
+			return false;
 			//$(this).data("clickX", ev.clientX + "");
 			//$(this).data("clickY", ev.clientY + "");
 		}
@@ -231,14 +240,20 @@ function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 		deiconifyButton.addEventListener("click", function()
 		{
 			var icon = $(window).data("iconified");
-			if(icon == "true")
+			if(icon == "false")
 			{
 				NDesktopEmitEvent("deiconify", window, {});
-				// Deiconify window
-				$(window).show();
+				//! Deiconify window
+				//$(window).show();
+				$(window).width(parseInt($(window).data("defaultWidth")));
+				$(window).height(parseInt($(window).data("defaultHeight")));
+				$(window).css({top: parseInt($(window).data("defaultTop")) + 59});
+				$(window).css({left: parseInt($(window).data("defaultLeft"))});
+				$(window).data("iconified", "true");
 			}
 			else
 			{
+				$(window).data("iconified", "false");
 				NDesktopEmitEvent("maximized", window, {});
 				// Maximize window
 				window.style.top = $("#bar").height() + "px"; // System bar height
@@ -247,7 +262,7 @@ function NDesktopDefaultWindowLayout(title) // Crea un layout predeterminado
 				window.style.height = ($("body").height() - $("#bar").height()) + "px";
 			}
 		});
-		$(window).data("iconified", "false"); // Si esta minimizada
+		$(window).data("iconified", "true"); // Si esta minimizada
 		window.appendChild(header); // Agregamos nuestro layout
 		window.appendChild(content);
 		window.style.display = "inline-flex";
@@ -588,6 +603,7 @@ NDesktopMakeApplication("findapps", "NAppFinder", function()
 NaturalOnLoadevent = function()
 {
 	clearInterval(NDesktopErrorInterval);
+	$(".loader").hide();
 	NaturalLoadPrograms(function(appname, manifest)
 	{
 		var apps = $("#appshow").get(0);

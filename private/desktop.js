@@ -335,7 +335,7 @@ function NDesktopMakeApplication(name, title, apphandler)
 }
 
 // Abre una aplicacion
-function NDesktopOpenApplication(name)
+function NDesktopOpenApplication(name, args)
 {
 	var i = 0;
 	var j = NDesktopApplications.length;
@@ -344,7 +344,7 @@ function NDesktopOpenApplication(name)
 		var capp = NDesktopApplications[i];
 		if(capp.name == name)
 		{
-			return capp.handler();
+			return capp.handler(args);
 		}
 	}
 	return null;
@@ -383,9 +383,9 @@ function NGraphCreateApplication(name, title, handler)
 }
 
 // Abre una aplicacion
-function NGraphOpenApplication(name)
+function NGraphOpenApplication(name, args)
 {
-	NDesktopOpenApplication(name);
+	NDesktopOpenApplication(name, args);
 }
 
 // Guarda informacion en una ventana
@@ -603,7 +603,6 @@ NDesktopMakeApplication("findapps", "NAppFinder", function()
 NaturalOnLoadevent = function()
 {
 	clearInterval(NDesktopErrorInterval);
-	$(".loader").hide();
 	NaturalLoadPrograms(function(appname, manifest)
 	{
 		var apps = $("#appshow").get(0);
@@ -622,6 +621,9 @@ NaturalOnLoadevent = function()
 		});
 		div.appendChild(text);
 		apps.appendChild(div);
+	}, function()
+	{
+		$(".loader").hide();
 	});
 };
 

@@ -102,11 +102,12 @@
 		file.addEventListener("click", onclick);
 		area.appendChild(file);
 	}
-	NGraphCreateApplication("nfiles", "NFiles", function()
+	NGraphCreateApplication("nfiles", "NFiles", function(args)
 	{
 		var window = NGraphCreateWindow("nfiles", "NFiles");
 		var mypid = NGraphLoadDataFromWindow(window, "pid");
 		NGraphStoraDataInWindow(window, "path", "/");
+		NGraphStoraDataInWindow(window, "showhidden", "false");
 		var toolbar = document.createElement("div");
 		toolbar.className = "navigation color-light-aqua";
 		var dirUpLink = document.createElement("span");
@@ -123,6 +124,7 @@
 		structureArea.className = "f1 o2 container color-grey border border-color-everred bs-2";
 		var treeView = MakeTreeView();
 		structureArea.appendChild(treeView);
+		var dirUp = null;
 		var changedir = function()
 		{
 			while(treeView.firstChild)
@@ -135,7 +137,15 @@
 			{
 				if(err)
 				{
-					ShowModal("Algo va mal!", "Algún error inesperado sucedio mientras se leia el directorio. Asegurate de tener los permisos necesarios para la acción");
+					err.code = err.code || 500;
+					if(err.code == 403)
+					{
+						// Unauthorized
+						ShowModal("Permiso denegado", "No posees los permisos necesarios para ver este directorio");
+						dirUp();
+						return;
+					}
+					ShowModal("Algo va mal!", "Algún error inesperado sucedio mientras se leia el directorio. Asegurate de tener los permisos necesarios para la acción. Error: " + err.msg);
 					return;
 				}
 				var i = 0;
@@ -146,10 +156,15 @@
 				{
 					var file = files[i];
 					var icon = "/images/misc/icons/file.svg";
+					var hidden = /^\./g.test(file.filename);
+					hidden = hidden || /~$/g.test(file.filename);
+					hidden = hidden || /^\.natural\.manifest\.json$/g.test(file.filename);
 					if(file.isDirectory)
 					{
 						icon = "/images/misc/icons/dir.svg";
 					}
+					if((NGraphLoadDataFromWindow(window, "showhidden") == "false") && (hidden))
+						continue;
 					AddFileToArea(fileArea, icon, file.filename, function(file, ev)
 					{
 						var path = NGraphLoadDataFromWindow(window, "path");
@@ -159,11 +174,16 @@
 							//alert(path + file.filename + "/");
 							changedir();
 						}
+						else
+						{
+							// Open the file with the default app for it
+							NGraphOpenApplication("nfileopen", [NGraphLoadDataFromWindow(window, "path") + file.filename]);
+						}
 					}.bind(this, file));
 				}
 			});
 		};
-		var dirUp = function()
+		dirUp = function()
 		{
 			var path = NGraphLoadDataFromWindow(window, "path").split("/");
 			var newpath = path.slice(0, path.length - 2).join("/");

@@ -21,7 +21,7 @@ router.get("/:url", function(req, res, next)
 			return;
 		}
 		res.status(resp.statusCode);
-		res.send(body.replace("/", ""));
+		res.send(body.replace("\"/", "\""));
 	});
 });
 

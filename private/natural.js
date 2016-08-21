@@ -228,7 +228,7 @@ function NaturalListDir(path, pid, callback)
 
 // Carga los programas ubicados en natural/bin/
 // Por cada programa cargado, llama a each(program name, manifest)
-function NaturalLoadPrograms(each)
+function NaturalLoadPrograms(each, end)
 {
 	NaturalListDir("$NATURAL/bin/", 0, function(err, files)
 	{
@@ -256,6 +256,7 @@ function NaturalLoadPrograms(each)
 				document.body.appendChild(scriptTag);
 			}
 		}
+		end();
 	});
 }
 

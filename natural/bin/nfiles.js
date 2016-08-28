@@ -115,7 +115,8 @@
 		dirUpLink.appendChild(document.createTextNode("Subir un directorio"));
 		toolbar.appendChild(dirUpLink);
 		var layout = document.createElement("section");
-		layout.className = "flexible direction-row justify-start align-stretch no-wrap width-block height-block";
+		layout.className = "flexible direction-row justify-start align-stretch no-wrap width-block";
+		layout.style.height = "80%";
 		var fileArea = document.createElement("div");
 		fileArea.className = "f3 o1 container color-light-grey overflow-auto";
 		fileArea.style.maxWidth = "80%";

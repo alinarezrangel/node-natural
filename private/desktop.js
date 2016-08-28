@@ -617,7 +617,7 @@ NaturalOnLoadevent = function()
 		div.addEventListener("click", function()
 		{
 			NDesktopOpenApplication(manifest.appid);
-			$("#appshow").slideToggle();
+			$("#appshow").slideUp("slow");
 		});
 		div.appendChild(text);
 		apps.appendChild(div);
@@ -668,7 +668,7 @@ window.addEventListener("load", function() // Cuando el DOM carge
 	});
 	$("#cxtm_exit").click(function() // Cuando se cierre el meno de contexto desde el mismo
 	{
-		$("#contextmenu").slideUp("slow");
+		$("#contextmenu").hide("slow");
 	});
 	$("#cxtm_select").click(function() // Habilitar la seleccion global de texto
 	{
@@ -679,7 +679,7 @@ window.addEventListener("load", function() // Cuando el DOM carge
 	});
 	$(document).contextmenu(function() // Cuando se intente hacer click derecho.
 	{
-		$("#contextmenu").slideToggle("slow");
+		$("#contextmenu").toggle("slow");
 		return false;
 	});
 	$(document).keydown(function(ev)

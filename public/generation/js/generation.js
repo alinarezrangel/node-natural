@@ -4,7 +4,7 @@
 **************************************/
 
 var Generation = Generation || {
-	version: "1",
+	version: 1,
 	get: function(id)
 	{
 		return this._parse(document.getElementById(id));

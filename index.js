@@ -167,7 +167,6 @@ app.use(function(req, res, next) // CSP headers
 	res.setHeader("Strict-Transport-Security", "max-age=31536000 ; includeSubDomains");
 	res.setHeader("X-XSS-Protection", "0");
 	res.setHeader("X-Frame-Options", "deny");
-	//res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; connect-src 'self' ws://" + myip + ":4567/ wss://" + myip + ":4567/");
 	res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; connect-src 'self' ws: wss:");
 	return next();
 });

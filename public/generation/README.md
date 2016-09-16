@@ -8,7 +8,7 @@ This is Generation 1.
 
 Copy this directory to your proyect and use
 
-```
+```html
 <link href="generation/css/generation.css" rel="stylesheet"/>
 <script src="generation/js/generation.js"></script>
 ```
@@ -16,6 +16,19 @@ Copy this directory to your proyect and use
 The ECMAScript core is optional.
 
 ## Usage
+
+All Generation classes can apply to all elements:
+
+```html
+<div class="container">
+	Hello!
+</div>
+<section class="container">
+	Hello!
+</section>
+```
+
+A list of the classes can be found on the wiki.
 
 See the tutorial.html file.
 

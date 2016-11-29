@@ -102,3 +102,4 @@ license. See the [LICENSE][license] file.
 [socketio]: http://socket.io/
 [generation]: https://github.com/alinarezrangel/generation
 [license]: ./LICENSE
+[csp]: https://content-security-policy.com/

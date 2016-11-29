@@ -27,9 +27,11 @@ var request = require("request");
 var router = express.Router();
 
 // GET for the frame
-router.get("/:url", function(req, res, next)
+router.use(function(req, res, next)
 {
-	var url = req.params.url || "";
+	var ourl = req.path;
+	var url = "http:/" + ourl || "";
+	console.log("Attempt to get " + url);
 	request(decodeURIComponent(url), function(err, resp, body)
 	{
 		if(err)
@@ -39,8 +41,18 @@ router.get("/:url", function(req, res, next)
 			res.send("");
 			return;
 		}
+		console.log("requesting " + url);
 		res.status(resp.statusCode);
-		res.send(body.replace("\"/", "\"/embed/web/"));
+		res.type(resp.headers["content-type"]);
+
+		if((resp.headers["content-type"] == "text/html") || (resp.headers["content-type"] == "application/xhtml+xml"))
+		{
+			var b = body.split(/\<[hH][eE][aA][dD]\>/gmi);
+			var j = b[0] + "\r\n<head>\r\n<BASE href=\"/embed/web" + ourl + "\" target=\"_self\" />\r\n" + b[1];
+			body = j;
+		}
+
+		res.send(body);
 	});
 });
 

@@ -14,7 +14,7 @@
 		<script src="/jquery.js"></script>
 		<script src="/private/natural.js"></script>
 		<script src="/private/widgets.js"></script>
-		<script src="/private/desktop.js"></script>
+		<script src="/private/pure/desktop.js"></script>
 	</head>
 	<body class="color-everblack flexible center no-wrap direction-column justify-space-around overflow-hide">
 		<!--
@@ -22,7 +22,7 @@
 ***********************************
 *** Natural: A remote desktop for embed systems.
 *** By Alejandro Linarez Rangel.
-*** Default desktop HTML file (frontend).
+*** Better desktop HTML file (frontend).
 ***********************************
 ****************************************************************** */
 
@@ -42,37 +42,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 			-->
-		<div class="contextmenu side-navigation color-black user-cant-select" id="contextmenu">
-			<div class="link" id="cxtm_help">Ver ayuda</div>
-			<div class="link" id="cxtm_config">Configuración</div>
-			<div class="link" id="cxtm_select">Habilitar selección manual de texto</div>
-			<div class="link" id="cxtm_exit">Cerrar menu</div>
-		</div>
-		<section class="top-navigation color-black o1 user-cant-select" id="bar">
-			<div class="link cursor" id="home">
-				<img src="/images/syslog.svg" alt="Hogar" width="35" height="35" />
-			</div>
-			<div class="link cursor" id="apps_show">
-				<img src="/images/misc/icons/apps.svg" alt="Aplicaciones" width="35" height="35" />
-			</div>
-		</section>
-		<section class="container f1 o2 no-padding background overflow-auto user-can-select" id="main">
-			<div class="absbottom color-black border-vertical no-border-bottom direction-row justify-space-around wrap wrap-center user-cant-select" id="appmenu">
-				<a class="item" id="logout" href="/logout">Cerrar sesión</a>
-				<div class="item" id="config">Configuración</div>
-				<div class="item" id="help">Ayuda</div>
-				<div class="item" id="open">Buscar y abrir una aplicación</div>
-				<div class="item" id="allapp">Todas las aplicaciones</div>
-			</div>
-			<div class="absbottom color-black border-vertical no-border-bottom direction-row justify-space-around wrap wrap-center" id="appshow">
-			</div>
-			<div class="width-block height-block flexible direction-column justify-space-around no-wrap align-center window" id="intro">
-				<h1 class="text-jumbo-5 font-monospace">Natural</h1>
-				<img id="main_load" src="/images/misc/load-0.svg" alt="Cargando" width="500" height="50" />
-			</div>
-			<div class="loader">
-				<i class="nic" aria-label="loading">K</i>
-			</div>
-		</section>
+		//
 	</body>
 </html>

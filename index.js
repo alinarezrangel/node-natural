@@ -220,7 +220,7 @@ app.get("/main", function(req, res)
 {
 	if(req.session.logged)
 	{
-		res.sendFile(__dirname + "/private/desktop.html");
+		res.sendFile(__dirname + "/private/pure/desktop.html");
 	}
 	else
 	{

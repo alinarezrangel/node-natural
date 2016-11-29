@@ -28,6 +28,33 @@ var NDesktopMaxZIndex = 1;
 var NDesktopErrorInterval = -1;
 var NDesktopUsingFont = true;
 
+jQuery.fn.extend({
+	nHide: function(velocity)
+	{
+		this.__jqnt = this.__jqnt || {};
+		this.__jqnt.__ds = this.css("display");
+		this.addClass("hidden");
+	},
+	nShow: function(velocity)
+	{
+		this.__jqnt = this.__jqnt || {};
+		this.removeClass("hidden");
+		this.css("display", this.__jqnt.__ds);
+	},
+	nToggle: function(velocity)
+	{
+		this.__jqnt = this.__jqnt || {};
+		if(this.hasClass("hidden"))
+		{
+			this.nShow();
+		}
+		else
+		{
+			this.nHide();
+		}
+	}
+});
+
 function NDesktopMakeTextTag(tag, text) // Construye un elemento del DOM tag y lo rellena con el texto text
 {
 	var tag = document.createElement(tag);
@@ -52,7 +79,7 @@ function NDesktopOpenWindow(name, title, contenthtml) // Crea y abre una nueva v
 	+ `windowPriorityChanged`: Cuando es necesario un reajuste de los indices Z (zindex)
 	*/
 	var wind = document.createElement("div");
-	wind.className = "window color-white no-margin no-padding overflow-hide border border-color-black";
+	wind.className = "window box color-white no-margin no-padding overflow-hide border border-color-black";
 	wind.style.boxShadow = "10px 10px 71px 0px rgba(0, 0, 0, 0.3)";
 	wind.style.width = "300px";
 	wind.style.height = "300px";
@@ -639,14 +666,14 @@ NaturalOnLoadevent = function()
 		apps.appendChild(div);
 	}, function()
 	{
-		$(".loader").hide();
+		$(".loader").nHide();
 	});
 };
 
 window.addEventListener("load", function() // Cuando el DOM carge
 {
-	$("#appmenu").hide(); // Oculta el menu del sistema (al presionar el boton hogar se muestra)
-	$("#appshow").hide(); // Oculta el menu de aplicaciones (al presionar la tecla aplicaciones se muestra)
+	$("#appmenu").nHide(); // Oculta el menu del sistema (al presionar el boton hogar se muestra)
+	$("#appshow").nHide(); // Oculta el menu de aplicaciones (al presionar la tecla aplicaciones se muestra)
 	// Del core
 	// Debemos mostrar los errores
 	NDesktopErrorInterval = setInterval(function()
@@ -660,11 +687,11 @@ window.addEventListener("load", function() // Cuando el DOM carge
 	}, 1000);
 	$("#home, #appmenu > .item").click(function()
 	{
-		$("#appmenu").slideToggle("slow");
+		$("#appmenu").nToggle("slow");
 	});
 	$("#apps_show").click(function()
 	{
-		$("#appshow").slideToggle("slow");
+		$("#appshow").nToggle("slow");
 	});
 	$("#config, #cxtm_config").click(function() // Cuando se abra la ventana de configuración
 	{
@@ -684,7 +711,7 @@ window.addEventListener("load", function() // Cuando el DOM carge
 	});
 	$("#cxtm_exit").click(function() // Cuando se cierre el meno de contexto desde el mismo
 	{
-		$("#contextmenu").hide("slow");
+		$("#contextmenu").nHide("slow");
 	});
 	$("#cxtm_select").click(function() // Habilitar la seleccion global de texto
 	{
@@ -695,7 +722,7 @@ window.addEventListener("load", function() // Cuando el DOM carge
 	});
 	$(document).contextmenu(function(ev) // Cuando se intente hacer click derecho.
 	{
-		$("#contextmenu").toggle("slow");
+		$("#contextmenu").nToggle("slow");
 		ev.preventDefault();
 		return false;
 	});

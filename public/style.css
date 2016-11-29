@@ -48,7 +48,7 @@ limitations under the License.
 	margin: 0px !important;
 	padding: 0px !important;
 	box-sizing: border-box;
-	display: flex;
+	/* display: flex; */
 	background-color: rgba(0, 0, 0, 0.7) !important;
 	box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 1);
 }
@@ -189,4 +189,8 @@ limitations under the License.
 	box-sizing: border-box;
 	word-break: break-all;
 	word-wrap: break-word;
+}
+
+.hidden {
+	display: none !important;
 }

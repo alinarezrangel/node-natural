@@ -293,11 +293,11 @@ app.get("/token", function(req, res) // Devuelve el token de seguridad, sideñad
 	}
 });
 
-app.get("/private/:resource", function(req, res) // Acceso a recursos privados.
+app.use("/private/", function(req, res) // Acceso a recursos privados.
 {
 	if((req.session) && (req.session.logged))
 	{
-		res.sendFile(__dirname + "/private/" + req.params.resource);
+		res.sendFile(__dirname + "/private/" + req.path);
 	}
 	else
 	{

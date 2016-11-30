@@ -2,7 +2,7 @@
 ***********************************
 *** Natural: A remote desktop for embed systems.
 *** By Alejandro Linarez Rangel.
-*** Pure desktop event manager.
+*** Pure Desktop StyleSheet.
 ***********************************
 ****************************************************************** */
 
@@ -22,45 +22,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
-function PureMakeTextNode(text)
-{
-	return document.createTextNode(text);
+.puredesktop-main-content {
+	width: 100%;
+	height: 100%;
 }
 
-function PureExecuteTemplate(template, arguments)
-{
-	var tmp = document.importNode(template, true);
-	var t = $(tmp);
-
-	var classes = t.find("*[data-template-class-insert]");
-	classes.each(function(node)
-	{
-		node.addClass(arguments[node.data("templateClassInsert")]);
-	});
-	var texts = t.find("*[data-template-text-insert]");
-	texts.each(function(node)
-	{
-		node.get(0).appendChild(PureMakeTextNode(arguments[node.data("templateTextInsert")]));
-	});
-
-	return tmp;
+.flexbi {
+	display: flex;
 }
-
-NaturalOnLoadevent = function()
-{
-	$(".puredesktop-main-content").get(0).appendChild(
-		PureExecuteTemplate(
-			$("#puredesktop-window").get(0),
-			{
-				"color": "color-natural-magenta",
-				"title": "Hello World"
-			}
-		)
-	);
-};
-
-window.addEventListener("load", function()
-{
-	NaturalLoadNext();
-	console.log("PureDE loaded DOM " + NaturalLoadingIndex);
-});

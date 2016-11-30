@@ -281,8 +281,10 @@ function NaturalLoadNext()
 {
 	$("#main_load").attr("src", "/images/misc/load-" + NaturalLoadingIndex + ".svg");
 	NaturalLoadingIndex += 1;
+	console.log("Reached " + NaturalLoadingIndex);
 	if(NaturalLoadingIndex >= 6)
 	{
+		console.log("On loaded");
 		NaturalOnLoaded();
 	}
 }
@@ -296,6 +298,7 @@ NaturalSocket.on("ready", function(data) // Cuando el servidor pueda manejar nue
 		if((status == "success") && (data != "none"))
 		{
 			NaturalToken = data;
+			console.log("Loaded data");
 			NaturalLoadNext();
 			NaturalSocket.on("authenticated", function(data) // E intenta autenticar
 			{

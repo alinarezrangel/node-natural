@@ -15,6 +15,7 @@
 		<script src="/jquery.js"></script>
 		<script src="/private/natural.js"></script>
 		<script src="/private/widgets.js"></script>
+		<script src="/private/pure/locale.js"></script>
 		<script src="/private/pure/desktop.js"></script>
 	</head>
 	<body class="color-natural-white flexible background no-wrap direction-column justify-space-around overflow-hide">
@@ -44,7 +45,7 @@ limitations under the License.
 ***************************************************************************/
 			-->
 		<template id="puredesktop-window">
-			<div class="window flexible direction-column justify-space-around wrap no-padding no-margin card puredesktop-window-main">
+			<div class="window flexible direction-column justify-space-around no-wrap no-padding no-margin card puredesktop-window-main">
 				<div class="row no-padding no-margin puredesktop-window-titlebar o1" data-template-class-insert="color">
 					<span class="puredesktop-flat-button puredesktop-btn-exit nic padding-8 col o1">e</span>
 					<span class="puredesktop-flat-button puredesktop-btn-move nic padding-8 col o2">x</span>
@@ -56,18 +57,25 @@ limitations under the License.
 				</div>
 			</div>
 		</template>
+		<template id="puredesktop-appitem">
+			<div class="puredesktop-flat-button padding-16 color-natural-grey margin-4" data-template-text-insert="appname">
+			</div>
+		</template>
 
 		<section class="puredesktop-top-menubar no-margin navigation o1 color-natural-grey">
-			<a href="/logout">Cerrar sesión</a>
+			<a href="/logout" data-locale-string="closesession"></a>
+			<span class="link" id="loading" data-locale-string="loadingapps"></span>
 		</section>
 		<div class="flexible direction-row wrap justify-space-around no-margin no-passing o2 f1 puredesktop-screenbot">
 			<section class="puredesktop-left-menubar no-margin side-navigation o1 color-natural-indigo">
-				<a href="/logout">Cerrar sesión</a>
+				<span class="link" data-locale-string="openappsmenu" id="openappsmenu"></span>
 			</section>
 			<div class="puredesktop-main-content o2 f1 box no-margin no-padding color-transparent border-left border-top bs-2 border-color-natural-black">
 				<div class="width-block height-block flexbi direction-column justify-space-around no-wrap align-center window" id="intro">
 					<h1 class="text-jumbo-5 font-monospace">Natural</h1>
 					<img id="main_load" src="/images/misc/load-0.svg" alt="Cargando" width="500" height="50" />
+				</div>
+				<div class="puredesktop-left-menubar-menu puredesktop-applications-menu box no-margin no-padding overflow-auto hidden">
 				</div>
 			</div>
 		</div>

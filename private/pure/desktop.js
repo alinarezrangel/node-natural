@@ -23,7 +23,9 @@ limitations under the License.
 ***************************************************************************/
 
 var PureWindows = [];
+var PureApplications = [];
 var PureMaxZIndex = 2;
+var PureWindowGWID = 0;
 
 function PureMakeTextNode(text)
 {
@@ -67,7 +69,7 @@ function PureExecuteTemplate(template, args)
 	return t.children().get(0);
 }
 
-function PureMakeDefaultWindowLayout(args)
+function PureMakeDefaultWindowLayout(name, args)
 {
 	var win = PureExecuteTemplate(
 		$("#puredesktop-window").get(0),
@@ -78,6 +80,10 @@ function PureMakeDefaultWindowLayout(args)
 	win.style.height = "300px";
 	win.style.zIndex = 1;
 
+	PureWindowGWID += 1;
+
+	win.id = "window_" + name + "_" + PureWindowGWID;
+
 	$(win).data("clickX", 0);
 	$(win).data("clickY", 0);
 	$(win).data("mousedown", "false");
@@ -85,6 +91,13 @@ function PureMakeDefaultWindowLayout(args)
 	$(win).data("focused", "false");
 	$(win).data("instantRemove", "true");
 	$(win).data("preventTitlebarMove", "false");
+	$(win).data("maximized", "false");
+	$(win).data("defaultTop", $(win).position().top);
+	$(win).data("defaultLeft", $(win).position().left);
+	$(win).data("defaultWidth", 300);
+	$(win).data("defaultHeight", 300);
+	$(win).data("title", args.title);
+	$(win).data("pid", PureWindowGWID);
 
 	win.addEventListener("exit", function(ev)
 	{
@@ -229,6 +242,43 @@ function PureMakeDefaultWindowLayout(args)
 		}
 	});
 
+	$(titlebar).find(".puredesktop-btn-min").get(0).addEventListener("click", function()
+	{
+		$(win).addClass("hidden");
+		PureEmitEvents(PureWindows, "windowPriorityChanged", {
+			"from": win
+		});
+	});
+
+	$(titlebar).find(".puredesktop-btn-max").get(0).addEventListener("click", function()
+	{
+		var isMaximized = $(win).data("maximized");
+		if(isMaximized == "false")
+		{
+			var topnavtp = $(".puredesktop-top-menubar").height() + 2;
+			var leftnavtp = $(".puredesktop-left-menubar").width() + 2;
+			win.style.top = topnavtp + "px";
+			win.style.left = leftnavtp + "px";
+			win.style.width = ($(document.body).width() - leftnavtp) + "px";
+			win.style.height = ($(document.body).height() - topnavtp) + "px";
+			$(win).data("maximized", "true");
+			$(win).data("preventTitlebarMove", "true");
+		}
+		else
+		{
+			var dt = $(win).data("defaultTop");
+			var dl = $(win).data("defaultLeft");
+			var dw = $(win).data("defaultWidth");
+			var dh = $(win).data("defaultHeight");
+			win.style.top = dt + "px";
+			win.style.left = dl + "px";
+			win.style.width = dw + "px";
+			win.style.height = dh + "px";
+			$(win).data("maximized", "false");
+			$(win).data("preventTitlebarMove", "false");
+		}
+	});
+
 	var li = PureWindows.push(win) - 1;
 
 	$(win).data("pureIndex", li);
@@ -236,23 +286,215 @@ function PureMakeDefaultWindowLayout(args)
 	return win;
 }
 
-NaturalOnLoadevent = function()
+function PureOpenWindow(window, args)
 {
-	var win = PureMakeDefaultWindowLayout({
+	args = args || {
+		"preventFromTopbar": false
+	};
+	PureEmitEvent(window, "opened", {});
+	$(".puredesktop-main-content").get(0).appendChild(window);
+	if(!args.preventFromTopbar)
+	{
+		console.log("Prevent From Topbar Disabled");
+		var tp = $(".puredesktop-top-menubar").get(0);
+		var item = document.createElement("span");
+		item.className = "link border-horizontal border-color-black";
+		item.addEventListener("click", function()
+		{
+			$(window).toggleClass("hidden");
+		});
+		window.addEventListener("exit", function()
+		{
+			$(item).remove();
+		});
+		item.appendChild(PureMakeTextNode($(window).data("title")));
+		tp.appendChild(item);
+	}
+}
+
+function PureGetWindowBody(window)
+{
+	return $(window).find(".puredesktop-window-content").get(0);
+}
+
+function PureCreateApplication(name, title, handler)
+{
+	return PureApplications.push({
+		"name": name,
+		"title": title,
+		"handler": handler
+	});
+}
+
+function PureOpenApplication(name, args)
+{
+	var i = 0;
+	var j = PureApplications.length;
+
+	for(i = 0; i < j; i++)
+	{
+		if(PureApplications[i].name == name)
+		{
+			return PureApplications[i].handler(args);
+		}
+	}
+
+	return null;
+}
+
+// NGraph Minimal API
+
+function NGraphCreateWindow(name, title)
+{
+	var win = PureMakeDefaultWindowLayout(
+		name,
+		{
+		"color": "color-natural-indigo",
+		"title": title,
+		"bkgcolor": "color-natural-white"
+		}
+	);
+	PureOpenWindow(win);
+	return win;
+}
+
+function NGraphGetWindowBody(window)
+{
+	return PureGetWindowBody(window);
+}
+
+function NGraphDestroyWindow(window)
+{
+	$(window).data("instantRemove", "true");
+	PureEmitEvent(window, "exit", {});
+	return null;
+}
+
+function NGraphWindowAddEventListener(window, eventname, handler)
+{
+	return window.addEventListener(eventname, handler);
+}
+
+function NGraphCreateApplication(name, title, handler)
+{
+	return PureCreateApplication(name, title, handler);
+}
+
+function NGraphOpenApplication(name, args)
+{
+	return PureOpenApplication(name, args);
+}
+
+function NGraphStoraDataInWindow(window, key, value)
+{
+	$(window).data(key, value);
+	return window;
+}
+
+function NGraphLoadDataFromWindow(window, key)
+{
+	return $(window).data(key);
+}
+
+// End
+
+PureCreateApplication("__purehelloworld", "Hello World", function(args)
+{
+	var window = PureMakeDefaultWindowLayout(
+		"__purehelloworld",
+		{
 		"color": "color-natural-indigo",
 		"title": "Hello World",
-		"bkgcolor": "color-natural-white"
+		"bkgcolor": "color-natural-indigo"
+		}
+	);
+	PureOpenWindow(window);
+
+	PureGetWindowBody(window).appendChild(PureMakeTextNode("Hello World"));
+});
+
+NaturalOnLoadevent = function()
+{
+	PureApplications.forEach(function(value, index)
+	{
+		var appitem = PureExecuteTemplate(
+			$("#puredesktop-appitem").get(0),
+			{
+				"appname": value.title
+			}
+		);
+		appitem.addEventListener("click", function()
+		{
+			console.log("Attemting to open " + value.name);
+			PureOpenApplication(value.name, undefined);
+		});
+		$(".puredesktop-applications-menu").get(0).appendChild(appitem);
 	});
-	PureEmitEvent(win, "opened", {});
-	var ct = $(win).find(".puredesktop-window-content").get(0);
-
-	ct.appendChild(PureMakeTextNode("Hello World"));
-
-	$(".puredesktop-main-content").get(0).appendChild(win);
+	NaturalLoadPrograms(function(appname, manifest)
+	{
+		var appitem = PureExecuteTemplate(
+			$("#puredesktop-appitem").get(0),
+			{
+				"appname": appname
+			}
+		);
+		appitem.addEventListener("click", function()
+		{
+			console.log("Attemting to open " + manifest.appid);
+			PureOpenApplication(manifest.appid, undefined);
+		});
+		$(".puredesktop-applications-menu").get(0).appendChild(appitem);
+	}, function()
+	{
+		$("#loading").addClass("hidden");
+	});
 };
 
 window.addEventListener("load", function()
 {
+	$("*[data-locale-string]").each(function(index)
+	{
+		console.log("Locale.at " + PureLocaleStrings[PureLanguage][$(this).data("localeString")]);
+		this.appendChild(PureMakeTextNode(PureLocaleStrings[PureLanguage][$(this).data("localeString")]))
+	});
+	$("#openappsmenu").click(function()
+	{
+		var menu = $(".puredesktop-applications-menu");
+		var lm = $(".puredesktop-left-menubar").position();
+		var lw = $(".puredesktop-left-menubar").width();
+		var ox = 25;
+		var ex = 50;
+
+		if(menu.hasClass("hidden"))
+		{
+			menu.removeClass("hidden")
+				.css({
+					"left": (lm.left + lw - ox + 2) + "px",
+					"opacity": "0"
+				})
+				.animate({
+					"left": (lm.left + lw + ox + 2) + "px",
+					"opacity": "1"
+				}, 100, "linear")
+			.end();
+		}
+		else
+		{
+			menu.css({
+					"left": (lm.left + lw + ox + 2) + "px",
+					"opacity": "1"
+				})
+				.animate({
+					"left": (lm.left + lw + ex + 2) + "px",
+					"opacity": "0"
+				}, 100, "linear", () =>
+				{
+					menu.addClass("hidden");
+				})
+			.end();
+		}
+	});
+
 	NaturalLoadNext();
 	console.log("PureDE loaded DOM " + NaturalLoadingIndex);
 });

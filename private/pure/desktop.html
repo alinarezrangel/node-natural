@@ -44,15 +44,15 @@ limitations under the License.
 ***************************************************************************/
 			-->
 		<template id="puredesktop-window">
-			<div class="window flexible no-padding no-margin card puredesktop-window-main" data-template-class-insert="color">
-				<div class="row no-padding no-margin puredesktop-window-titlebar o1">
-					<span class="puredesktop-flat-button nic col o1">e</span>
-					<span class="puredesktop-flat-button nic col o2">x</span>
-					<span class="puredesktop-title-text o3 f1" data-template-text-insert="title"></span>
-					<span class="puredesktop-flat-button nic col o4">Q</span>
-					<span class="puredesktop-flat-button nic col o5">P</span>
+			<div class="window flexible direction-column justify-space-around wrap no-padding no-margin card puredesktop-window-main">
+				<div class="row no-padding no-margin puredesktop-window-titlebar o1" data-template-class-insert="color">
+					<span class="puredesktop-flat-button puredesktop-btn-exit nic padding-8 col o1">e</span>
+					<span class="puredesktop-flat-button puredesktop-btn-move nic padding-8 col o2">x</span>
+					<span class="puredesktop-title-text o3 f1 no-margin padding-8" data-template-text-insert="title"></span>
+					<span class="puredesktop-flat-button puredesktop-btn-min nic padding-8 col o4">Q</span>
+					<span class="puredesktop-flat-button puredesktop-btn-max nic padding-8 col o5">P</span>
 				</div>
-				<div class="container no-padding no-margin o2 f1 puredesktop-window-content">
+				<div class="container no-padding no-margin o2 f1 puredesktop-window-content puredesktop-can-select" data-template-class-insert="bkgcolor">
 				</div>
 			</div>
 		</template>

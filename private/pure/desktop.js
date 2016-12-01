@@ -97,12 +97,34 @@ function PureMakeDefaultWindowLayout(name, args)
 	$(win).data("instantRemove", "true");
 	$(win).data("preventTitlebarMove", "false");
 	$(win).data("maximized", "false");
-	$(win).data("defaultTop", $(win).position().top);
-	$(win).data("defaultLeft", $(win).position().left);
+	$(win).data("defaultTop", $(".puredesktop-top-menubar").height() + 2);
+	$(win).data("defaultLeft", $(".puredesktop-left-menubar").width() + 2);
 	$(win).data("defaultWidth", 300);
 	$(win).data("defaultHeight", 300);
 	$(win).data("title", args.title);
 	$(win).data("pid", PureWindowGWID);
+
+	var resize = function(win, to, setdef)
+	{
+		$(win).css({
+			width: to[0] + "px",
+			height: to[1] + "px",
+			maxWidth: to[0] + "px",
+			maxHeight: to[1] + "px"
+		}).find(".puredesktop-window-content")
+			.css({
+				width: to[0] + "px",
+				height: (to[1] - $(win).find(".puredesktop-window-titlebar").height()) + "px",
+				maxWidth: to[0] + "px",
+				maxHeight: (to[1] - $(win).find(".puredesktop-window-titlebar").height()) + "px"
+			})
+		.end();
+		if(setdef)
+		{
+			$(win).data("defaultWidth", to[0])
+			.data("defaultHeight", to[1]);
+		}
+	};
 
 	win.addEventListener("exit", function(ev)
 	{
@@ -204,10 +226,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	win.addEventListener("__pure_resize_to", function(ev)
 	{
-		$(this).css({
-			width: PureResizeEnd[0],
-			height: PureResizeEnd[1]
-		}).data("defaultWidth", PureResizeEnd[0]).data("defaultHeight", PureResizeEnd[1]);
+		resize(this, PureResizeEnd, true);
 	});
 
 	titlebar.addEventListener("mousedown", function()
@@ -272,8 +291,7 @@ function PureMakeDefaultWindowLayout(name, args)
 			var leftnavtp = $(".puredesktop-left-menubar").width() + 2;
 			win.style.top = topnavtp + "px";
 			win.style.left = leftnavtp + "px";
-			win.style.width = ($(document.body).width() - leftnavtp) + "px";
-			win.style.height = ($(document.body).height() - topnavtp) + "px";
+			resize(win, [($(document.body).width() - leftnavtp), ($(document.body).height() - topnavtp)], false);
 			$(win).data("maximized", "true");
 			$(win).data("preventTitlebarMove", "true");
 			PureEmitEvent(win, "maximized", {});
@@ -287,8 +305,7 @@ function PureMakeDefaultWindowLayout(name, args)
 			var dh = $(win).data("defaultHeight");
 			win.style.top = dt + "px";
 			win.style.left = dl + "px";
-			win.style.width = dw + "px";
-			win.style.height = dh + "px";
+			resize(win, [dw, dh], true);
 			$(win).data("maximized", "false");
 			$(win).data("preventTitlebarMove", "false");
 		}
@@ -617,7 +634,12 @@ window.addEventListener("load", function()
 			ev.preventDefault();
 			return false;
 		}
-	})
+	});
+
+	$(".puredesktop-left-menubar-menu").css({
+		width: ($(document.body).width() - $(".puredesktop-left-menubar").width() + 2) + "px",
+		height: ($(document.body).height() - $(".puredesktop-top-menubar").height() + 2) + "px",
+	});
 
 	NaturalLoadNext();
 	console.log("PureDE loaded DOM " + NaturalLoadingIndex);

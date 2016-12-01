@@ -69,6 +69,14 @@ html, body {
 	background-color: #CCC !important;
 }
 
+.puredesktop-hoverable {
+	transition: background-color 0.6s !important;
+}
+
+.puredesktop-hoverable:hover {
+	background-color: #AAA !important;
+}
+
 .puredesktop-top-menubar, .puredesktop-left-menubar {
 	z-index: 4000;
 }
@@ -90,4 +98,5 @@ html, body {
 .puredesktop-resize-preview {
 	position: absolute;
 	border: 1px dotted #04C;
+	background-color: rgba(50, 50, 50, 0.3);
 }

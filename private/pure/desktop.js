@@ -33,6 +33,7 @@ var PureResizeStart = []; // [x, y]
 var PureResizeEnd = []; // [w, h]
 var PureResizeAlign = []; // [ox, oy]
 var PureResizeTimeout = false;
+var PureGlobalAnimationDuration = 250;
 
 function PureMakeTextNode(text)
 {
@@ -105,28 +106,72 @@ function PureMakeDefaultWindowLayout(name, args)
 	$(win).data("defaultHeight", 300);
 	$(win).data("title", args.title);
 	$(win).data("pid", PureWindowGWID);
+	$(win).data("animateResize", "false");
 
-	var resize = function(win, to, setdef)
+	var resize = function(win, to, setdef, animate, optfcn1)
 	{
-		$(win).css({
-			width: to[0] + "px",
-			height: to[1] + "px",
-			maxWidth: to[0] + "px",
-			maxHeight: to[1] + "px"
-		}).find(".puredesktop-window-content")
-			.css({
+		optfcn1 = ((typeof optfcn1) === "undefined")? function() {} : optfcn1;
+
+		if(!animate)
+		{
+			$(win).css({
 				width: to[0] + "px",
-				height: (to[1] - $(win).find(".puredesktop-window-titlebar").height()) + "px",
+				height: to[1] + "px",
 				maxWidth: to[0] + "px",
-				maxHeight: (to[1] - $(win).find(".puredesktop-window-titlebar").height()) + "px"
-			})
-		.end();
+				maxHeight: to[1] + "px"
+			}).find(".puredesktop-window-content")
+				.css({
+					width: to[0] + "px",
+					height: (to[1] - $(win).find(".puredesktop-window-titlebar").height()) + "px",
+					maxWidth: to[0] + "px",
+					maxHeight: (to[1] - $(win).find(".puredesktop-window-titlebar").height()) + "px"
+				})
+			.end();
+		}
+		else
+		{
+			$(win).animate(optfcn1({
+				width: to[0] + "px",
+				height: to[1] + "px",
+				maxWidth: to[0] + "px",
+				maxHeight: to[1] + "px"
+			}, 1), PureGlobalAnimationDuration, function()
+			{
+				$(win).css({
+					width: to[0] + "px",
+					height: to[1] + "px",
+					maxWidth: to[0] + "px",
+					maxHeight: to[1] + "px"
+				});
+			}).find(".puredesktop-window-content")
+				.animate(optfcn1({
+					width: to[0] + "px",
+					height: (to[1] - $(win).find(".puredesktop-window-titlebar").height()) + "px",
+					maxWidth: to[0] + "px",
+					maxHeight: (to[1] - $(win).find(".puredesktop-window-titlebar").height()) + "px"
+				}, 2), PureGlobalAnimationDuration, function()
+				{
+					$(win).find(".puredesktop-window-content")
+						.css({
+							width: to[0] + "px",
+							height: (to[1] - $(win).find(".puredesktop-window-titlebar").height()) + "px",
+							maxWidth: to[0] + "px",
+							maxHeight: (to[1] - $(win).find(".puredesktop-window-titlebar").height()) + "px"
+						});
+				});
+		}
 		if(setdef)
 		{
 			$(win).data("defaultWidth", to[0])
 			.data("defaultHeight", to[1]);
 		}
 	};
+
+	resize(win, [300, 300], true, false);
+	$(win).css({
+		"top": $(".puredesktop-top-menubar").height() + 2,
+		"left": $(".puredesktop-left-menubar").width() + 2
+	});
 
 	win.addEventListener("exit", function(ev)
 	{
@@ -228,11 +273,17 @@ function PureMakeDefaultWindowLayout(name, args)
 			ev.stopPropagation();
 			return false;
 		}
+		if($(this).data("movable") == "true")
+		{
+			ev.preventDefault();
+			ev.stopPropagation();
+			return false;
+		}
 	});
 
 	win.addEventListener("__pure_resize_to", function(ev)
 	{
-		resize(this, PureResizeEnd, true);
+		resize(this, PureResizeEnd, true, true);
 	});
 
 	titlebar.addEventListener("mousedown", function()
@@ -296,9 +347,29 @@ function PureMakeDefaultWindowLayout(name, args)
 		{
 			var topnavtp = $(".puredesktop-top-menubar").height() + 2;
 			var leftnavtp = $(".puredesktop-left-menubar").width() + 2;
-			win.style.top = topnavtp + "px";
-			win.style.left = leftnavtp + "px";
-			resize(win, [($(document.body).width() - leftnavtp), ($(document.body).height() - topnavtp)], false);
+			// win.style.top = topnavtp + "px";
+			// win.style.left = leftnavtp + "px";
+			// $(win).animate({
+			// "top": topnavtp,
+			// "left": leftnavtp
+			// }, PureGlobalAnimationDuration);
+			resize(
+				win,
+				[
+					($(document.body).width() - leftnavtp),
+					($(document.body).height() - topnavtp)
+				],
+				false,
+				true,
+				function(obj, at)
+			{
+				if(at == 1)
+				{
+					obj["top"] = topnavtp + "px";
+					obj["left"] = leftnavtp + "px";
+				}
+				return obj;
+			});
 			$(win).data("maximized", "true");
 			$(win).data("preventTitlebarMove", "true");
 			PureEmitEvent(win, "maximized", {});
@@ -310,9 +381,30 @@ function PureMakeDefaultWindowLayout(name, args)
 			var dl = $(win).data("defaultLeft");
 			var dw = $(win).data("defaultWidth");
 			var dh = $(win).data("defaultHeight");
-			win.style.top = dt + "px";
-			win.style.left = dl + "px";
-			resize(win, [dw, dh], true);
+			// win.style.top = dt + "px";
+			// win.style.left = dl + "px";
+			// $(win).animate({
+			// "top": dt,
+			// "left": dl
+			// }, PureGlobalAnimationDuration);
+			// resize(win, [dw, dh], true, true);
+			resize(
+				win,
+				[
+					dw,
+					dh
+				],
+				false,
+				true,
+				function(obj, at)
+			{
+				if(at == 1)
+				{
+					obj["top"] = dt + "px";
+					obj["left"] = dl + "px";
+				}
+				return obj;
+			});
 			$(win).data("maximized", "false");
 			$(win).data("preventTitlebarMove", "false");
 		}
@@ -337,12 +429,12 @@ function PureOpenWindow(window, args)
 		NaturalLog("Prevent From Topbar Disabled");
 		var tp = $(".puredesktop-windows-menu").get(0);
 		var item = PureExecuteTemplate(
-			$("#puredesktop-appitem").get(0),
+			$("#puredesktop-winitem").get(0),
 			{
 				"appname": $(window).data("title")
 			}
 		);
-		item.addEventListener("click", function()
+		$(item).find(".puredesktop-label").click(function()
 		{
 			if($(window).hasClass("hidden"))
 			{
@@ -358,6 +450,13 @@ function PureOpenWindow(window, args)
 				});
 				PureEmitEvent(window, "iconify", {});
 			}
+		});
+		$(item).find(".puredesktop-btn-exit").click(function()
+		{
+			$(window).removeClass("hidden");
+			PureEmitEvent(window, "focus", {});
+			PureEmitEvent(window, "deiconify", {});
+			PureEmitEvent(window, "exit", {});
 		});
 		window.addEventListener("__pure_exit", function()
 		{
@@ -447,7 +546,7 @@ function PureSlideHMenuRightShow(menu, callback)
 {
 	var lm = $(".puredesktop-left-menubar").position();
 	var lw = $(".puredesktop-left-menubar").width();
-	var ox = 50;
+	var ox = $(menu).width() / 4;
 
 	PureSlideHMenu__Show(menu, callback, lm, lw, ox);
 }
@@ -456,7 +555,7 @@ function PureSlideHMenuRightHide(menu, callback)
 {
 	var lm = $(".puredesktop-left-menubar").position();
 	var lw = $(".puredesktop-left-menubar").width();
-	var ox = 50;
+	var ox = $(menu).width() / 4;
 
 	PureSlideHMenu__Hide(menu, callback, lm, lw, ox);
 }

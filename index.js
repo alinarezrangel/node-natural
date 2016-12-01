@@ -38,6 +38,7 @@ var child_proccess = require("child_process");
 //var userid = require("userid");
 var ip = require("ip");
 var path = require("path");
+var favicon = require("serve-favicon");
 
 var group = require("./servercore/group");
 var sha256 = require("./servercore/sha256");
@@ -160,6 +161,7 @@ function initSocket(socket, token)
 
 //io.set("origins", "http://" + ip.address() + ":4567/");
 
+app.use(favicon(path.join(__dirname, "public", "images", "logicon.svg")));
 app.use(bodyParser.urlencoded({extended: true})); // POST data
 app.use(express.static("public")); // directorio estatico
 app.use(session({

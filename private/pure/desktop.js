@@ -27,10 +27,11 @@ var PureApplications = [];
 var PureMaxZIndex = 2;
 var PureWindowGWID = 0;
 var PureShowingMenu = false;
+var PureMenuIndex = 0;
 var PureWindow2Resize = null;
 var PureResizeStart = []; // [x, y]
 var PureResizeEnd = []; // [w, h]
-var PureResizeAlign = [];
+var PureResizeAlign = []; // [ox, oy]
 
 function PureMakeTextNode(text)
 {
@@ -404,6 +405,68 @@ function PureGetWindowAtom(window, name)
 	return $(window).data(name);
 }
 
+function PureSlideHMenu__Show(menu, callback, lm, lw, ox)
+{
+	menu.removeClass("hidden")
+		.css({
+			"left": (lm.left + lw - ox + 2) + "px",
+			"opacity": "0"
+		})
+		.animate({
+			"left": (lm.left + lw + 2) + "px",
+			"opacity": "1"
+		}, 100, "linear")
+	.end();
+	callback(true);
+}
+
+function PureSlideHMenu__Hide(menu, callback, lm, lw, ox)
+{
+	menu.css({
+			"left": (lm.left + lw + 2) + "px",
+			"opacity": "1"
+		})
+		.animate({
+			"left": (lm.left + lw + ox + 2) + "px",
+			"opacity": "0"
+		}, 100, "linear", () =>
+		{
+			menu.addClass("hidden");
+			callback(false);
+		})
+	.end();
+}
+
+function PureSlideHMenuRightShow(menu, callback)
+{
+	var lm = $(".puredesktop-left-menubar").position();
+	var lw = $(".puredesktop-left-menubar").width();
+	var ox = 50;
+
+	PureSlideHMenu__Show(menu, callback, lm, lw, ox);
+}
+
+function PureSlideHMenuRightHide(menu, callback)
+{
+	var lm = $(".puredesktop-left-menubar").position();
+	var lw = $(".puredesktop-left-menubar").width();
+	var ox = 50;
+
+	PureSlideHMenu__Hide(menu, callback, lm, lw, ox);
+}
+
+function PureSlideHMenuRight(menu, callback)
+{
+	if(menu.hasClass("hidden"))
+	{
+		PureSlideHMenuRightShow(menu, callback);
+	}
+	else
+	{
+		PureSlideHMenuRightHide(menu, callback);
+	}
+}
+
 // NGraph Minimal API
 
 function NGraphCreateWindow(name, title)
@@ -524,6 +587,30 @@ NaturalOnLoadevent = function()
 
 window.addEventListener("load", function()
 {
+	var menuSlide = function(menu, myMenuIndex)
+	{
+		console.log("SM " + PureShowingMenu + ":" + PureMenuIndex);
+		if((PureShowingMenu) && (PureMenuIndex != myMenuIndex))
+		{
+			PureSlideHMenuRightHide($(".puredesktop-left-menubar-menu:not(.hidden)"), function(_showing)
+			{
+				PureSlideHMenuRightShow(menu, function(showing)
+				{
+					PureShowingMenu = showing;
+					PureMenuIndex = myMenuIndex;
+				});
+			});
+		}
+		else
+		{
+			PureSlideHMenuRight(menu, function(showing)
+			{
+				PureShowingMenu = showing;
+				PureMenuIndex = myMenuIndex;
+			});
+		}
+	};
+
 	$("*[data-locale-string]").each(function(index)
 	{
 		console.log("Locale.at " + PureLocaleStrings[PureLanguage][$(this).data("localeString")]);
@@ -532,74 +619,12 @@ window.addEventListener("load", function()
 	$("#openappsmenu").click(function()
 	{
 		var menu = $(".puredesktop-applications-menu");
-		var lm = $(".puredesktop-left-menubar").position();
-		var lw = $(".puredesktop-left-menubar").width();
-		var ox = 50;
-
-		if(menu.hasClass("hidden"))
-		{
-			menu.removeClass("hidden")
-				.css({
-					"left": (lm.left + lw - ox + 2) + "px",
-					"opacity": "0"
-				})
-				.animate({
-					"left": (lm.left + lw + 2) + "px",
-					"opacity": "1"
-				}, 100, "linear")
-			.end();
-		}
-		else
-		{
-			menu.css({
-					"left": (lm.left + lw + 2) + "px",
-					"opacity": "1"
-				})
-				.animate({
-					"left": (lm.left + lw + ox + 2) + "px",
-					"opacity": "0"
-				}, 100, "linear", () =>
-				{
-					menu.addClass("hidden");
-				})
-			.end();
-		}
+		menuSlide(menu, 1);
 	});
 	$("#seeappsmenu").click(function()
 	{
 		var menu = $(".puredesktop-windows-menu");
-		var lm = $(".puredesktop-left-menubar").position();
-		var lw = $(".puredesktop-left-menubar").width();
-		var ox = 50;
-
-		if(menu.hasClass("hidden"))
-		{
-			menu.removeClass("hidden")
-				.css({
-					"left": (lm.left + lw - ox + 2) + "px",
-					"opacity": "0"
-				})
-				.animate({
-					"left": (lm.left + lw + 2) + "px",
-					"opacity": "1"
-				}, 100, "linear")
-			.end();
-		}
-		else
-		{
-			menu.css({
-					"left": (lm.left + lw + 2) + "px",
-					"opacity": "1"
-				})
-				.animate({
-					"left": (lm.left + lw + ox + 2) + "px",
-					"opacity": "0"
-				}, 100, "linear", () =>
-				{
-					menu.addClass("hidden");
-				})
-			.end();
-		}
+		menuSlide(menu, 2);
 	});
 
 	$(".puredesktop-main-content, .puredesktop-resize-preview").mousemove(function(ev)

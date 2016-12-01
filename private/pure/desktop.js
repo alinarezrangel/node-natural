@@ -32,6 +32,7 @@ var PureWindow2Resize = null;
 var PureResizeStart = []; // [x, y]
 var PureResizeEnd = []; // [w, h]
 var PureResizeAlign = []; // [ox, oy]
+var PureResizeTimeout = false;
 
 function PureMakeTextNode(text)
 {
@@ -182,6 +183,7 @@ function PureMakeDefaultWindowLayout(name, args)
 			$(this).data("clickX", (ev.clientX - $(this).offset().left));
 			$(this).data("clickY", (ev.clientY - $(this).offset().top));
 			ev.preventDefault();
+			ev.stopPropagation();
 			return false;
 		}
 	});
@@ -193,6 +195,7 @@ function PureMakeDefaultWindowLayout(name, args)
 			$(this).data("mousedown", "false");
 			this.style.cursor = "auto";
 			ev.preventDefault();
+			ev.stopPropagation();
 			return false;
 		}
 	});
@@ -211,6 +214,7 @@ function PureMakeDefaultWindowLayout(name, args)
 			this.style.left = Math.max(ev.clientX - left, leftnavtp) + "px";
 			this.style.cursor = "move";
 			ev.preventDefault();
+			ev.stopPropagation();
 			return false;
 		}
 	});
@@ -221,6 +225,7 @@ function PureMakeDefaultWindowLayout(name, args)
 		{
 			PureEmitEvent(this, "focus", {});
 			ev.preventDefault();
+			ev.stopPropagation();
 			return false;
 		}
 	});
@@ -281,6 +286,7 @@ function PureMakeDefaultWindowLayout(name, args)
 		PureWindow2Resize = win;
 		PureResizeStart = [$(win).position().left, $(win).position().top];
 		PureResizeAlign = [ev.clientX, ev.clientY];
+		ev.stopPropagation();
 	});
 
 	$(titlebar).find(".puredesktop-btn-max").get(0).addEventListener("click", function()
@@ -649,7 +655,7 @@ window.addEventListener("load", function()
 		}
 	});
 
-	$(".puredesktop-main-content, .puredesktop-resize-preview").contextmenu(function(ev)
+	$(".puredesktop-main-content, .puredesktop-resize-preview").click(function(ev)
 	{
 		if(PureWindow2Resize != null)
 		{

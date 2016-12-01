@@ -27,6 +27,10 @@ var PureApplications = [];
 var PureMaxZIndex = 2;
 var PureWindowGWID = 0;
 var PureShowingMenu = false;
+var PureWindow2Resize = null;
+var PureResizeStart = []; // [x, y]
+var PureResizeEnd = []; // [w, h]
+var PureResizeAlign = [];
 
 function PureMakeTextNode(text)
 {
@@ -107,6 +111,7 @@ function PureMakeDefaultWindowLayout(name, args)
 			PureMaxZIndex -= 1;
 			PureWindows.splice(parseInt($(this).data("pureIndex")), 1);
 			$(this).remove();
+			PureEmitEvent(this, "__pure_exit", {});
 		}
 	});
 
@@ -197,6 +202,14 @@ function PureMakeDefaultWindowLayout(name, args)
 		}
 	});
 
+	win.addEventListener("__pure_resize_to", function(ev)
+	{
+		$(this).css({
+			width: PureResizeEnd[0],
+			height: PureResizeEnd[1]
+		}).data("defaultWidth", PureResizeEnd[0]).data("defaultHeight", PureResizeEnd[1]);
+	});
+
 	titlebar.addEventListener("mousedown", function()
 	{
 		if($(win).data("preventTitlebarMove") == "true")
@@ -243,9 +256,11 @@ function PureMakeDefaultWindowLayout(name, args)
 		}
 	});
 
-	$(titlebar).find(".puredesktop-btn-min").get(0).addEventListener("click", function()
+	$(titlebar).find(".puredesktop-btn-min").get(0).addEventListener("click", function(ev)
 	{
-		// Resize
+		PureWindow2Resize = win;
+		PureResizeStart = [$(win).position().left, $(win).position().top];
+		PureResizeAlign = [ev.clientX, ev.clientY];
 	});
 
 	$(titlebar).find(".puredesktop-btn-max").get(0).addEventListener("click", function()
@@ -320,7 +335,7 @@ function PureOpenWindow(window, args)
 				PureEmitEvent(window, "iconify", {});
 			}
 		});
-		window.addEventListener("exit", function()
+		window.addEventListener("__pure_exit", function()
 		{
 			$(item).remove();
 		});
@@ -569,6 +584,40 @@ window.addEventListener("load", function()
 			.end();
 		}
 	});
+
+	$(".puredesktop-main-content, .puredesktop-resize-preview").mousemove(function(ev)
+	{
+		var x = ev.clientX;
+		var y = ev.clientY;
+
+		if(PureWindow2Resize != null)
+		{
+			var wx = $(PureWindow2Resize).position().left;
+			var wy = $(PureWindow2Resize).position().top;
+
+			$(".puredesktop-resize-preview").removeClass("hidden").css({
+				left: PureResizeStart[0] + "px",
+				top: PureResizeStart[1] + "px",
+				width: x - PureResizeStart[0],
+				height: y - PureResizeStart[1],
+				zIndex: 2000
+			});
+			PureResizeEnd[0] = $(".puredesktop-resize-preview").width();
+			PureResizeEnd[1] = $(".puredesktop-resize-preview").height();
+		}
+	});
+
+	$(".puredesktop-main-content, .puredesktop-resize-preview").contextmenu(function(ev)
+	{
+		if(PureWindow2Resize != null)
+		{
+			$(".puredesktop-resize-preview").addClass("hidden");
+			PureEmitEvent(PureWindow2Resize, "__pure_resize_to", {});
+			PureWindow2Resize = null;
+			ev.preventDefault();
+			return false;
+		}
+	})
 
 	NaturalLoadNext();
 	console.log("PureDE loaded DOM " + NaturalLoadingIndex);

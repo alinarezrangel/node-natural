@@ -88,3 +88,8 @@ html, body {
 	background-color: rgba(127, 127, 127, 0.7) !important;
 	z-index: 3999 !important;
 }
+
+.puredesktop-resize-preview {
+	position: absolute;
+	border: 1px dotted #04C;
+}

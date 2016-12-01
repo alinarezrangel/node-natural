@@ -26,6 +26,7 @@ var PureWindows = [];
 var PureApplications = [];
 var PureMaxZIndex = 2;
 var PureWindowGWID = 0;
+var PureShowingMenu = false;
 
 function PureMakeTextNode(text)
 {
@@ -244,10 +245,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	$(titlebar).find(".puredesktop-btn-min").get(0).addEventListener("click", function()
 	{
-		$(win).addClass("hidden");
-		PureEmitEvents(PureWindows, "windowPriorityChanged", {
-			"from": win
-		});
+		// Resize
 	});
 
 	$(titlebar).find(".puredesktop-btn-max").get(0).addEventListener("click", function()
@@ -263,6 +261,8 @@ function PureMakeDefaultWindowLayout(name, args)
 			win.style.height = ($(document.body).height() - topnavtp) + "px";
 			$(win).data("maximized", "true");
 			$(win).data("preventTitlebarMove", "true");
+			PureEmitEvent(win, "maximized", {});
+			PureEmitEvent(win, "fixeable", {});
 		}
 		else
 		{
@@ -296,18 +296,34 @@ function PureOpenWindow(window, args)
 	if(!args.preventFromTopbar)
 	{
 		console.log("Prevent From Topbar Disabled");
-		var tp = $(".puredesktop-top-menubar").get(0);
-		var item = document.createElement("span");
-		item.className = "link border-horizontal border-color-black";
+		var tp = $(".puredesktop-windows-menu").get(0);
+		var item = PureExecuteTemplate(
+			$("#puredesktop-appitem").get(0),
+			{
+				"appname": $(window).data("title")
+			}
+		);
 		item.addEventListener("click", function()
 		{
-			$(window).toggleClass("hidden");
+			if($(window).hasClass("hidden"))
+			{
+				$(window).removeClass("hidden");
+				PureEmitEvent(window, "focus", {});
+				PureEmitEvent(window, "deiconify", {});
+			}
+			else
+			{
+				$(window).addClass("hidden");
+				PureEmitEvents(PureWindows, "windowPriorityChanged", {
+					"from": window
+				});
+				PureEmitEvent(window, "iconify", {});
+			}
 		});
 		window.addEventListener("exit", function()
 		{
 			$(item).remove();
 		});
-		item.appendChild(PureMakeTextNode($(window).data("title")));
 		tp.appendChild(item);
 	}
 }
@@ -340,6 +356,20 @@ function PureOpenApplication(name, args)
 	}
 
 	return null;
+}
+
+function PureSetWindowAtom(window, name, value)
+{
+	$(window).data(name.toString(), value.toString());
+}
+
+function PureGetWindowAtom(window, name)
+{
+	if($(window).data(name) === undefined)
+	{
+		return null;
+	}
+	return $(window).data(name);
 }
 
 // NGraph Minimal API
@@ -396,6 +426,16 @@ function NGraphLoadDataFromWindow(window, key)
 	return $(window).data(key);
 }
 
+function NGraphWindowSetAtom(window, name, value)
+{
+	return PureSetWindowAtom(window, name, value);
+}
+
+function NGraphWindowGetAtom(window, name)
+{
+	return PureGetWindowAtom(window, name);
+}
+
 // End
 
 PureCreateApplication("__purehelloworld", "Hello World", function(args)
@@ -403,9 +443,9 @@ PureCreateApplication("__purehelloworld", "Hello World", function(args)
 	var window = PureMakeDefaultWindowLayout(
 		"__purehelloworld",
 		{
-		"color": "color-natural-indigo",
-		"title": "Hello World",
-		"bkgcolor": "color-natural-indigo"
+			"color": "color-natural-indigo",
+			"title": "Hello World",
+			"bkgcolor": "color-natural-indigo"
 		}
 	);
 	PureOpenWindow(window);
@@ -462,8 +502,7 @@ window.addEventListener("load", function()
 		var menu = $(".puredesktop-applications-menu");
 		var lm = $(".puredesktop-left-menubar").position();
 		var lw = $(".puredesktop-left-menubar").width();
-		var ox = 25;
-		var ex = 50;
+		var ox = 50;
 
 		if(menu.hasClass("hidden"))
 		{
@@ -473,7 +512,7 @@ window.addEventListener("load", function()
 					"opacity": "0"
 				})
 				.animate({
-					"left": (lm.left + lw + ox + 2) + "px",
+					"left": (lm.left + lw + 2) + "px",
 					"opacity": "1"
 				}, 100, "linear")
 			.end();
@@ -481,11 +520,47 @@ window.addEventListener("load", function()
 		else
 		{
 			menu.css({
-					"left": (lm.left + lw + ox + 2) + "px",
+					"left": (lm.left + lw + 2) + "px",
 					"opacity": "1"
 				})
 				.animate({
-					"left": (lm.left + lw + ex + 2) + "px",
+					"left": (lm.left + lw + ox + 2) + "px",
+					"opacity": "0"
+				}, 100, "linear", () =>
+				{
+					menu.addClass("hidden");
+				})
+			.end();
+		}
+	});
+	$("#seeappsmenu").click(function()
+	{
+		var menu = $(".puredesktop-windows-menu");
+		var lm = $(".puredesktop-left-menubar").position();
+		var lw = $(".puredesktop-left-menubar").width();
+		var ox = 50;
+
+		if(menu.hasClass("hidden"))
+		{
+			menu.removeClass("hidden")
+				.css({
+					"left": (lm.left + lw - ox + 2) + "px",
+					"opacity": "0"
+				})
+				.animate({
+					"left": (lm.left + lw + 2) + "px",
+					"opacity": "1"
+				}, 100, "linear")
+			.end();
+		}
+		else
+		{
+			menu.css({
+					"left": (lm.left + lw + 2) + "px",
+					"opacity": "1"
+				})
+				.animate({
+					"left": (lm.left + lw + ox + 2) + "px",
 					"opacity": "0"
 				}, 100, "linear", () =>
 				{

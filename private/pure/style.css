@@ -83,7 +83,7 @@ html, body {
 
 .puredesktop-left-menubar-menu {
 	position: absolute !important;
-	width: 60%;
+	width: 100%;
 	height: 100%;
 	background-color: rgba(127, 127, 127, 0.7) !important;
 	z-index: 3999 !important;

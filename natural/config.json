@@ -1,5 +1,5 @@
 {
-	"desktopManager": "NDesktop",
+	"desktopManager": "Pure",
 	"availablesDesktopManagers": [
 		{
 			"name": "NDesktop",
@@ -11,19 +11,19 @@
 			"name": "Pure",
 			"version": "1.0.0",
 			"file": "pure",
-			"description": "A GNOME 3 styled desktop manager (in source, NPure)"
+			"description": "A simple, intuitive and minimalist desktop manager"
 		},
 		{
 			"name": "Aqua",
 			"version": "1.0.0",
 			"file": "aqua",
-			"description": "A JOS Aqua styled desktop manager (in source, JAqua)"
+			"description": "Emphasis on effects and animations"
 		},
 		{
 			"name": "Tree",
 			"version": "1.0.0",
 			"file": "tree",
-			"description": "A Cinnamon styled desktop manager"
+			"description": "Without bars, all screen for you"
 		}
 	],
 	"naturalVersion": "1.0.0",

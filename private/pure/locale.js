@@ -28,11 +28,13 @@ var PureLocaleStrings = {
 	"es_VE": {
 		"closesession": "Cerrar sesión",
 		"loadingapps": "Cargando aplicaciones",
-		"openappsmenu": "Aplicaciones"
+		"openappsmenu": "Aplicaciones",
+		"seeappsmenu": "Ventanas"
 	},
 	"en_US": {
 		"closesession": "Close session",
 		"loadingapps": "Loading Applications",
-		"openappsmenu": "Applications"
+		"openappsmenu": "Applications",
+		"seeappsmenu": "Windows"
 	}
 };

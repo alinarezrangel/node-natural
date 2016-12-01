@@ -37,6 +37,7 @@ var crypto = require("crypto");
 var child_proccess = require("child_process");
 //var userid = require("userid");
 var ip = require("ip");
+var path = require("path");
 
 var group = require("./servercore/group");
 var sha256 = require("./servercore/sha256");
@@ -297,6 +298,9 @@ app.use("/private/", function(req, res) // Acceso a recursos privados.
 {
 	if((req.session) && (req.session.logged))
 	{
+		// FIXME: We should verify that req.path is **inside** of the
+		// (__dirname + "/private/") directory or we can make a malicious
+		// path like "../../super/secret/keep_me_hidden.txt".
 		res.sendFile(__dirname + "/private/" + req.path);
 	}
 	else
@@ -312,12 +316,8 @@ app.get("/filesystem/:type", function(req, res)
 		if(req.params["type"] == "application")
 		{
 			var file = req.query.file || "";
-			/*
-			Obtenemos el token del usuario y despues el usuario del token.
-			Es así para poder asegurarnos de que el que esta ejecutando la
-			consulta tenga un token y por ende, este en el sistema.
-			*/
-			var token = tokens.GetTokenFromUser(req.session.username);
+			var token = req.query.token || "";
+
 			group.UserCanRead(tokens.GetUserFromToken(token), natural + "/bin/" + file, function(err, can)
 			{
 				if(err)

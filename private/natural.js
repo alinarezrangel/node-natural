@@ -100,6 +100,16 @@ var NaturalIconSetMap = {
 	"book-mini": "."
 };
 
+// Funcion de depuracion
+function NaturalLog(msg)
+{
+	console.log(msg);
+}
+function NaturalLogErr(msg)
+{
+	console.error(msg);
+}
+
 // Se llama cuando ya se cargo el sistema por completo.
 function NaturalOnLoaded()
 {
@@ -112,7 +122,7 @@ function NaturalOnLoaded()
 		if(ev !== null)
 			ev.handler(null, data);
 		else
-			console.log("Unexpected response at " + JSON.stringify(data));
+			NaturalLogErr("Unexpected response at " + JSON.stringify(data));
 	});
 	NaturalSocket.on("error-response", function(data)
 	{
@@ -266,7 +276,7 @@ function NaturalLoadPrograms(each, end)
 				scriptTag.addEventListener("load", function()
 				{
 					var manifest = JSON.parse(JSON.stringify(NaturalExports));
-					console.log("Loaded manifest from " + $(this).attr("src") + ": the appname is " + manifest.appname);
+					NaturalLog("Loaded manifest from " + $(this).attr("src") + ": the appname is " + manifest.appname);
 					each(manifest.appname, manifest);
 				});
 				document.body.appendChild(scriptTag);
@@ -281,37 +291,37 @@ function NaturalLoadNext()
 {
 	$("#main_load").attr("src", "/images/misc/load-" + NaturalLoadingIndex + ".svg");
 	NaturalLoadingIndex += 1;
-	console.log("Reached " + NaturalLoadingIndex);
+	NaturalLog("Reached " + NaturalLoadingIndex);
 	if(NaturalLoadingIndex >= 6)
 	{
-		console.log("On loaded");
+		NaturalLog("On loaded");
 		NaturalOnLoaded();
 	}
 }
 
 NaturalSocket.on("ready", function(data) // Cuando el servidor pueda manejar nuestras solicitudes:
 {
-	console.log("loaded socket");
+	NaturalLog("loaded socket");
 	NaturalLoadNext();
 	$.get("/token", {}, function(data, status, xhr) // Obtén el socket por AJAX
 	{
 		if((status == "success") && (data != "none"))
 		{
 			NaturalToken = data;
-			console.log("Loaded data");
+			NaturalLog("Loaded data");
 			NaturalLoadNext();
 			NaturalSocket.on("authenticated", function(data) // E intenta autenticar
 			{
 				var valid = data.valid || false;
-				console.log("Is valid: " + valid);
+				NaturalLog("Is valid: " + valid);
 				if(valid)
 				{
-					console.log("hello server?");
+					NaturalLog("hello server?");
 					NaturalSocket.emit("hello", {});
 					NaturalSocket.on("world", function(data)
 					{
 						NaturalLoadNext();
-						console.log("Hello World");
+						NaturalLog("Hello World");
 					});
 				}
 				else
@@ -323,13 +333,13 @@ NaturalSocket.on("ready", function(data) // Cuando el servidor pueda manejar nue
 		}
 		else
 		{
-			console.log("error on get token " + data);
+			NaturalLogErr("error on get token " + data);
 		}
 	}, "text");
 });
 
 window.addEventListener("load", function() // Cuando el DOM carge
 {
-	console.log("loaded DOM");
+	NaturalLog("loaded DOM");
 	NaturalLoadNext();
 });

@@ -334,7 +334,7 @@ function PureOpenWindow(window, args)
 	$(".puredesktop-main-content").get(0).appendChild(window);
 	if(!args.preventFromTopbar)
 	{
-		console.log("Prevent From Topbar Disabled");
+		NaturalLog("Prevent From Topbar Disabled");
 		var tp = $(".puredesktop-windows-menu").get(0);
 		var item = PureExecuteTemplate(
 			$("#puredesktop-appitem").get(0),
@@ -566,7 +566,7 @@ NaturalOnLoadevent = function()
 		);
 		appitem.addEventListener("click", function()
 		{
-			console.log("Attemting to open " + value.name);
+			NaturalLog("Attemting to open " + value.name);
 			PureOpenApplication(value.name, undefined);
 		});
 		$(".puredesktop-applications-menu").get(0).appendChild(appitem);
@@ -581,7 +581,7 @@ NaturalOnLoadevent = function()
 		);
 		appitem.addEventListener("click", function()
 		{
-			console.log("Attemting to open " + manifest.appid);
+			NaturalLog("Attemting to open " + manifest.appid);
 			PureOpenApplication(manifest.appid, undefined);
 		});
 		$(".puredesktop-applications-menu").get(0).appendChild(appitem);
@@ -595,7 +595,7 @@ window.addEventListener("load", function()
 {
 	var menuSlide = function(menu, myMenuIndex)
 	{
-		console.log("SM " + PureShowingMenu + ":" + PureMenuIndex);
+		NaturalLog("SM " + PureShowingMenu + ":" + PureMenuIndex);
 		if((PureShowingMenu) && (PureMenuIndex != myMenuIndex))
 		{
 			PureSlideHMenuRightHide($(".puredesktop-left-menubar-menu:not(.hidden)"), function(_showing)
@@ -619,7 +619,7 @@ window.addEventListener("load", function()
 
 	$("*[data-locale-string]").each(function(index)
 	{
-		console.log("Locale.at " + PureLocaleStrings[PureLanguage][$(this).data("localeString")]);
+		NaturalLog("Locale.at " + PureLocaleStrings[PureLanguage][$(this).data("localeString")]);
 		this.appendChild(PureMakeTextNode(PureLocaleStrings[PureLanguage][$(this).data("localeString")]))
 	});
 	$("#openappsmenu").click(function()
@@ -673,5 +673,5 @@ window.addEventListener("load", function()
 	});
 
 	NaturalLoadNext();
-	console.log("PureDE loaded DOM " + NaturalLoadingIndex);
+	NaturalLog("PureDE loaded DOM " + NaturalLoadingIndex);
 });

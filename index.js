@@ -301,7 +301,38 @@ app.use("/private/", function(req, res) // Acceso a recursos privados.
 		// FIXME: We should verify that req.path is **inside** of the
 		// (__dirname + "/private/") directory or we can make a malicious
 		// path like "../../super/secret/keep_me_hidden.txt".
-		res.sendFile(__dirname + "/private/" + req.path);
+		fs.realpath(__dirname + "/private/" + req.path, function(err, resourcePath)
+		{
+			if(err)
+			{
+				console.error(err);
+				res.send("");
+				return;
+			}
+			fs.realpath(__dirname + "/private/", function(err, privatePath)
+			{
+				if(err)
+				{
+					console.error(err);
+					res.send("");
+					return;
+				}
+				var cp = resourcePath;
+				console.log("Reducing: " + cp + " by " + privatePath);
+				while((path.normalize(cp) != path.normalize(privatePath)) && (path.normalize(cp) != "/"))
+				{
+					console.log("At: " + cp);
+					cp = path.dirname(cp);
+				}
+				if(path.normalize(cp) == "/") // The path req.path is not inside the /private/ dir
+				{
+					console.error("Error: " + resourcePath + " is not inside " + privatePath);
+					res.send("");
+					return;
+				}
+				res.sendFile(__dirname + "/private/" + req.path);
+			});
+		});
 	}
 	else
 	{

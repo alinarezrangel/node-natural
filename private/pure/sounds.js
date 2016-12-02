@@ -24,6 +24,12 @@ limitations under the License.
 
 var PureSoundCanPlay = true;
 var PureSoundAudioVolume = 1;
+var PureAllSounds = [
+	{
+		"name": "Freedesktop",
+		"value": "sound-theme-freedesktop"
+	}
+];
 
 function PureSoundLibPlay(name)
 {

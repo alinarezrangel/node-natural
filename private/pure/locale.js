@@ -50,6 +50,9 @@ var PureLocaleStrings = {
 			"welcome": {
 				"title": "Bienvenido a Pure",
 				"description": "Todo lo que ves, desde las barras del menu hasta los estilos de esta ventana, es el resultado de un entorno de escritorio simple, intuitivo y elegante. Ya no más barras grandes y grises, adapta el sistema a tu experiencia única de usuario. Esto es Pure, puro y simple."
+			},
+			"desktopconfig": {
+				"title": "Configuración del escritorio"
 			}
 		}
 	},
@@ -68,6 +71,9 @@ var PureLocaleStrings = {
 			"welcome": {
 				"title": "Welcome to Pure",
 				"description": "All of what you see, from the menu bars to this window's styles, is the result of a desktop environment simple, intuitive and elegant. No more big grey bars, adapt the system to you unique user experience. This is Pure, pure and simple."
+			},
+			"desktopconfig": {
+				"title": "Desktop configuration"
 			}
 		}
 	}

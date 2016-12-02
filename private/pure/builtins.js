@@ -90,4 +90,102 @@ function PureBuiltinApps()
 			PureDestroyWindow(window);
 		});
 	});
+
+	PureCreateApplication("__puredesktopconfig", ApplicationsLocale()["desktopconfig"]["title"], function(args)
+	{
+		var mainWindow = PureMakeDefaultWindowLayout("__purewelcome", {
+			"title": ApplicationsLocale()["desktopconfig"]["title"],
+			"color": "color-natural-middlegrey",
+			"bkgcolor": "color-natural-white"
+		});
+		var mainAreaGeo = PureGetWindowAreaGeometry();
+
+		PureSetWindowSize(mainWindow, 600, 250, false);
+		PureSetWindowPosition(
+			mainWindow,
+			((mainAreaGeo.width - mainAreaGeo.left) / 2) - 300,
+			((mainAreaGeo.height - mainAreaGeo.top) / 2) - 125
+		);
+		PureOpenWindow(mainWindow);
+
+		var makeLabel = function(win, text, tfor)
+		{
+			var l = document.createElement("label");
+			l.htmlFor = PureGenerateID(win, tfor);
+			l.appendChild(document.createTextNode(text));
+			l.className = "width-block label text-color-natural-indigo";
+			return l;
+		};
+		var makeCombobox = function(win, def, sel, id)
+		{
+			var c = document.createElement("select");
+			c.className = "width-block input inputtext select";
+			c.id = PureGenerateID(win, id);
+
+			def.forEach(function(value, index)
+			{
+				var nd = document.createElement("option");
+				nd.value = value.value;
+				nd.appendChild(document.createTextNode(value.name));
+				c.appendChild(nd);
+			});
+			return c;
+		};
+		var makeNumber = function(win, initial, id)
+		{
+			var n = document.createElement("input");
+			n.type = "number";
+			n.className = "width-block input inputtext number";
+			n.id = PureGenerateID(win, id);
+			n.value = initial;
+			return n;
+		};
+
+		var globalAnimationI = makeNumber(
+			mainWindow,
+			PureGlobalAnimationDuration,
+			"globalAnimationI"
+		);
+		var globalAnimationL = makeLabel(
+			mainWindow,
+			"Global Animation Duration (milliseconds):",
+			"globalAnimationI"
+		);
+
+		var soundThemeI = makeCombobox(
+			mainWindow,
+			PureAllSounds, (f) => (f == PureSoundTheme),
+			"soundThemeI"
+		);
+		var soundThemeL = makeLabel(
+			mainWindow,
+			"Sound Theme:",
+			"soundThemeI"
+		);
+
+		var languageI = makeCombobox(
+			mainWindow,
+			PureLanguages.map((f) => ({"name": f.name, "value": f.code})),
+			(f) => (f.value == PureLanguage),
+			"languageI"
+		);
+		var languageL = makeLabel(
+			mainWindow,
+			"Language (requires restart and privileges):",
+			"languageI"
+		);
+
+		var container = document.createElement("div");
+		container.className = "container width-block height-block no-margin padding-8";
+
+		var winb = PureGetWindowBody(mainWindow);
+
+		container.appendChild(globalAnimationL);
+		container.appendChild(globalAnimationI);
+		container.appendChild(soundThemeL);
+		container.appendChild(soundThemeI);
+		container.appendChild(languageL);
+		container.appendChild(languageI);
+		winb.appendChild(container);
+	});
 }

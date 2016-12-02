@@ -602,6 +602,11 @@ function PureGetWindowAreaGeometry()
 	return geometry;
 }
 
+function PureGenerateID(window, id)
+{
+	return window.id + "__" + id;
+}
+
 // Sound and multimedia
 
 // `name` is one from the freedesktop sound theme reference

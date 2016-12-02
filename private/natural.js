@@ -203,11 +203,6 @@ function NaturalImport(path, pid, callback)
 		return;
 	}
 	*/
-	NaturalSocket.emit("import", {
-		cwd: path,
-		pid: pid,
-		token: NaturalToken,
-	});
 	NaturalAddTaskToQueue("import", pid, function(err, data)
 	{
 		if(err)
@@ -216,6 +211,11 @@ function NaturalImport(path, pid, callback)
 			return;
 		}
 		callback(null, data.response);
+	});
+	NaturalSocket.emit("import", {
+		cwd: path,
+		pid: pid,
+		token: NaturalToken,
 	});
 }
 
@@ -236,11 +236,6 @@ function NaturalListDir(path, pid, callback)
 		return;
 	}
 	*/
-	NaturalSocket.emit("ls", {
-		cwd: path,
-		pid: pid,
-		token: NaturalToken,
-	});
 	NaturalAddTaskToQueue("ls", pid, function(err, data)
 	{
 		if(err)
@@ -249,6 +244,11 @@ function NaturalListDir(path, pid, callback)
 			return;
 		}
 		callback(null, data.files);
+	});
+	NaturalSocket.emit("ls", {
+		cwd: path,
+		pid: pid,
+		token: NaturalToken,
 	});
 }
 
@@ -297,6 +297,16 @@ function NaturalLoadNext()
 		NaturalLog("On loaded");
 		NaturalOnLoaded();
 	}
+}
+
+// Llama a una funcion de sockets con los datos especificados
+function NaturalHighLevelSocketCall(task, pid, data, callback)
+{
+	data["pid"] = pid;
+	data["token"] = NaturalToken;
+
+	NaturalAddTaskToQueue(task, pid, callback);
+	NaturalSocket.emit(task, data);
 }
 
 NaturalSocket.on("ready", function(data) // Cuando el servidor pueda manejar nuestras solicitudes:

@@ -537,10 +537,10 @@ function PureSetWindowSize(window, width, height)
 
 function PureSetWindowPosition(window, xpos, ypos)
 {
-	$(window).css({
+	$(window).animate({
 		"top": $(".puredesktop-top-menubar").height() + 2 + xpos,
 		"left": $(".puredesktop-left-menubar").width() + 2 + ypos
-	})
+	}, PureGlobalAnimationDuration)
 	.data("defaultTop", $(".puredesktop-top-menubar").height() + 2 + xpos)
 	.data("defaultLeft", $(".puredesktop-left-menubar").width() + 2 + ypos);
 }

@@ -29,5 +29,6 @@
 	"naturalVersion": "1.0.0",
 	"codeName": "Araguaney",
 	"buildNth": 1,
-	"publicHash": "none"
+	"publicHash": "none",
+	"locale": "es"
 }

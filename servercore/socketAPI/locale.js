@@ -2,7 +2,7 @@
 ***********************************
 *** Natural: A remote desktop for embed systems.
 *** By Alejandro Linarez Rangel.
-*** Natural Socket API inc file.
+*** Locale get using the socket API
 ***********************************
 ****************************************************************** */
 
@@ -22,8 +22,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
+var group = require("../group");
+var tokens = require("../tokens");
+
 module.exports = function(socket, configuration)
 {
-	require("./socketAPI/ping")(socket, configuration);
-	require("./socketAPI/locale")(socket, configuration);
+	socket.on("api.locale.get", function(data)
+	{
+		var token = data.token || "";
+		var pid = data.pid || 0;
+		var task = "api.locale.get";
+		if(tokens.ValidateToken(token))
+		{
+			// socket.emit("error-response", {"task": task, "code": 0, "msg": "", "pid": pid});
+			// socket.emit("response", {"task": task, ..., "pid": pid});
+			socket.emit("response", {"task": task, "locale": configuration.locale, "pid": pid});
+		}
+		else
+		{
+			socket.emit("authenticated", {"task": task, "valid": false, "pid": pid});
+		}
+	});
 };

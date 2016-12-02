@@ -25,7 +25,7 @@ limitations under the License.
 var group = require("../group");
 var tokens = require("../tokens");
 
-module.exports = function(socket)
+module.exports = function(socket, configuration)
 {
 	socket.on("api.ping", function(data)
 	{

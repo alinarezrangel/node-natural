@@ -158,7 +158,7 @@ function initSocket(socket, token)
 			socket.emit("authenticated", {task: "ls", valid: false, pid: pid});
 		}
 	});
-	socketAPI(socket);
+	socketAPI(socket, configuration);
 }
 
 //io.set("origins", "http://" + ip.address() + ":4567/");
@@ -177,7 +177,7 @@ app.use(session({
 		reapInterval: 360, // aprox. 1 hour
 		encrypt: true
 	}),
-	secret: "secret hash",
+	secret: configuration.publicHash,
 	httpOnly: true,
 	resave: false,
 	saveUninitialized: false
@@ -192,6 +192,11 @@ app.use(function(req, res, next) // CSP headers
 	return next();
 });
 app.use("/embed/web/", framewrapper);
+
+console.log("Welcome to Natural " + configuration.codeName + " v" + configuration.naturalVersion);
+console.log("Client locale " + configuration.locale);
+console.log("Client DE " + configuration.desktopManager);
+console.log("Starting Natural server");
 
 console.log("The server is running at port 4567");
 
@@ -225,7 +230,17 @@ app.get("/main", function(req, res)
 {
 	if(req.session.logged)
 	{
-		res.sendFile(__dirname + "/private/pure/desktop.html");
+		var name = "pure";
+		configuration.availablesDesktopManagers.forEach(function(value, index)
+		{
+			if(value.name == configuration.desktopManager)
+			{
+				name = value.file;
+				console.log("Loaded DE " + value.name + " v" + value.version);
+				console.log("> " + value.description);
+			}
+		});
+		res.sendFile(__dirname + "/private/" + name + "/desktop.html");
 	}
 	else
 	{

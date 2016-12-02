@@ -22,18 +22,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
-// Async for better performance
-
-setTimeout(function()
+function PureBuiltinApps()
 {
 	"use strict";
 
-	var ApplicationsLocale = PureLocaleStrings[PureLanguage]["applications"];
+	console.log("Loaded builtins");
 
-	PureCreateApplication("__purewelcome", ApplicationsLocale["welcome"]["title"], function(args)
+	var ApplicationsLocale = function() {return PureLocaleStrings[PureLanguage]["applications"];};
+
+	console.log("Locale is " + JSON.stringify(ApplicationsLocale()));
+
+	PureCreateApplication("__purewelcome", ApplicationsLocale()["welcome"]["title"], function(args)
 	{
 		var window = PureMakeDefaultWindowLayout("__purewelcome", {
-			"title": ApplicationsLocale["welcome"]["title"],
+			"title": ApplicationsLocale()["welcome"]["title"],
 			"color": "color-natural-indigo",
 			"bkgcolor": "color-natural-white"
 		});
@@ -47,9 +49,9 @@ setTimeout(function()
 		);
 		PureOpenWindow(window);
 
-		var titleString = ApplicationsLocale["welcome"]["title"];
-		var welcomeString = ApplicationsLocale["welcome"]["description"];
-		var buttonString = ApplicationsLocale["buttons"]["ready"];
+		var titleString = ApplicationsLocale()["welcome"]["title"];
+		var welcomeString = ApplicationsLocale()["welcome"]["description"];
+		var buttonString = ApplicationsLocale()["buttons"]["ready"];
 
 		var flexbox = document.createElement("div");
 		var title = document.createElement("h1");
@@ -88,4 +90,4 @@ setTimeout(function()
 			PureDestroyWindow(window);
 		});
 	});
-}, 0);
+}

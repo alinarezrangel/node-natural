@@ -22,10 +22,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
-var PureLanguage = "es_VE";
+var PureLanguage = "es";
+var PureLanguages = [
+	{
+		"code": "es",
+		"name": "español"
+	},
+	{
+		"code": "en",
+		"name": "english"
+	}
+];
 
 var PureLocaleStrings = {
-	"es_VE": {
+	"es": {
 		"closesession": "Cerrar sesión",
 		"loadingapps": "Cargando aplicaciones",
 		"openappsmenu": "Aplicaciones",
@@ -40,7 +50,7 @@ var PureLocaleStrings = {
 			}
 		}
 	},
-	"en_US": {
+	"en": {
 		"closesession": "Close session",
 		"loadingapps": "Loading Applications",
 		"openappsmenu": "Applications",
@@ -56,3 +66,21 @@ var PureLocaleStrings = {
 		}
 	}
 };
+
+var NIntLocaleName = PureLanguage;
+var NIntLocales = PureLanguages;
+var NIntLocaleStrings = PureLocaleStrings;
+
+function PureInitInternational(fcn)
+{
+	NaturalHighLevelSocketCall("api.locale.get", 0, {}, function(err, data)
+	{
+		if(err)
+		{
+			console.log("Error getting locale " + err);
+			return;
+		}
+		PureLanguage = NIntLocaleName = data.locale;
+		fcn();
+	});
+}

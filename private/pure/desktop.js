@@ -181,11 +181,15 @@ function PureMakeDefaultWindowLayout(name, args)
 	{
 		if($(this).data("instantRemove") == "true")
 		{
-			PureMaxZIndex -= 1;
-			PureWindows.splice(parseInt($(this).data("pureIndex")), 1);
-			$(this).remove();
 			PureEmitEvent(this, "__pure_exit", {});
 		}
+	});
+
+	win.addEventListener("__pure_exit", function(ev)
+	{
+		PureMaxZIndex -= 1;
+		PureWindows.splice(parseInt($(this).data("pureIndex")), 1);
+		$(this).remove();
 	});
 
 	win.addEventListener("opened", function(ev)

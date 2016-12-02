@@ -17,6 +17,7 @@
 		<script src="/private/widgets.js"></script>
 		<script src="/private/pure/locale.js"></script>
 		<script src="/private/pure/desktop.js"></script>
+		<script src="/private/pure/builtins.js"></script>
 	</head>
 	<body class="color-natural-white flexible background no-wrap direction-column justify-space-around overflow-hide">
 		<!--
@@ -62,9 +63,9 @@ limitations under the License.
 			</div>
 		</template>
 		<template id="puredesktop-winitem">
-			<div class="container puredesktop-hoverable padding-16 color-natural-grey margin-4">
-				<span class="puredesktop-flat-button puredesktop-btn-exit nic padding-8">e</span>
-				<span class="puredesktop-label" data-template-text-insert="appname"></span>
+			<div class="fcontainer puredesktop-hoverable padding-16 color-natural-grey margin-4">
+				<span class="puredesktop-flat-button box o1 puredesktop-btn-exit nic padding-8">e</span>
+				<span class="puredesktop-label container o2 f1" data-template-text-insert="appname"></span>
 			</div>
 		</template>
 
@@ -81,7 +82,10 @@ limitations under the License.
 					<img src="/images/misc/pure/apps.svg" alt="[applications menu image]" width="25" height="25" class="centerme" />
 					<span class="centerme o2" data-locale-string="openappsmenu"></span>
 				</div>
-				<span class="link" data-locale-string="seeappsmenu" id="seeappsmenu"></span>
+				<div class="link flexible center no-wrap" id="seeappsmenu">
+					<img src="/images/misc/pure/windows.svg" alt="[windows menu image]" width="25" height="25" class="centerme" />
+					<span class="centerme o2" data-locale-string="seeappsmenu"></span>
+				</div>
 			</section>
 			<div class="puredesktop-main-content o2 f1 box no-margin no-padding color-transparent border-left border-top bs-2 border-color-natural-black">
 				<div class="width-block height-block flexbi direction-column justify-space-around no-wrap align-center window" id="intro">

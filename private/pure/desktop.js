@@ -60,6 +60,7 @@ function PureExecuteTemplate(template, args)
 {
 	var tmp = document.importNode(template.content, true);
 	var t = $(tmp);
+	t.data("__pureTemplateConstructorDo", JSON.stringify(args));
 
 	var classes = t.find("*[data-template-class-insert]");
 	classes.each(function(index)
@@ -172,6 +173,8 @@ function PureMakeDefaultWindowLayout(name, args)
 		"top": $(".puredesktop-top-menubar").height() + 2,
 		"left": $(".puredesktop-left-menubar").width() + 2
 	});
+
+	win.__pureResizeFcn = resize;
 
 	win.addEventListener("exit", function(ev)
 	{
@@ -508,6 +511,38 @@ function PureGetWindowAtom(window, name)
 		return null;
 	}
 	return $(window).data(name);
+}
+
+function PureSetWindowTitle(window, title)
+{
+	var ttl = $(window).find(".puredesktop-title-text").get(0);
+	while(ttl.firstChild)
+		ttl.removeChild(ttl.firstChild);
+	ttl.appendChild(PureMakeTextNode(title));
+}
+
+function PureSetWindowTitlebarColor(window, colorClass)
+{
+	var ttl = $(window).find(".puredesktop-window-titlebar");
+	var dt = JSON.parse($(window).data("__pureTemplateConstructorDo"));
+	ttl.removeClass(dt["color"]).addClass(colorClass);
+	dt["color"] = colorClass;
+	$(window).data("__pureTemplateConstructorDo", JSON.stringify(dt));
+}
+
+function PureSetWindowSize(window, width, height)
+{
+	window.__pureResizeFcn(window, [width, height], true, true);
+}
+
+function PureSetWindowPosition(window, xpos, ypos)
+{
+	$(window).css({
+		"top": $(".puredesktop-top-menubar").height() + 2 + xpos,
+		"left": $(".puredesktop-left-menubar").width() + 2 + ypos
+	})
+	.data("defaultTop", $(".puredesktop-top-menubar").height() + 2 + xpos)
+	.data("defaultLeft", $(".puredesktop-left-menubar").width() + 2 + ypos);
 }
 
 function PureSlideHMenu__Show(menu, callback, lm, lw, ox)

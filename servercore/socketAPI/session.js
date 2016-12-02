@@ -2,7 +2,7 @@
 ***********************************
 *** Natural: A remote desktop for embed systems.
 *** By Alejandro Linarez Rangel.
-*** Natural Socket API inc file.
+*** Session manager
 ***********************************
 ****************************************************************** */
 
@@ -22,9 +22,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
+var group = require("../group");
+var tokens = require("../tokens");
+
 module.exports = function(socket, configuration)
 {
-	require("./socketAPI/ping")(socket, configuration);
-	require("./socketAPI/locale")(socket, configuration);
-	require("./socketAPI/session")(socket, configuration);
+	socket.on("api.session.logout", function(data)
+	{
+		var token = data.token || "";
+		var pid = data.pid || 0;
+		var task = "api.session.logout";
+		if(tokens.ValidateToken(token))
+		{
+			// socket.emit("error-response", {"task": task, "code": 0, "msg": "", "pid": pid});
+			// socket.emit("response", {"task": task, ..., "pid": pid});
+			console.log("The user " + tokens.GetUserFromToken(token) + " logouts");
+			socket.emit("response", {"task": task, "can": true, "pid": pid});
+		}
+		else
+		{
+			socket.emit("authenticated", {"task": task, "valid": false, "pid": pid});
+		}
+	});
 };

@@ -34,6 +34,7 @@ var PureResizeEnd = []; // [w, h]
 var PureResizeAlign = []; // [ox, oy]
 var PureResizeTimeout = false;
 var PureGlobalAnimationDuration = 250;
+var PureSoundTheme = "sound-theme-freedesktop";
 
 function PureMakeTextNode(text)
 {
@@ -600,6 +601,26 @@ function PureGetWindowAreaGeometry()
 
 	return geometry;
 }
+
+// Sound and multimedia
+
+// `name` is one from the freedesktop sound theme reference
+// `name` is un nombre de la referencia de temas de sonido de freedesktop
+function PurePlaySound(name, fcn)
+{
+	// We can change it later
+	// Podemos cambiar el temoa de sonido luego
+	var soundTheme = PureSoundTheme;
+	var prefix = "/sounds/";
+	var postfix = "/stereo/";
+	var format = ".oga"; // MIME audio/x-vorbis+ogg
+	var path = prefix + soundTheme + postfix + name + format;
+
+	var audio = new Audio(path);
+	fcn(audio);
+}
+
+// Animations
 
 function PureSlideHMenu__Show(menu, callback, lm, lw, ox)
 {

@@ -17,6 +17,7 @@
 		<script src="/private/widgets.js"></script>
 		<script src="/private/pure/locale.js"></script>
 		<script src="/private/pure/desktop.js"></script>
+		<script src="/private/pure/sounds.js"></script>
 		<script src="/private/pure/builtins.js"></script>
 		<script src="/private/pure/frontend.js"></script>
 	</head>
@@ -70,11 +71,23 @@ limitations under the License.
 			</div>
 		</template>
 
+		<div class="modal" id="puredesktop-logout-modal">
+			<div class="modal-content">
+				<div class="container border bs-2 border-color-natural-grey border-round color-light-grey">
+					<p data-locale-string="logoutmessage"></p>
+					<div class="button-group width-block">
+						<button type="button" data-close-modal="puredesktop-logout-modal" class="puredesktop-logout-button-yes button padding-8 o1 f1 color-natural-deepgreen margin-8" data-locale-string="logoutmessage_yes"></button>
+						<button type="button" data-close-modal="puredesktop-logout-modal" class="puredesktop-logout-button-no button padding-8 o2 f1 color-natural-deepred margin-8" data-locale-string="logoutmessage_no"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="puredesktop-resize-preview hidden">
 		</div>
 
 		<section class="puredesktop-top-menubar no-margin navigation o1 color-natural-grey no-wrap">
-			<a href="/logout" data-locale-string="closesession"></a>
+			<span class="link" data-locale-string="closesession" id="closesession" data-open-modal="puredesktop-logout-modal"></span>
 			<span class="link" id="loading" data-locale-string="loadingapps"></span>
 		</section>
 		<div class="flexible direction-row wrap justify-space-around no-margin no-passing o2 f1 puredesktop-screenbot">

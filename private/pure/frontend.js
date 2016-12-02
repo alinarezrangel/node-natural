@@ -80,6 +80,7 @@ NaturalOnLoadevent = function()
 		{
 			$("#loading").addClass("hidden");
 		});
+		PureSoundLibPlay("service-login");
 	});
 };
 
@@ -114,6 +115,29 @@ window.addEventListener("load", function()
 			});
 		}
 	};
+
+	$(".puredesktop-logout-button-yes").click(function()
+	{
+		// Show logout menu and play sound
+		PureSoundLibPlay("service-logout");
+		setTimeout(function()
+		{
+			$(".window").each(function(index)
+			{
+				PureDestroyWindow(this, true);
+			});
+			NaturalHighLevelSocketCall("api.session.logout", 1, {}, function(err, data)
+			{
+				if(err)
+				{
+					console.error(err);
+					alert("Error login out " + err);
+					return;
+				}
+				window.location.pathname = "/logout";
+			});
+		}, 1300);
+	});
 
 	$("#openappsmenu").click(function()
 	{

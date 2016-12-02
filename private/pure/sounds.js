@@ -2,7 +2,7 @@
 ***********************************
 *** Natural: A remote desktop for embed systems.
 *** By Alejandro Linarez Rangel.
-*** Natural Socket API inc file.
+*** Pure desktop sounds helper functions
 ***********************************
 ****************************************************************** */
 
@@ -22,9 +22,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
-module.exports = function(socket, configuration)
+var PureSoundCanPlay = true;
+var PureSoundAudioVolume = 1;
+
+function PureSoundLibPlay(name)
 {
-	require("./socketAPI/ping")(socket, configuration);
-	require("./socketAPI/locale")(socket, configuration);
-	require("./socketAPI/session")(socket, configuration);
-};
+	if(PureSoundCanPlay)
+	{
+		PurePlaySound(name, function(audio)
+		{
+			audio.volume = PureSoundAudioVolume;
+			audio.play();
+		});
+	}
+}

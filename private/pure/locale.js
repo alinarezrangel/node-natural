@@ -40,6 +40,9 @@ var PureLocaleStrings = {
 		"loadingapps": "Cargando aplicaciones",
 		"openappsmenu": "Aplicaciones",
 		"seeappsmenu": "Ventanas",
+		"logoutmessage": "¿Estas seguro que deseas cerrar sesión?",
+		"logoutmessage_yes": "Si (cerrar sesión)",
+		"logoutmessage_no": "No (continuar en Natural)",
 		"applications": {
 			"buttons": {
 				"ready": "Listo"
@@ -55,6 +58,9 @@ var PureLocaleStrings = {
 		"loadingapps": "Loading Applications",
 		"openappsmenu": "Applications",
 		"seeappsmenu": "Windows",
+		"logoutmessage": "Are you sure of log out?",
+		"logoutmessage_yes": "Yes (and log out)",
+		"logoutmessage_no": "No (continue in Natural)",
 		"applications": {
 			"buttons": {
 				"ready": "Ready"

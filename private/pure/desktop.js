@@ -561,8 +561,14 @@ function PureSetWindowPosition(window, xpos, ypos, animate)
 	}
 }
 
-function PureDestroyWindow(window)
+function PureDestroyWindow(window, force)
 {
+	force = ((typeof force) === "undefined")? true : force;
+
+	if(force)
+	{
+		$(window).data("instantRemove", "true");
+	}
 	PureEmitEvent(window, "exit", {});
 }
 
@@ -753,7 +759,7 @@ NaturalOnLoadevent = function()
 			NaturalLog("Attemting to open " + value.name);
 			PureOpenApplication(value.name, undefined);
 		});
-		$(".puredesktop-applications-menu").get(0).appendChild(appitem);
+		$(".puredesktop-applications-container").get(0).appendChild(appitem);
 	});
 	NaturalLoadPrograms(function(appname, manifest)
 	{
@@ -768,7 +774,7 @@ NaturalOnLoadevent = function()
 			NaturalLog("Attemting to open " + manifest.appid);
 			PureOpenApplication(manifest.appid, undefined);
 		});
-		$(".puredesktop-applications-menu").get(0).appendChild(appitem);
+		$(".puredesktop-applications-container").get(0).appendChild(appitem);
 	}, function()
 	{
 		$("#loading").addClass("hidden");
@@ -854,6 +860,73 @@ window.addEventListener("load", function()
 	$(".puredesktop-left-menubar-menu").css({
 		width: ($(document.body).width() - $(".puredesktop-left-menubar").width() + 2) + "px",
 		height: ($(document.body).height() - $(".puredesktop-top-menubar").height() + 2) + "px",
+	});
+
+	$(".puredesktop-applications-search-box").keydown(function(ev)
+	{
+		ev.keyCode = ev.which || ev.keyCode;
+
+		if(ev.keyCode == 13)
+		{
+			PureEmitEvent($(".puredesktop-applications-search-button").get(0), "click", {});
+			return false;
+		}
+	});
+
+	$(".puredesktop-applications-search-button").click(function(ev)
+	{
+		var value = $(".puredesktop-applications-search-box").val();
+		$(".puredesktop-applications-search-box").val("");
+		var $searchOut = $(".puredesktop-applications-container-search-output");
+		var searchOut = $searchOut.get(0);
+		var $apps = $(".puredesktop-applications-container");
+		var apps = $apps.get(0);
+
+		var words = value.split(" ");
+
+		$apps.addClass("hidden");
+		$searchOut.removeClass("hidden");
+
+		while(searchOut.firstChild)
+			searchOut.removeChild(searchOut.firstChild);
+
+		PureApplications.forEach(function(current, i)
+		{
+			words.forEach(function(word, c)
+			{
+				if(current.title.indexOf(word) >= 0)
+				{
+					var appitem = PureExecuteTemplate(
+						$("#puredesktop-appitem").get(0),
+						{
+							"appname": current.title
+						}
+					);
+					appitem.addEventListener("click", function()
+					{
+						NaturalLog("Attemting to open SR " + current.name);
+						PureOpenApplication(current.name, undefined);
+					});
+					searchOut.appendChild(appitem);
+				}
+			});
+		});
+	});
+
+	$(".puredesktop-applications-cancel-button").click(function()
+	{
+		var value = $(".puredesktop-applications-search-box").val();
+		$(".puredesktop-applications-search-box").val("");
+		var $searchOut = $(".puredesktop-applications-container-search-output");
+		var searchOut = $searchOut.get(0);
+		var $apps = $(".puredesktop-applications-container");
+		var apps = $apps.get(0);
+
+		while(searchOut.firstChild)
+			searchOut.removeChild(searchOut.firstChild);
+
+		$apps.removeClass("hidden");
+		$searchOut.addClass("hidden");
 	});
 
 	NaturalLoadNext();

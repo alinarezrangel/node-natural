@@ -100,3 +100,7 @@ html, body {
 	border: 1px dotted #04C;
 	background-color: rgba(50, 50, 50, 0.3);
 }
+
+.puredesktop-applications-container-search-output {
+	background-color: rgba(50, 50, 50, 0.7) !important;
+}

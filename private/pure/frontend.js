@@ -59,6 +59,10 @@ NaturalOnLoadevent = function()
 			{
 				NaturalLog("Attemting to open " + value.name);
 				PureOpenApplication(value.name, undefined);
+				if(!$(".puredesktop-applications-menu").hasClass("hidden"))
+				{
+					$(".puredesktop-applications-search-box").focus();
+				}
 			});
 			$(".puredesktop-applications-container").get(0).appendChild(appitem);
 		});
@@ -74,6 +78,10 @@ NaturalOnLoadevent = function()
 			{
 				NaturalLog("Attemting to open " + manifest.appid);
 				PureOpenApplication(manifest.appid, undefined);
+				if(!$(".puredesktop-applications-menu").hasClass("hidden"))
+				{
+					$(".puredesktop-applications-search-box").focus();
+				}
 			});
 			$(".puredesktop-applications-container").get(0).appendChild(appitem);
 		}, function()
@@ -196,6 +204,7 @@ window.addEventListener("load", function()
 
 		if(ev.keyCode == 13)
 		{
+			$(".puredesktop-applications-search-box").focus();
 			if($(this).val().trim() == "")
 			{
 				PureEmitEvent($(".puredesktop-applications-cancel-button").get(0), "click", {});
@@ -250,11 +259,13 @@ window.addEventListener("load", function()
 					{
 						NaturalLog("Attemting to open SR " + current.name);
 						PureOpenApplication(current.name, undefined);
+						$(".puredesktop-applications-search-box").focus();
 					});
 					searchOut.appendChild(appitem);
 				}
 			});
 		});
+		$(".puredesktop-applications-search-box").focus();
 	});
 
 	$(".puredesktop-applications-cancel-button").click(function()
@@ -271,6 +282,7 @@ window.addEventListener("load", function()
 
 		$apps.removeClass("hidden");
 		$searchOut.addClass("hidden");
+		$(".puredesktop-applications-search-box").focus();
 	});
 
 	NaturalLoadNext();

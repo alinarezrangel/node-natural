@@ -582,6 +582,11 @@ function PureDestroyAllWindow(window)
 	PureEmitEvent(window, "__pure_exit", {});
 }
 
+function PureWindowSetFocus(window)
+{
+	PureEmitEvent(window, "focus", {});
+}
+
 function PureGetWindowAreaGeometry()
 {
 	var topmenu = $(".puredesktop-top-menubar").position();
@@ -693,7 +698,7 @@ function PureSlideHMenuRight(menu, callback)
 	}
 }
 
-// NGraph Minimal API
+// NGraph Minimal API / Natural Universal Graphical API (NGraph)
 
 function NGraphCreateWindow(name, title)
 {

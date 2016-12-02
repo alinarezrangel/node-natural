@@ -85,9 +85,13 @@ var PureLocaleStrings = {
 	}
 };
 
+// Natural Universal International API (NInt)
+
 var NIntLocaleName = PureLanguage;
 var NIntLocales = PureLanguages;
 var NIntLocaleStrings = PureLocaleStrings;
+
+// End
 
 function PureInitInternational(fcn)
 {

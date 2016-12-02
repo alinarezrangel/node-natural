@@ -42,3 +42,14 @@ function PureSoundLibPlay(name)
 		});
 	}
 }
+
+// Natural Universal Multimedia API (NMedia)
+
+// Plays a Freedesktop-named sound (http://0pointer.de/public/sound-naming-spec.html)
+// Note: some sounds may not exist or may be in development
+function NMediaPlayFreedesktopSound(name)
+{
+	PureSoundLibPlay(name);
+}
+
+// End

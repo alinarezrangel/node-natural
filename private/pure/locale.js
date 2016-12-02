@@ -29,12 +29,30 @@ var PureLocaleStrings = {
 		"closesession": "Cerrar sesión",
 		"loadingapps": "Cargando aplicaciones",
 		"openappsmenu": "Aplicaciones",
-		"seeappsmenu": "Ventanas"
+		"seeappsmenu": "Ventanas",
+		"applications": {
+			"buttons": {
+				"ready": "Listo"
+			},
+			"welcome": {
+				"title": "Bienvenido a Pure",
+				"description": "Todo lo que ves, desde las barras del menu hasta los estilos de esta ventana, es el resultado de un entorno de escritorio simple, intuitivo y elegante. Ya no más barras grandes y grises, adapta el sistema a tu experiencia única de usuario. Esto es Pure, puro y simple."
+			}
+		}
 	},
 	"en_US": {
 		"closesession": "Close session",
 		"loadingapps": "Loading Applications",
 		"openappsmenu": "Applications",
-		"seeappsmenu": "Windows"
+		"seeappsmenu": "Windows",
+		"applications": {
+			"buttons": {
+				"ready": "Ready"
+			},
+			"welcome": {
+				"title": "Welcome to Pure",
+				"description": "All of what you see, from the menu bars to this window's styles, is the result of a desktop environment simple, intuitive and elegant. No more big grey bars, adapt the system to you unique user experience. This is Pure, pure and simple."
+			}
+		}
 	}
 };

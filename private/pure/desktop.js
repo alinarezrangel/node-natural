@@ -530,19 +530,69 @@ function PureSetWindowTitlebarColor(window, colorClass)
 	$(window).data("__pureTemplateConstructorDo", JSON.stringify(dt));
 }
 
-function PureSetWindowSize(window, width, height)
+function PureSetWindowSize(window, width, height, animate)
 {
-	window.__pureResizeFcn(window, [width, height], true, true);
+	animate = ((typeof animate) === "undefined")? true : animate;
+
+	window.__pureResizeFcn(window, [width, height], true, animate);
 }
 
-function PureSetWindowPosition(window, xpos, ypos)
+function PureSetWindowPosition(window, xpos, ypos, animate)
 {
-	$(window).animate({
-		"top": $(".puredesktop-top-menubar").height() + 2 + xpos,
-		"left": $(".puredesktop-left-menubar").width() + 2 + ypos
-	}, PureGlobalAnimationDuration)
-	.data("defaultTop", $(".puredesktop-top-menubar").height() + 2 + xpos)
-	.data("defaultLeft", $(".puredesktop-left-menubar").width() + 2 + ypos);
+	animate = ((typeof animate) === "undefined")? true : animate;
+
+	if(animate)
+	{
+		$(window).animate({
+			"top": $(".puredesktop-top-menubar").height() + 2 + ypos,
+			"left": $(".puredesktop-left-menubar").width() + 2 + xpos
+		}, PureGlobalAnimationDuration)
+		.data("defaultTop", $(".puredesktop-top-menubar").height() + 2 + ypos)
+		.data("defaultLeft", $(".puredesktop-left-menubar").width() + 2 + xpos);
+	}
+	else
+	{
+		$(window).css({
+			"top": $(".puredesktop-top-menubar").height() + 2 + ypos,
+			"left": $(".puredesktop-left-menubar").width() + 2 + xpos
+		})
+		.data("defaultTop", $(".puredesktop-top-menubar").height() + 2 + ypos)
+		.data("defaultLeft", $(".puredesktop-left-menubar").width() + 2 + xpos);
+	}
+}
+
+function PureDestroyWindow(window)
+{
+	PureEmitEvent(window, "exit", {});
+}
+
+function PureDestroyAllWindow(window)
+{
+	PureEmitEvent(window, "__pure_exit", {});
+}
+
+function PureGetWindowAreaGeometry()
+{
+	var topmenu = $(".puredesktop-top-menubar").position();
+	var leftmenu = $(".puredesktop-left-menubar").position();
+	var topmenuwd = $(".puredesktop-top-menubar").width();
+	var topmenuhg = $(".puredesktop-top-menubar").height();
+	var leftmenuwd = $(".puredesktop-left-menubar").width();
+	var leftmenuhg = $(".puredesktop-left-menubar").height();
+	var main = $(".puredesktop-main-content").position();
+	var mainwd = $(".puredesktop-main-content").width();
+	var mainhg = $(".puredesktop-main-content").height();
+
+	var geometry = {
+		"top": topmenu.top + topmenuhg + 2,
+		"left": leftmenu.left + leftmenuwd + 2,
+		"bottom": topmenu.top + topmenuhg + 2 + mainhg,
+		"right": leftmenu.left + leftmenuwd + 2 + mainwd,
+		"width": mainwd,
+		"height": mainhg
+	};
+
+	return geometry;
 }
 
 function PureSlideHMenu__Show(menu, callback, lm, lw, ox)

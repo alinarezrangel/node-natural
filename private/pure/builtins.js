@@ -28,15 +28,64 @@ setTimeout(function()
 {
 	"use strict";
 
-	PureCreateApplication("__purewelcome", "Welcome to Pure", function(args)
+	var ApplicationsLocale = PureLocaleStrings[PureLanguage]["applications"];
+
+	PureCreateApplication("__purewelcome", ApplicationsLocale["welcome"]["title"], function(args)
 	{
 		var window = PureMakeDefaultWindowLayout("__purewelcome", {
-			"title": "Welcome to Pure",
-			"color": "color-natural-bluegrey",
+			"title": ApplicationsLocale["welcome"]["title"],
+			"color": "color-natural-indigo",
 			"bkgcolor": "color-natural-white"
 		});
-		PureSetWindowPosition(window, 20, 20);
-		PureSetWindowSize(window, 250, 400);
+		var mainAreaGeo = PureGetWindowAreaGeometry();
+
+		PureSetWindowSize(window, 600, 250, false);
+		PureSetWindowPosition(
+			window,
+			((mainAreaGeo.width - mainAreaGeo.left) / 2) - 300,
+			((mainAreaGeo.height - mainAreaGeo.top) / 2) - 125
+		);
 		PureOpenWindow(window);
+
+		var titleString = ApplicationsLocale["welcome"]["title"];
+		var welcomeString = ApplicationsLocale["welcome"]["description"];
+		var buttonString = ApplicationsLocale["buttons"]["ready"];
+
+		var flexbox = document.createElement("div");
+		var title = document.createElement("h1");
+		var text = document.createElement("p");
+		var closeButton = document.createElement("button");
+		var innerText = document.createTextNode(welcomeString);
+		var innerTitle = document.createTextNode(titleString);
+		var innerButton = document.createTextNode(buttonString);
+
+		flexbox.classList = "fcontainer center direction-column no-margin padding-8 width-block height-block";
+		title.className = "text-jumbo-1 o1 font-bold centerme";
+		title.style.maxWidth = "70%";
+		title.style.textAlign = "center";
+		title.style.margin = "auto";
+		text.className = "box centerme o2 f1 padding-2";
+		text.style.maxWidth = "70%";
+		text.style.textAlign = "center";
+		text.style.margin = "auto";
+		closeButton.className = "button o3 padding-4 color-natural-indigo width-block";
+		closeButton.type = "button";
+		closeButton.maxWidth = "70%";
+		closeButton.style.margin = "auto";
+
+		flexbox.appendChild(title);
+		flexbox.appendChild(text);
+		flexbox.appendChild(closeButton);
+
+		title.appendChild(innerTitle);
+		text.appendChild(innerText);
+		closeButton.appendChild(innerButton);
+
+		PureGetWindowBody(window).appendChild(flexbox);
+
+		closeButton.addEventListener("click", function()
+		{
+			PureDestroyWindow(window);
+		});
 	});
 }, 0);

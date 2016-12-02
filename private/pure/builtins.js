@@ -148,7 +148,7 @@ function PureBuiltinApps()
 		);
 		var globalAnimationL = makeLabel(
 			mainWindow,
-			"Global Animation Duration (milliseconds):",
+			ApplicationsLocale()["desktopconfig"]["globalanimationduration"],
 			"globalAnimationI"
 		);
 
@@ -159,7 +159,7 @@ function PureBuiltinApps()
 		);
 		var soundThemeL = makeLabel(
 			mainWindow,
-			"Sound Theme:",
+			ApplicationsLocale()["desktopconfig"]["soundtheme"],
 			"soundThemeI"
 		);
 
@@ -171,7 +171,7 @@ function PureBuiltinApps()
 		);
 		var languageL = makeLabel(
 			mainWindow,
-			"Language (requires restart and privileges):",
+			ApplicationsLocale()["desktopconfig"]["language"],
 			"languageI"
 		);
 

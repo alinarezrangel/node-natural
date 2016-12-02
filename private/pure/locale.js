@@ -52,7 +52,10 @@ var PureLocaleStrings = {
 				"description": "Todo lo que ves, desde las barras del menu hasta los estilos de esta ventana, es el resultado de un entorno de escritorio simple, intuitivo y elegante. Ya no más barras grandes y grises, adapta el sistema a tu experiencia única de usuario. Esto es Pure, puro y simple."
 			},
 			"desktopconfig": {
-				"title": "Configuración del escritorio"
+				"title": "Configuración del escritorio",
+				"globalanimationduration": "Duración de la animación global:",
+				"soundtheme": "Tema de sonido:",
+				"language": "Idioma (requiere reiniciar y privilegios):"
 			}
 		}
 	},
@@ -73,7 +76,10 @@ var PureLocaleStrings = {
 				"description": "All of what you see, from the menu bars to this window's styles, is the result of a desktop environment simple, intuitive and elegant. No more big grey bars, adapt the system to you unique user experience. This is Pure, pure and simple."
 			},
 			"desktopconfig": {
-				"title": "Desktop configuration"
+				"title": "Desktop configuration",
+				"globalanimationduration": "Global animation duration:",
+				"soundtheme": "Sound theme:",
+				"language": "Language (requires restart and privileges):"
 			}
 		}
 	}

@@ -134,16 +134,22 @@ window.addEventListener("load", function()
 			{
 				PureDestroyWindow(this, true);
 			});
-			NaturalHighLevelSocketCall("api.session.logout", 1, {}, function(err, data)
+			setInterval(function()
 			{
-				if(err)
-				{
-					console.error(err);
-					alert("Error login out " + err);
+				if(PureWindows.length > 0)
 					return;
-				}
-				window.location.pathname = "/logout";
-			});
+
+				NaturalHighLevelSocketCall("api.session.logout", 1, {}, function(err, data)
+				{
+					if(err)
+					{
+						console.error(err);
+						alert("Error login out " + err);
+						return;
+					}
+					window.location.pathname = "/logout";
+				});
+			}, 20);
 		}, 1300);
 	});
 

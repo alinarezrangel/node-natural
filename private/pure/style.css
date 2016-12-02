@@ -104,3 +104,11 @@ html, body {
 .puredesktop-applications-container-search-output {
 	background-color: rgba(50, 50, 50, 0.7) !important;
 }
+
+.modal {
+	z-index: 5000 !important;
+}
+
+.modal-content {
+	z-index: 5001 !important;
+}

@@ -110,7 +110,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	var resize = function(win, to, setdef, animate, optfcn1)
 	{
-		optfcn1 = ((typeof optfcn1) === "undefined")? function() {} : optfcn1;
+		optfcn1 = ((typeof optfcn1) === "undefined")? ((a, b) => a) : optfcn1;
 
 		if(!animate)
 		{

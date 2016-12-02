@@ -23,6 +23,7 @@ limitations under the License.
 ***************************************************************************/
 
 var sha256 = require("./sha256");
+var crypto = require("crypto");
 
 var validTokens = []; // Tokens válidos
 // Valores min y max del número aleatorio del token.
@@ -50,19 +51,41 @@ function AdjustToN(value, n, r)
 }
 
 /*
+Convierte un Buffer de crypto a un string ASCII
+
+NOTE: tecnicamente, dado que utiliza condiciones aleatorias puede
+NUNCA terminar.
+*/
+function ASCIIify(buffer)
+{
+	var r = "";
+	buffer.forEach((byte) =>
+	{
+		while((byte < 32) || (byte > 126))
+		{
+			while(byte < 32)
+				byte += crypto.randomBytes(1)[0];
+			while(byte > 126)
+				byte -= crypto.randomBytes(1)[0];
+		}
+		r += String.fromCharCode(byte);
+	});
+	return r;
+}
+
+/*
 Crea un nuevo token para el usuario id.
 */
 function MakeNewtoken(id)
 {
-	var st = Math.round(Math.random() * (R.b - R.a)) + R.a;
-	var et = Math.round(Math.random() * (R.b - R.a)) + R.a;
+	var st = ASCIIify(crypto.randomBytes(15));
+	var et = ASCIIify(crypto.randomBytes(15));
 	var sid = id.toString();
 	var timestamp = Date.now();
 	sid = AdjustToN(sid, 40, " ");
-	st = AdjustToN(st + "", 5, "0");
-	et = AdjustToN(et + "", 5, "0");
+	st = AdjustToN(st + "", 15, "0");
+	et = AdjustToN(et + "", 15, "0");
 	timestamp = AdjustToN(timestamp + "", 15, "0");
-	//console.log("Maked " + st + "" + sid + "" + et);
 	return sha256.Crypt(timestamp + "" + st + "" + sid + "" + et);
 }
 
@@ -78,7 +101,7 @@ function GetUserFromToken(token)
 	// s = Start random number
 	// u = username
 	// e = End random number
-	var username = decrypted.substr(20, 40);
+	var username = decrypted.substr(30, 40);
 	//console.log("Decrypted " + username.trim());
 	return username.trim();
 }

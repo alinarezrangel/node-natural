@@ -44,6 +44,7 @@ var group = require("./servercore/group");
 var sha256 = require("./servercore/sha256");
 var tokens = require("./servercore/tokens");
 var framewrapper = require("./servercore/framewrapper");
+var socketAPI = require("./servercore/socketAPI");
 
 var natural = __dirname + "/natural"; // Directorio con los datos de la instalacion y configuración.
 
@@ -157,6 +158,7 @@ function initSocket(socket, token)
 			socket.emit("authenticated", {task: "ls", valid: false, pid: pid});
 		}
 	});
+	socketAPI(socket);
 }
 
 //io.set("origins", "http://" + ip.address() + ":4567/");
@@ -286,8 +288,8 @@ app.get("/token", function(req, res) // Devuelve el token de seguridad, sideñad
 	// usuario antes.
 	if((req.session) && (req.session.logged) && (!req.session.tokenized))
 	{
-		//console.log("gived " + GetTokenFromUser(req.session.username));
-		res.send(tokens.GetTokenFromUser(req.session.username));
+		console.log("gived " + tokens.GetTokenFromUser(req.session.username));
+		res.send("<token>" + tokens.GetTokenFromUser(req.session.username) + "</token>");
 		req.session.tokenized = true;
 	}
 	else

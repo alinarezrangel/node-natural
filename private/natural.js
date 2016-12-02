@@ -307,8 +307,9 @@ NaturalSocket.on("ready", function(data) // Cuando el servidor pueda manejar nue
 	{
 		if((status == "success") && (data != "none"))
 		{
+			data = new DOMParser().parseFromString(data, "text/html").getElementsByTagName("token")[0].firstChild.nodeValue;
 			NaturalToken = data;
-			NaturalLog("Loaded data");
+			NaturalLog("Loaded data " + data);
 			NaturalLoadNext();
 			NaturalSocket.on("authenticated", function(data) // E intenta autenticar
 			{

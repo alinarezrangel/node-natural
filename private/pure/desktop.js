@@ -188,7 +188,14 @@ function PureMakeDefaultWindowLayout(name, args)
 	win.addEventListener("__pure_exit", function(ev)
 	{
 		PureMaxZIndex -= 1;
-		PureWindows.splice(parseInt($(this).data("pureIndex")), 1);
+		PureWindows.forEach(function(value, index, array)
+		{
+			if(value.id == win.id)
+			{
+				PureWindows.splice(index, 1);
+				return false;
+			}
+		});
 		$(this).remove();
 	});
 
@@ -418,9 +425,7 @@ function PureMakeDefaultWindowLayout(name, args)
 		}
 	});
 
-	var li = PureWindows.push(win) - 1;
-
-	$(win).data("pureIndex", li);
+	PureWindows.push(win);
 
 	return win;
 }

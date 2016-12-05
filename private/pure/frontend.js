@@ -130,14 +130,19 @@ window.addEventListener("load", function()
 		PureSoundLibPlay("service-logout");
 		setTimeout(function()
 		{
-			$(".window").each(function(index)
-			{
-				PureDestroyWindow(this, true);
-			});
+			var red = false;
 			setInterval(function()
 			{
-				if(PureWindows.length > 0)
+				if(red)
 					return;
+				if(PureWindows.length > 0)
+				{
+					$(".window").each(function(index)
+					{
+						PureDestroyWindow(this, true);
+					});
+					return;
+				}
 
 				NaturalHighLevelSocketCall("api.session.logout", 1, {}, function(err, data)
 				{
@@ -147,6 +152,7 @@ window.addEventListener("load", function()
 						alert("Error login out " + err);
 						return;
 					}
+					red = true;
 					window.location.pathname = "/logout";
 				});
 			}, 20);

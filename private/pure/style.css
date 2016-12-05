@@ -112,3 +112,7 @@ html, body {
 .modal-content {
 	z-index: 5001 !important;
 }
+
+.puredesktop-window-titlebar {
+	min-height: 25px !important;
+}

@@ -43,6 +43,7 @@ var PureLocaleStrings = {
 		"logoutmessage": "¿Estas seguro que deseas cerrar sesión?",
 		"logoutmessage_yes": "Si (cerrar sesión)",
 		"logoutmessage_no": "No (continuar en Natural)",
+		"volumemenu": "Volumen",
 		"applications": {
 			"buttons": {
 				"ready": "Listo"
@@ -67,6 +68,7 @@ var PureLocaleStrings = {
 		"logoutmessage": "Are you sure of log out?",
 		"logoutmessage_yes": "Yes (and log out)",
 		"logoutmessage_no": "No (continue in Natural)",
+		"volumemenu": "Volume",
 		"applications": {
 			"buttons": {
 				"ready": "Ready"

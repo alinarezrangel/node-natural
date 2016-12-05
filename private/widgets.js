@@ -90,8 +90,13 @@ function NWidgetsShowSnack(snack)
 	//snack.style.display = "block";
 }
 
-function NWidgetsCreateCombobox(style, editable, options)
+function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 {
+	if((typeof defaultFunction) === "undefined")
+	{
+		defaultFunction = function(at) {return false;};
+	}
+
 	var combobox = document.createElement("div");
 	var input = null;
 	var input_cc = null;
@@ -119,6 +124,7 @@ function NWidgetsCreateCombobox(style, editable, options)
 	combobox.style.width = "80% !important";
 	combobox.marginLeft = "auto !important";
 	combobox.marginRight = "auto !important";
+	combobox.dataset["naturalWidgetsComboboxValue"] = "";
 	darrow.className = "box o1 padding-4 no-margin dropdown";
 	darrow_text.className = "nic";
 	dropdown.className = "dropdown-content box card no-margin";
@@ -141,27 +147,55 @@ function NWidgetsCreateCombobox(style, editable, options)
 		opt.style.float = "left";
 		opt.style.clear = "both";
 		opt.style.cursor = "pointer";
-		opt.dataset["naturalWidgetsComboboxValue"] = at;
+		opt.dataset["naturalWidgetsComboboxValue"] = at.name;
+		opt.dataset["naturalWidgetsComboboxRValue"] = at.value;
 
-		opt.appendChild(document.createTextNode(at));
+		opt.appendChild(document.createTextNode(at.name));
 
 		dropdown.appendChild(opt);
+
+		if(defaultFunction(at))
+		{
+			if(editable)
+			{
+				input.value = opt.dataset["naturalWidgetsComboboxValue"];
+				combobox.dataset["naturalWidgetsComboboxValue"] =
+					this.dataset["naturalWidgetsComboboxRValue"];
+			}
+			else
+			{
+				while(input.firstChild)
+					input.removeChild(input.firstChild);
+				input.appendChild(document.createTextNode(opt.dataset["naturalWidgetsComboboxValue"]));
+				combobox.dataset["naturalWidgetsComboboxValue"] =
+					opt.dataset["naturalWidgetsComboboxRValue"];
+			}
+		}
 
 		opt.addEventListener("click", function()
 		{
 			if(editable)
 			{
 				input.value = this.dataset["naturalWidgetsComboboxValue"];
+				combobox.dataset["naturalWidgetsComboboxValue"] =
+					this.dataset["naturalWidgetsComboboxRValue"];
 			}
 			else
 			{
 				while(input.firstChild)
 					input.removeChild(input.firstChild);
 				input.appendChild(document.createTextNode(this.dataset["naturalWidgetsComboboxValue"]));
+				combobox.dataset["naturalWidgetsComboboxValue"] =
+					this.dataset["naturalWidgetsComboboxRValue"];
 			}
 		});
 	}
 
 	return combobox;
+}
+
+function NWidgetsGetComboboxValue(combobox)
+{
+	return combobox.dataset["naturalWidgetsComboboxValue"];
 }
 

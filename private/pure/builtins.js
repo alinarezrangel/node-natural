@@ -117,19 +117,11 @@ function PureBuiltinApps()
 			l.className = "width-block label text-color-natural-indigo";
 			return l;
 		};
-		var makeCombobox = function(win, def, sel, id)
+		var makeCombobox = function(win, opts, def, id)
 		{
-			var c = document.createElement("select");
-			c.className = "width-block input inputtext select";
+			var c = NWidgetsCreateCombobox(style, false, opts, def);
 			c.id = PureGenerateID(win, id);
 
-			def.forEach(function(value, index)
-			{
-				var nd = document.createElement("option");
-				nd.value = value.value;
-				nd.appendChild(document.createTextNode(value.name));
-				c.appendChild(nd);
-			});
 			return c;
 		};
 		var makeNumber = function(win, initial, id)
@@ -155,7 +147,7 @@ function PureBuiltinApps()
 
 		var soundThemeI = makeCombobox(
 			mainWindow,
-			PureAllSounds, (f) => (f == PureSoundTheme),
+			PureAllSounds, (f) => (f.value == PureSoundTheme),
 			"soundThemeI"
 		);
 		var soundThemeL = makeLabel(
@@ -179,12 +171,6 @@ function PureBuiltinApps()
 		var container = document.createElement("div");
 		container.className = "container width-block height-block no-margin padding-8";
 
-		var test1 = NWidgetsCreateCombobox(style, false, [
-			"hola",
-			"adios",
-			"mundo"
-		]);
-
 		var winb = PureGetWindowBody(mainWindow);
 
 		container.appendChild(globalAnimationL);
@@ -193,7 +179,6 @@ function PureBuiltinApps()
 		container.appendChild(soundThemeI);
 		container.appendChild(languageL);
 		container.appendChild(languageI);
-		container.appendChild(test1);
 		winb.appendChild(container);
 	});
 }

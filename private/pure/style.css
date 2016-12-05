@@ -118,5 +118,5 @@ html, body {
 }
 
 .puredesktop-transparent {
-	background-color: rgba(0, 0, 0, 0.3) !important;
+	background-color: transparent !important;
 }

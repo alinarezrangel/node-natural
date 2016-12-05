@@ -272,7 +272,11 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	win.addEventListener("mousedown", function(ev)
 	{
-		PureEmitEvent(this, "focus", {});
+		if($(this).data("focused") == "false")
+		{
+			PureSoundLibPlay("window-inactive-click");
+			PureEmitEvent(this, "focus", {});
+		}
 		if($(this).data("movable") == "true")
 		{
 			$(this).data("mousedown", "true");

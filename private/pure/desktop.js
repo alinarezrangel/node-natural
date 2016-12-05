@@ -67,7 +67,12 @@ function PureExecuteTemplate(template, args)
 	classes.each(function(index)
 	{
 		var node = $(this);
-		node.addClass(args[node.data("templateClassInsert")]);
+		var a = node.data("templateClassInsert").split(",");
+		var i = 0;
+		var j = a.length;
+
+		for(i = 0; i < j; i++)
+			node.addClass(args[a[i]]);
 	});
 	var texts = t.find("*[data-template-text-insert]");
 	texts.each(function(index)
@@ -739,9 +744,11 @@ function NGraphCreateWindow(name, title)
 	var win = PureMakeDefaultWindowLayout(
 		name,
 		{
-		"color": "color-natural-indigo",
-		"title": title,
-		"bkgcolor": "color-natural-white"
+			"color": "color-natural-indigo",
+			"title": title,
+			"bkgcolor": "color-natural-white",
+			"border": "bs-1",
+			"bdcolor": "border-color-natural-indigo"
 		}
 	);
 	PureOpenWindow(win);

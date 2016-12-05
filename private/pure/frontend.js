@@ -29,7 +29,9 @@ PureCreateApplication("__purehelloworld", "Hello World", function(args)
 		{
 			"color": "color-natural-indigo",
 			"title": "Hello World",
-			"bkgcolor": "color-natural-indigo"
+			"bkgcolor": "color-natural-indigo",
+			"border": "bs-1",
+			"bdcolor": "border-color-natural-indigo"
 		}
 	);
 	PureOpenWindow(window);

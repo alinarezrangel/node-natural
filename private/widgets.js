@@ -142,7 +142,7 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 	{
 		var at = options[i];
 		var opt = document.createElement("span");
-		opt.className = "user-can-select box width-block no-margin hoverable";
+		opt.className = "user-cant-select box width-block no-margin hoverable";
 		opt.style.padding = "16px 32px";
 		opt.style.float = "left";
 		opt.style.clear = "both";

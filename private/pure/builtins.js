@@ -37,7 +37,9 @@ function PureBuiltinApps()
 		var window = PureMakeDefaultWindowLayout("__purewelcome", {
 			"title": ApplicationsLocale()["welcome"]["title"],
 			"color": "color-natural-indigo",
-			"bkgcolor": "color-natural-white"
+			"bkgcolor": "color-natural-white",
+			"border": "bs-1",
+			"bdcolor": "border-color-natural-indigo"
 		});
 		var mainAreaGeo = PureGetWindowAreaGeometry();
 
@@ -96,7 +98,9 @@ function PureBuiltinApps()
 		var mainWindow = PureMakeDefaultWindowLayout("__purewelcome", {
 			"title": ApplicationsLocale()["desktopconfig"]["title"],
 			"color": "color-natural-middlegrey",
-			"bkgcolor": "color-natural-white"
+			"bkgcolor": "color-natural-white",
+			"border": "bs-1",
+			"bdcolor": "border-color-natural-middlegrey"
 		});
 		var mainAreaGeo = PureGetWindowAreaGeometry();
 		var style = NWidgetsCreateAppStyle();

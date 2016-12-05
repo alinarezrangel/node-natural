@@ -172,6 +172,18 @@ function PureBuiltinApps()
 			"languageI"
 		);
 
+		var submit = document.createElement("button");
+		submit.className = "button color-natural-deepgreen width-block";
+		submit.type = "button";
+		submit.appendChild(PureMakeTextNode("Guardar"));
+
+		submit.addEventListener("click", function()
+		{
+			PureGlobalAnimationDuration = parseInt(globalAnimationI.value + "");
+			PureSoundTheme = NWidgetsGetComboboxValue(soundThemeI);
+			PureLanguage = NIntLocaleName = NWidgetsGetComboboxValue(languageI);
+		});
+
 		var container = document.createElement("div");
 		container.className = "container width-block height-block no-margin padding-8";
 
@@ -180,9 +192,10 @@ function PureBuiltinApps()
 		container.appendChild(globalAnimationL);
 		container.appendChild(globalAnimationI);
 		container.appendChild(soundThemeL);
-		container.appendChild(soundThemeI);
+		NWidgetsPack(container, soundThemeI);
 		container.appendChild(languageL);
-		container.appendChild(languageI);
+		NWidgetsPack(container, languageI);
+		container.appendChild(submit);
 		winb.appendChild(container);
 	});
 }

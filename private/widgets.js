@@ -122,8 +122,9 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 
 	combobox.className = "user-cant-select box width-block padding-2 margin-8 flexible direction-row no-wrap justify-space-around border-bottom";
 	combobox.style.width = "80% !important";
-	combobox.marginLeft = "auto !important";
-	combobox.marginRight = "auto !important";
+	combobox.style.marginLeft = "auto !important";
+	combobox.style.marginRight = "auto !important";
+	combobox.style.boxSizing = "border-box !important";
 	combobox.dataset["naturalWidgetsComboboxValue"] = "";
 	darrow.className = "box o1 padding-4 no-margin dropdown";
 	darrow_text.className = "nic";

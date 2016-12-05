@@ -31,6 +31,7 @@ var PureAllSounds = [
 		"value": "sound-theme-freedesktop"
 	}
 ];
+var PureSoundMuted = [];
 
 // Sound and multimedia
 
@@ -54,6 +55,17 @@ function PureSoundLibPlay(name)
 {
 	if(PureSoundCanPlay)
 	{
+		var muted = false;
+		PureSoundMuted.forEach(function(sound)
+		{
+			if(sound == name)
+			{
+				muted = true;
+				return false;
+			}
+		});
+		if(muted)
+			return;
 		PurePlaySound(name, function(audio)
 		{
 			audio.volume = PureSoundAudioVolume;
@@ -68,7 +80,7 @@ function PureSoundLibPlay(name)
 // Note: some sounds may not exist or may be in development
 function NMediaPlayFreedesktopSound(name)
 {
-	PureSoundLibPlay(name);
+	return PureSoundLibPlay(name);
 }
 
 // End

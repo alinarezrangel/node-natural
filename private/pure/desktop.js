@@ -91,8 +91,9 @@ function PureMakeDefaultWindowLayout(name, args)
 	win.style.zIndex = 1;
 
 	PureWindowGWID += 1;
+	var pid = PureWindowGWID;
 
-	win.id = "window_" + name + "_" + PureWindowGWID;
+	win.id = "window_" + name + "_" + pid;
 
 	$(win).data("clickX", 0);
 	$(win).data("clickY", 0);
@@ -107,7 +108,7 @@ function PureMakeDefaultWindowLayout(name, args)
 	$(win).data("defaultWidth", 300);
 	$(win).data("defaultHeight", 300);
 	$(win).data("title", args.title);
-	$(win).data("pid", PureWindowGWID);
+	$(win).data("pid", pid);
 	$(win).data("animateResize", "false");
 
 	var resize = function(win, to, setdef, animate, optfcn1)
@@ -621,22 +622,10 @@ function PureGenerateID(window, id)
 	return window.id + "__" + id;
 }
 
-// Sound and multimedia
-
-// `name` is one from the freedesktop sound theme reference
-// `name` is un nombre de la referencia de temas de sonido de freedesktop
-function PurePlaySound(name, fcn)
+function PureGetPID()
 {
-	// We can change it later
-	// Podemos cambiar el temoa de sonido luego
-	var soundTheme = PureSoundTheme;
-	var prefix = "/sounds/";
-	var postfix = "/stereo/";
-	var format = ".oga"; // MIME audio/x-vorbis+ogg
-	var path = prefix + soundTheme + postfix + name + format;
-
-	var audio = new Audio(path);
-	fcn(audio);
+	PureWindowGWID += 1;
+	return PureWindowGWID;
 }
 
 // Animations

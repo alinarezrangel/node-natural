@@ -89,3 +89,79 @@ function NWidgetsShowSnack(snack)
 	$(snack).show("slow");
 	//snack.style.display = "block";
 }
+
+function NWidgetsCreateCombobox(style, editable, options)
+{
+	var combobox = document.createElement("div");
+	var input = null;
+	var input_cc = null;
+
+	if(editable)
+	{
+		input = document.createElement("input");
+		input.className = "user-can-select input no-padding no-margin no-border f1 o2";
+		input.style.border = "0px !important";
+	}
+	else
+	{
+		input = document.createElement("span");
+		input.className = "user-can-select box no-padding no-margin f1 o2";
+		input_cc = document.createTextNode("");
+		input.appendChild(input_cc);
+	}
+
+	var darrow = document.createElement("div");
+	var darrow_text = document.createElement("span");
+	var darrow_text_it = document.createTextNode("o");
+	var dropdown = document.createElement("div");
+
+	combobox.className = "user-cant-select box width-block padding-2 margin-8 flexible direction-row no-wrap justify-space-around border-bottom";
+	combobox.style.width = "80% !important";
+	combobox.marginLeft = "auto !important";
+	combobox.marginRight = "auto !important";
+	darrow.className = "box o1 padding-4 no-margin dropdown";
+	darrow_text.className = "nic";
+	dropdown.className = "dropdown-content box card no-margin";
+	dropdown.style.padding = "2px 0px";
+
+	combobox.appendChild(input);
+	combobox.appendChild(darrow);
+	darrow.appendChild(darrow_text);
+	darrow_text.appendChild(darrow_text_it);
+	darrow.appendChild(dropdown);
+
+	var i = 0;
+	var j = options.length;
+	for(i = 0; i < j; i++)
+	{
+		var at = options[i];
+		var opt = document.createElement("span");
+		opt.className = "user-can-select box width-block no-margin hoverable";
+		opt.style.padding = "16px 32px";
+		opt.style.float = "left";
+		opt.style.clear = "both";
+		opt.style.cursor = "pointer";
+		opt.dataset["naturalWidgetsComboboxValue"] = at;
+
+		opt.appendChild(document.createTextNode(at));
+
+		dropdown.appendChild(opt);
+
+		opt.addEventListener("click", function()
+		{
+			if(editable)
+			{
+				input.value = this.dataset["naturalWidgetsComboboxValue"];
+			}
+			else
+			{
+				while(input.firstChild)
+					input.removeChild(input.firstChild);
+				input.appendChild(document.createTextNode(this.dataset["naturalWidgetsComboboxValue"]));
+			}
+		});
+	}
+
+	return combobox;
+}
+

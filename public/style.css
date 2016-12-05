@@ -210,3 +210,11 @@ template {
 .hidden {
 	display: none !important;
 }
+
+.hoverable {
+	transition: background-color 0.4s;
+}
+
+.hoverable:hover {
+	background-color: #CCC;
+}

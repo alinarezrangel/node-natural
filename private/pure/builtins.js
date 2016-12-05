@@ -99,6 +99,7 @@ function PureBuiltinApps()
 			"bkgcolor": "color-natural-white"
 		});
 		var mainAreaGeo = PureGetWindowAreaGeometry();
+		var style = NWidgetsCreateAppStyle();
 
 		PureSetWindowSize(mainWindow, 600, 250, false);
 		PureSetWindowPosition(
@@ -178,6 +179,12 @@ function PureBuiltinApps()
 		var container = document.createElement("div");
 		container.className = "container width-block height-block no-margin padding-8";
 
+		var test1 = NWidgetsCreateCombobox(style, false, [
+			"hola",
+			"adios",
+			"mundo"
+		]);
+
 		var winb = PureGetWindowBody(mainWindow);
 
 		container.appendChild(globalAnimationL);
@@ -186,6 +193,7 @@ function PureBuiltinApps()
 		container.appendChild(soundThemeI);
 		container.appendChild(languageL);
 		container.appendChild(languageI);
+		container.appendChild(test1);
 		winb.appendChild(container);
 	});
 }

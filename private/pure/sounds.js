@@ -22,6 +22,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
+var PureSoundTheme = "sound-theme-freedesktop";
 var PureSoundCanPlay = true;
 var PureSoundAudioVolume = 1;
 var PureAllSounds = [

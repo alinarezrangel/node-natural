@@ -34,7 +34,6 @@ var PureResizeEnd = []; // [w, h]
 var PureResizeAlign = []; // [ox, oy]
 var PureResizeTimeout = false;
 var PureGlobalAnimationDuration = 250;
-var PureSoundTheme = "sound-theme-freedesktop";
 
 function PureMakeTextNode(text)
 {
@@ -188,6 +187,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	win.addEventListener("__pure_exit", function(ev)
 	{
+		PureSoundLibPlay("window-close");
 		PureMaxZIndex -= 1;
 		PureWindows.forEach(function(value, index, array)
 		{
@@ -207,11 +207,13 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	win.addEventListener("hide", function(ev)
 	{
+		PureSoundLibPlay("window-minimized");
 		$(this).addClass("hidden");
 	});
 
 	win.addEventListener("show", function(ev)
 	{
+		PureSoundLibPlay("window-unminimized");
 		$(this).removeClass("hidden");
 	});
 
@@ -284,6 +286,7 @@ function PureMakeDefaultWindowLayout(name, args)
 	{
 		if($(this).data("focused") == "false")
 		{
+			PureSoundLibPlay("window-inactive-click");
 			PureEmitEvent(this, "focus", {});
 			ev.preventDefault();
 			ev.stopPropagation();
@@ -299,6 +302,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	win.addEventListener("__pure_resize_to", function(ev)
 	{
+		PureSoundLibPlay("window-resize-end");
 		resize(this, PureResizeEnd, true, true);
 	});
 
@@ -306,6 +310,7 @@ function PureMakeDefaultWindowLayout(name, args)
 	{
 		if($(win).data("preventTitlebarMove") == "true")
 			return;
+		PureSoundLibPlay("window-move-start");
 		$(win).data("movable", "true");
 		$(win).data("mousedown", "true");
 		$(win).removeClass("puredesktop-can-select");
@@ -315,6 +320,7 @@ function PureMakeDefaultWindowLayout(name, args)
 	{
 		if($(win).data("preventTitlebarMove") == "true")
 			return;
+		PureSoundLibPlay("window-move-end");
 		$(win).data("movable", "false");
 		$(win).data("mousedown", "false");
 		$(win).addClass("puredesktop-can-select");
@@ -332,6 +338,7 @@ function PureMakeDefaultWindowLayout(name, args)
 	{
 		if($(win).data("movable") == "false")
 		{
+			PureSoundLibPlay("window-move-start");
 			$(this).addClass("color-light-grey");
 			$(win).data("movable", "true");
 			$(win).data("preventTitlebarMove", "true");
@@ -340,6 +347,7 @@ function PureMakeDefaultWindowLayout(name, args)
 		}
 		else
 		{
+			PureSoundLibPlay("window-move-end");
 			$(this).removeClass("color-light-grey");
 			$(win).data("movable", "false");
 			$(win).data("preventTitlebarMove", "false");
@@ -350,6 +358,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	$(titlebar).find(".puredesktop-btn-min").get(0).addEventListener("click", function(ev)
 	{
+		PureSoundLibPlay("window-resize-start");
 		PureWindow2Resize = win;
 		PureResizeStart = [$(win).position().left, $(win).position().top];
 		PureResizeAlign = [ev.clientX, ev.clientY];
@@ -361,6 +370,7 @@ function PureMakeDefaultWindowLayout(name, args)
 		var isMaximized = $(win).data("maximized");
 		if(isMaximized == "false")
 		{
+			PureSoundLibPlay("window-maximized");
 			var topnavtp = $(".puredesktop-top-menubar").height() + 2;
 			var leftnavtp = $(".puredesktop-left-menubar").width() + 2;
 			// win.style.top = topnavtp + "px";
@@ -393,6 +403,7 @@ function PureMakeDefaultWindowLayout(name, args)
 		}
 		else
 		{
+			PureSoundLibPlay("window-unmaximized");
 			var dt = $(win).data("defaultTop");
 			var dl = $(win).data("defaultLeft");
 			var dw = $(win).data("defaultWidth");

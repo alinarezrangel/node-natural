@@ -297,6 +297,8 @@ window.addEventListener("load", function()
 		$(".puredesktop-applications-search-box").focus();
 	});
 
+	PureStylePanels();
+
 	NaturalLoadNext();
 	NaturalLog("PureDE loaded DOM " + NaturalLoadingIndex);
 });

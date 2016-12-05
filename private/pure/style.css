@@ -116,3 +116,7 @@ html, body {
 .puredesktop-window-titlebar {
 	min-height: 35px !important;
 }
+
+.puredesktop-transparent {
+	background-color: rgba(0, 0, 0, 0.3) !important;
+}

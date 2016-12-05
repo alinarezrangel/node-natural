@@ -57,6 +57,12 @@ var PureLocaleStrings = {
 				"globalanimationduration": "Duración de la animación global:",
 				"soundtheme": "Tema de sonido:",
 				"language": "Idioma (requiere reiniciar y privilegios):"
+			},
+			"sounds": {
+				"title": "Audio del sistema",
+				"mutedlabel": "Sonidos omitidos",
+				"volume": "Volumen",
+				"mute": "Sin audio"
 			}
 		}
 	},
@@ -82,6 +88,12 @@ var PureLocaleStrings = {
 				"globalanimationduration": "Global animation duration:",
 				"soundtheme": "Sound theme:",
 				"language": "Language (requires restart and privileges):"
+			},
+			"sounds": {
+				"title": "System audio",
+				"mutedlabel": "Muted sounds",
+				"volume": "Volumen",
+				"mute": "Muted"
 			}
 		}
 	}

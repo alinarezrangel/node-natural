@@ -95,7 +95,7 @@ function PureBuiltinApps()
 
 	PureCreateApplication("__puredesktopconfig", ApplicationsLocale()["desktopconfig"]["title"], function(args)
 	{
-		var mainWindow = PureMakeDefaultWindowLayout("__purewelcome", {
+		var mainWindow = PureMakeDefaultWindowLayout("__puredesktopconfig", {
 			"title": ApplicationsLocale()["desktopconfig"]["title"],
 			"color": "color-natural-middlegrey",
 			"bkgcolor": "color-natural-white",
@@ -197,5 +197,94 @@ function PureBuiltinApps()
 		NWidgetsPack(container, languageI);
 		container.appendChild(submit);
 		winb.appendChild(container);
+	});
+
+	PureCreateApplication("__puredesktopaudio", ApplicationsLocale()["sounds"]["title"], function(args)
+	{
+		var window = PureMakeDefaultWindowLayout(
+			"__puredesktopaudio",
+			{
+				"title": ApplicationsLocale()["sounds"]["title"],
+				"bkgcolor": "color-natural-white",
+				"color": "color-natural-deeporange",
+				"bdcolor": "border-color-natural-deeporange",
+				"border": "bs-1"
+			}
+		);
+		var mainAreaGeo = PureGetWindowAreaGeometry();
+
+		PureSetWindowSize(window, 600, 250, false);
+		PureSetWindowPosition(
+			window,
+			((mainAreaGeo.width - mainAreaGeo.left) / 2) - 300,
+			((mainAreaGeo.height - mainAreaGeo.top) / 2) - 125
+		);
+		PureOpenWindow(window);
+
+		var style = NWidgetsCreateAppStyle();
+
+		var mutedAudio = document.createElement("label");
+		mutedAudio.className = "label text-color-aqua font-bold";
+		mutedAudio.appendChild(PureMakeTextNode(ApplicationsLocale()["sounds"]["mutedlabel"]));
+		var mutedI = document.createElement("input");
+		mutedI.className = "input inputtext";
+		var mutedSounds = document.createElement("ul");
+		mutedSounds.className = "list no-style";
+		var addBtn = document.createElement("button");
+		addBtn.className = "button color-natural-deepgreen";
+		addBtn.appendChild(PureMakeTextNode("Mute sound"));
+
+		var update = function()
+		{
+			while(mutedSounds.firstChild)
+				mutedSounds.removeChild(mutedSounds.firstChild);
+
+			var i = 0;
+			var j = PureSoundMuted.length;
+			for(i = 0; i < j; i++)
+			{
+				var at = PureSoundMuted[i];
+				var el = document.createElement("li");
+				el.className = "padding-8 margin-2 hoverable user-cant-select";
+				el.appendChild(PureMakeTextNode(at));
+
+				el.addEventListener("click", function(i)
+				{
+					var index = 0;
+					PureSoundMuted.forEach((v, w) =>
+					{
+						if(v == i)
+						{
+							index = w;
+						}
+					});
+					PureSoundMuted.splice(index, 1);
+					this.parentElement.removeChild(this);
+				}.bind(el, at));
+
+				mutedSounds.appendChild(el);
+			}
+		};
+
+		addBtn.addEventListener("click", function()
+		{
+			var c = mutedI.value;
+			mutedI.value = "";
+			PureSoundMuted.push(c);
+			update();
+		});
+
+		update();
+
+		var winb = PureGetWindowBody(window);
+		var ct = document.createElement("div");
+		ct.className = "container";
+
+		ct.appendChild(mutedAudio);
+		ct.appendChild(mutedI);
+		ct.appendChild(addBtn);
+		ct.appendChild(mutedSounds);
+
+		winb.appendChild(ct);
 	});
 }

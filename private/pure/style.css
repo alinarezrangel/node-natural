@@ -124,3 +124,7 @@ html, body {
 .puredesktop-force-no-border {
 	border: 0px !important;
 }
+
+.puredesktop-window-content {
+	overflow: auto !important;
+}

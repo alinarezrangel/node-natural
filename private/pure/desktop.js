@@ -485,6 +485,7 @@ function PureOpenWindow(window, args)
 		"preventFromTopbar": false
 	};
 	PureEmitEvent(window, "opened", {});
+	PureEmitEvent(window, "focus", {});
 	$(".puredesktop-main-content").get(0).appendChild(window);
 	if(!args.preventFromTopbar)
 	{

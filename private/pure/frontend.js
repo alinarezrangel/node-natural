@@ -130,6 +130,11 @@ window.addEventListener("load", function()
 
 	NWidgetsPack($(".puredesktop-control-volume-slider").get(0), PureFrontEndControlVolume);
 
+	PureFrontEndControlVolume.addEventListener("oninput", function()
+	{
+		PureSoundAudioVolume = NWidgetsGetSliderValue(PureFrontEndControlVolume) / 100;
+	});
+
 	$(".puredesktop-logout-button-yes").click(function()
 	{
 		// Show logout menu and play sound

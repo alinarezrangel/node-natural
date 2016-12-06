@@ -25,9 +25,11 @@ limitations under the License.
 function NWidgetsCreateAppStyle()
 {
 	return {
-		"mainColor": "#CCC",
+		"mainColor": "#FFF",
 		"textColor": "#000",
-		"sliderColor": "#008080"
+		"sliderColor": "#008080",
+		"borderColor": "#000",
+		"successColor": "#5A1"
 	};
 }
 
@@ -50,7 +52,7 @@ function NWidgetsCreateMenu(style, text)
 	var menu = document.createElement("div");
 	menu.className = "link";
 	menu.style.backgroundColor = style.mainColor;
-	menu.style.color = style.color;
+	menu.style.color = style.textColor;
 	menu.appendChild(document.createTextNode(text));
 	return menu;
 }
@@ -62,7 +64,7 @@ function NWidgetsCreateSnack(style, textualContent)
 	var closebtn = document.createElement("span");
 	snack.className = "snack";
 	snack.style.backgroundColor = style.mainColor;
-	snack.style.color = style.color;
+	snack.style.color = style.textColor;
 	snack.style.display = "none";
 	text.style.cssFloat = "left";
 	closebtn.className = "nic text-ultra-big text-color-red";
@@ -134,6 +136,16 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 	dropdown.className = "dropdown-content box card no-margin";
 	dropdown.style.padding = "2px 0px";
 
+	combobox.style.backgroundColor = style.mainColor;
+	combobox.style.color = style.textColor;
+	combobox.style.borderBottom = style.borderColor;
+	/*darrow.style.backgroundColor = style.mainColor;
+	darrow.style.color = style.textColor;
+	dropdown.style.backgroundColor = style.mainColor;
+	dropdown.style.color = style.textColor;
+	input.style.backgroundColor = style.mainColor;
+	input.style.color = style.textColor;*/
+
 	combobox.appendChild(darrow);
 	combobox.appendChild(input);
 	darrow.appendChild(darrow_text);
@@ -174,6 +186,7 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 		opt.style.float = "left";
 		opt.style.clear = "both";
 		opt.style.cursor = "pointer";
+		opt.style.backgroundColor = style.mainColor;
 		opt.style.color = style.textColor;
 		opt.dataset["naturalWidgetsComboboxValue"] = at.name;
 		opt.dataset["naturalWidgetsComboboxRValue"] = at.value;
@@ -231,11 +244,28 @@ function NWidgetsGetComboboxValue(combobox)
 	return combobox.dataset["naturalWidgetsComboboxValue"];
 }
 
+function NWidgetsSetComboboxValue(combobox, name, value)
+{
+	combobox.dataset["naturalWidgetsComboboxValue"] = value;
+	var node = combobox.childNodes[1];
+	if(node.classList.contains("input"))
+	{
+		node.value = value;
+	}
+	else
+	{
+		while(node.firstChild)
+			node.removeChild(node.firstChild);
+
+		node.appendChild(document.createTextNode(name));
+	}
+}
+
 function NWidgetsCreateSlider(style, initialValue)
 {
 	var container = document.createElement("div");
 	container.className = "nwslider";
-	container.style.borderColor = style.textColor;
+	container.style.borderColor = style.bordertColor;
 	var slided = document.createElement("div");
 	slided.className = "nwslided";
 	slided.style.borderColor = slided.style.backgroundColor = style.sliderColor;
@@ -290,3 +320,97 @@ function NWidgetsSetSliderValue(slider, value)
 	slider.firstChild.style.left = ((value / 100) * a) + "px";
 }
 
+function NWidgetsCreateNumberInput(style, editable, startValue)
+{
+	var number = document.createElement("div");
+	var buttons = document.createElement("div");
+	var btnUp = document.createElement("div");
+	var btnUpLabel = document.createElement("span");
+	var btnDown = document.createElement("div");
+	var btnDownLabel = document.createElement("span");
+	var input = null;
+
+	if(editable)
+	{
+		input = document.createElement("input");
+		input.className = "input box no-border padding-2 o2 f1";
+		input.value = startValue;
+	}
+	else
+	{
+		input = document.createElement("span");
+		input.className = "box no-border padding-2 o2 f1";
+		input.appendChild(document.createTextNode(startValue));
+	}
+
+	number.className = "flexible box margin-8 padding-2 box border-bottom bs-1";
+	number.style.color = style.textColor;
+	number.style.backgroundColor = style.mainColor;
+	buttons.className = "o1 box no-margin padding-1 border-right";
+	buttons.style.borderColor = style.borderColor;
+	btnUp.className = "box no-margin no-padding";
+	btnUp.style.cssFloat = "left";
+	btnUp.style.clear = "both";
+	btnDown.className = "box no-margin no-padding";
+	btnDown.style.cssFloat = "left";
+	btnDown.style.clear = "both";
+	btnUpLabel.className = "font-bold nic text-big";
+	btnUpLabel.style.color = style.successColor;
+	btnDownLabel.className = "font-bold nic text-big";
+	btnDownLabel.style.color = style.successColor;
+
+	btnUp.style.cursor = btnDown.style.cursor = "pointer";
+
+	input.style.margin = "auto";
+
+	number.appendChild(buttons);
+	buttons.appendChild(btnUp);
+	btnUp.appendChild(btnUpLabel);
+	btnUpLabel.appendChild(document.createTextNode("k"));
+	buttons.appendChild(btnDown);
+	btnDown.appendChild(btnDownLabel);
+	btnDownLabel.appendChild(document.createTextNode("j"));
+	number.appendChild(input);
+
+	number.dataset["naturalWidgetsNumberValue"] = startValue;
+
+	btnUp.addEventListener("click", function()
+	{
+		var v = parseInt(number.dataset["naturalWidgetsNumberValue"]);
+		number.dataset["naturalWidgetsNumberValue"] = v + 1;
+
+		if(editable)
+		{
+			input.value = number.dataset["naturalWidgetsNumberValue"];
+		}
+		else
+		{
+			while(input.firstChild)
+				input.removeChild(input.firstChild);
+			input.appendChild(
+				document.createTextNode(number.dataset["naturalWidgetsNumberValue"])
+			);
+		}
+	});
+
+	btnDown.addEventListener("click", function()
+	{
+		var v = parseInt(number.dataset["naturalWidgetsNumberValue"]);
+		number.dataset["naturalWidgetsNumberValue"] = v - 1;
+
+		if(editable)
+		{
+			input.value = number.dataset["naturalWidgetsNumberValue"];
+		}
+		else
+		{
+			while(input.firstChild)
+				input.removeChild(input.firstChild);
+			input.appendChild(
+				document.createTextNode(number.dataset["naturalWidgetsNumberValue"])
+			);
+		}
+	});
+
+	return number;
+}

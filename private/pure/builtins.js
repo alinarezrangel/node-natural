@@ -130,11 +130,8 @@ function PureBuiltinApps()
 		};
 		var makeNumber = function(win, initial, id)
 		{
-			var n = document.createElement("input");
-			n.type = "number";
-			n.className = "width-block input inputtext number";
+			var n = NWidgetsCreateNumberInput(style, false, initial);
 			n.id = PureGenerateID(win, id);
-			n.value = initial;
 			return n;
 		};
 

@@ -212,11 +212,11 @@ template {
 }
 
 .hoverable {
-	transition: background-color 0.4s;
+	transition: background-color 0.4s !important;
 }
 
 .hoverable:hover {
-	background-color: #CCC;
+	background-color: #CCC !important;
 }
 
 .nwslider {

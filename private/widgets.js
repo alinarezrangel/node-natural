@@ -179,6 +179,10 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 
 		opt.addEventListener("click", function()
 		{
+			var ev = new CustomEvent("oninput", {
+				value: this.dataset["naturalWidgetsComboboxValue"]
+			});
+			combobox.dispatchEvent(ev);
 			if(editable)
 			{
 				input.value = this.dataset["naturalWidgetsComboboxValue"];
@@ -223,7 +227,7 @@ function NWidgetsCreateSlider(style, initialValue)
 
 	container.addEventListener("mouseup", function()
 	{
-		var ev = new CustomEvent("valuechanged", {
+		var ev = new CustomEvent("oninput", {
 			value: this.dataset["naturalWidgetsSliderValue"]
 		});
 		this.dispatchEvent(ev);

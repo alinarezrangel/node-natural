@@ -134,11 +134,34 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 	dropdown.className = "dropdown-content box card no-margin";
 	dropdown.style.padding = "2px 0px";
 
-	combobox.appendChild(input);
 	combobox.appendChild(darrow);
+	combobox.appendChild(input);
 	darrow.appendChild(darrow_text);
 	darrow_text.appendChild(darrow_text_it);
 	darrow.appendChild(dropdown);
+
+	darrow.addEventListener("mouseenter", function()
+	{
+		var sl = darrow.scrollLeft;
+		var st = darrow.scrollTop;
+		var el = darrow.parentElement;
+		while(true)
+		{
+			sl += el.scrollLeft;
+			st += el.scrollTop;
+			if(el.classList.contains("window"))
+			{
+				break;
+			}
+			el = el.parentElement;
+		}
+		var x = darrow.offsetLeft - sl;
+		var y = darrow.offsetTop - st;
+		NaturalLog("Hovered " + x + "px :" + y + "px");
+		dropdown.style.left = x + "px";
+		dropdown.style.top = y + "px";
+		NaturalLog("Res " + dropdown.style.left + " : " + dropdown.style.top);
+	});
 
 	var i = 0;
 	var j = options.length;

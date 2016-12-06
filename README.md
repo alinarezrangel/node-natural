@@ -12,6 +12,44 @@ system uses `eval` or the DOM `innerHTML`-like functions, it runs using
 [CSP][csp] (Content Security Policy) and multiples users can use the system
 at the same time.
 
+## Changing language ##
+
+* Open the `natural/config.json` JSON file with a text editor
+* Go to the last line
+* Where is `"locale": "es"` replace `"es"` with the selected language
+
+For now, Natural only supports `es` for spanish and `en` for english.
+
+### Adding new languages ###
+
+Go to the file `private/pure/locale.js` and copy any of the existing languages
+(are inside the JSON-like JavaScript map, identified with it's codename `es` or `en`)
+and edit the inner messages:
+
+```javascript
+var PureLocaleStrings = {
+	...
+	...
+
+	"my-awesome-lang": {
+		...
+		...
+
+		"closesession": "My close-session button message"
+
+		...
+		...
+	}
+
+	...
+	...
+};
+```
+
+If your desktop environment is not Pure, edit your DE `locale.js` file instead.
+
+You can send the new language as a pull request.
+
 ## How It Works ##
 
 ### Start ###

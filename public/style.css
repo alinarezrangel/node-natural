@@ -218,3 +218,52 @@ template {
 .hoverable:hover {
 	background-color: #CCC;
 }
+
+.nwslider {
+	display: block;
+	padding: 0px;
+	margin: 8px;
+	border-bottom: 1px solid black;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	padding-bottom: 10px;
+	position: relative;
+	cursor: normal;
+}
+
+.nwslided {
+	cursor: move;
+	width: 20px;
+	height: 20px;
+	background-color: teal;
+	border-top-left-radius: 50%;
+	border-top-right-radius: 50%;
+	position: relative;
+	clear: both;
+	padding: 0;
+	margin: 0;
+	top: 0%;
+	left: 0%;
+	transition: box-shadow 0.5s;
+}
+
+.nwslided::after {
+	content: "";
+	position: absolute;
+	display: block;
+	clear: both;
+	width: 0px;
+	height: 0px;
+	left: 0%;
+	top: 100%;
+	padding: 0;
+	margin: 0;
+	border-bottom: transparent;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid teal;
+}
+
+.nwslided:hover {
+	box-shadow: 0px 0px 20px #008080;
+}

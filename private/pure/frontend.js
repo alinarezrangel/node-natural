@@ -22,6 +22,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
+var PureFrontEndControlVolume = NWidgetsCreateSlider(NWidgetsCreateAppStyle(), 0);
+
 PureCreateApplication("__purehelloworld", "Hello World", function(args)
 {
 	var window = PureMakeDefaultWindowLayout(
@@ -126,6 +128,8 @@ window.addEventListener("load", function()
 		}
 	};
 
+	NWidgetsPack($(".puredesktop-control-volume-slider").get(0), PureFrontEndControlVolume);
+
 	$(".puredesktop-logout-button-yes").click(function()
 	{
 		// Show logout menu and play sound
@@ -176,6 +180,11 @@ window.addEventListener("load", function()
 	{
 		var menu = $(".puredesktop-windows-menu");
 		menuSlide(menu, 2, function(s) {});
+	});
+	$("#volumemenu").click(function()
+	{
+		var menu = $(".puredesktop-mmedia-menu");
+		menuSlide(menu, 3, function(s) {});
 	});
 
 	$(".puredesktop-main-content, .puredesktop-resize-preview").mousemove(function(ev)

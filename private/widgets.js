@@ -26,7 +26,8 @@ function NWidgetsCreateAppStyle()
 {
 	return {
 		"mainColor": "#CCC",
-		"textColor": "#000"
+		"textColor": "#000",
+		"sliderColor": "#008080"
 	};
 }
 
@@ -106,6 +107,7 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 		input = document.createElement("input");
 		input.className = "user-can-select input no-padding no-margin no-border f1 o2";
 		input.style.border = "0px !important";
+		input.style.color = style.textColor;
 	}
 	else
 	{
@@ -113,6 +115,7 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 		input.className = "user-can-select box no-padding no-margin f1 o2";
 		input_cc = document.createTextNode("");
 		input.appendChild(input_cc);
+		input.style.color = style.textColor;
 	}
 
 	var darrow = document.createElement("div");
@@ -148,6 +151,7 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 		opt.style.float = "left";
 		opt.style.clear = "both";
 		opt.style.cursor = "pointer";
+		opt.style.color = style.textColor;
 		opt.dataset["naturalWidgetsComboboxValue"] = at.name;
 		opt.dataset["naturalWidgetsComboboxRValue"] = at.value;
 
@@ -198,5 +202,64 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 function NWidgetsGetComboboxValue(combobox)
 {
 	return combobox.dataset["naturalWidgetsComboboxValue"];
+}
+
+function NWidgetsCreateSlider(style, initialValue)
+{
+	var container = document.createElement("div");
+	container.className = "nwslider";
+	container.style.borderColor = style.textColor;
+	var slided = document.createElement("div");
+	slided.className = "nwslided";
+	slided.style.borderColor = slided.style.backgroundColor = style.sliderColor;
+
+	container.dataset["naturalWidgetsSliderValue"] = initialValue;
+	container.dataset["naturalWidgetsSliderDown"] = "false";
+
+	container.addEventListener("mousedown", function()
+	{
+		this.dataset["naturalWidgetsSliderDown"] = "true";
+	});
+
+	container.addEventListener("mouseup", function()
+	{
+		var ev = new CustomEvent("valuechanged", {
+			value: this.dataset["naturalWidgetsSliderValue"]
+		});
+		this.dispatchEvent(ev);
+		this.dataset["naturalWidgetsSliderDown"] = "false";
+	});
+
+	container.addEventListener("mousemove", function(ev)
+	{
+		if(this.dataset["naturalWidgetsSliderDown"] != "true")
+			return;
+		var x = ev.clientX - this.getBoundingClientRect().left - (slided.offsetWidth / 2);
+		this.dataset["naturalWidgetsSliderValue"] = Math.max(
+			Math.min(
+				Math.round(
+					((x + slided.offsetWidth / 2) * 100) / this.offsetWidth),
+					100
+				),
+			0
+		) + "";
+		slided.style.left = x + "px";
+	});
+
+	container.appendChild(slided);
+
+	return container;
+}
+
+function NWidgetsGetSliderValue(slider)
+{
+	return parseInt(slider.dataset["naturalWidgetsSliderValue"]);
+}
+
+function NWidgetsSetSliderValue(slider, value)
+{
+	slider.dataset["naturalWidgetsSliderValue"] = value;
+	var a = slider.offsetWidth;
+	slider.firstChild.style.left = ((value / 100) * a) + "px";
 }
 

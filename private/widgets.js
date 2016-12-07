@@ -42,27 +42,44 @@ function NWidgetsPack(container, widget)
 	container.appendChild(widget);
 }
 
-function NWidgetsCreateMenuBar(style)
+function NWidgetsCreateMenuBar(style, substyle)
 {
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
 	var menubar = document.createElement("div");
 	menubar.className = "top-navigation";
 	menubar.style.backgroundColor = style.menuColor;
 	menubar.style.color = style.color;
+
 	return menubar;
 }
 
-function NWidgetsCreateMenu(style, text)
+function NWidgetsCreateMenu(style, text, substyle)
 {
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
 	var menu = document.createElement("div");
 	menu.className = "link";
 	menu.style.backgroundColor = style.menuColor;
 	menu.style.color = style.textColor;
 	menu.appendChild(document.createTextNode(text));
+
 	return menu;
 }
 
-function NWidgetsCreateSnack(style, textualContent)
+function NWidgetsCreateSnack(style, textualContent, substyle)
 {
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
 	var snack = document.createElement("div");
 	var text = document.createElement("div");
 	var closebtn = document.createElement("span");
@@ -79,11 +96,13 @@ function NWidgetsCreateSnack(style, textualContent)
 	text.appendChild(document.createTextNode(textualContent));
 	snack.appendChild(text);
 	snack.appendChild(closebtn);
+
 	closebtn.addEventListener("click", function(ev)
 	{
 		//snack.style.display = "none";
 		$(snack).hide("slow");
 	});
+
 	return snack;
 }
 
@@ -97,8 +116,13 @@ function NWidgetsShowSnack(snack)
 	//snack.style.display = "block";
 }
 
-function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
+function NWidgetsCreateCombobox(style, editable, options, defaultFunction, substyle)
 {
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
 	if((typeof defaultFunction) === "undefined")
 	{
 		defaultFunction = function(at) {return false;};
@@ -208,7 +232,7 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 			{
 				input.value = opt.dataset["naturalWidgetsComboboxValue"];
 				combobox.dataset["naturalWidgetsComboboxValue"] =
-					this.dataset["naturalWidgetsComboboxRValue"];
+					opt.dataset["naturalWidgetsComboboxRValue"];
 			}
 			else
 			{
@@ -268,8 +292,13 @@ function NWidgetsSetComboboxValue(combobox, name, value)
 	}
 }
 
-function NWidgetsCreateSlider(style, initialValue)
+function NWidgetsCreateSlider(style, initialValue, substyle)
 {
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
 	var container = document.createElement("div");
 	container.className = "nwslider";
 	container.style.borderColor = style.bordertColor;
@@ -327,8 +356,13 @@ function NWidgetsSetSliderValue(slider, value)
 	slider.firstChild.style.left = ((value / 100) * a) + "px";
 }
 
-function NWidgetsCreateNumberInput(style, editable, startValue)
+function NWidgetsCreateNumberInput(style, editable, startValue, substyle)
 {
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
 	var number = document.createElement("div");
 	var buttons = document.createElement("div");
 	var btnUp = document.createElement("div");
@@ -446,16 +480,15 @@ function NWidgetsSetNumberInputValue(number, value)
 
 function NWidgetsCreateButton(style, textualContent, substyle)
 {
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
 	var button = document.createElement("button");
 	button.className = "button";
 	button.style.color = style.textColor;
 	button.style.backgroundColor = style.buttonColor;
-
-	if(typeof substyle !== "undefined")
-	{
-		button.style.color = substyle.textColor;
-		button.style.backgroundColor = substyle.buttonColor;
-	}
 
 	button.type = "button";
 	button.appendChild(document.createTextNode(textualContent));
@@ -472,14 +505,14 @@ function NWidgetsSetButtonValue(button, text)
 
 function NWidgetsCreateLabel(style, textualContent, substyle)
 {
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
 	var label = document.createElement("span");
 	label.className = "label";
 	label.style.color = style.textColor;
-
-	if(typeof substyle !== "undefined")
-	{
-		label.style.color = substyle.textColor;
-	}
 
 	label.appendChild(document.createTextNode(textualContent));
 
@@ -493,11 +526,16 @@ function NWidgetsSetLabelValue(label, text)
 	label.appendChild(document.createTextNode(text));
 }
 
-function NWidgetsCreateTextInput(style, textualContent)
+function NWidgetsCreateTextInput(style, textualContent, substyle)
 {
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
 	var input = document.createElement("input");
 	input.type = "text";
-	input.className = "input inputtext width-block padding-2";
+	input.className = "input inputtext width-block padding-4";
 
 	input.style.backgroundColor = style.mainColor;
 	input.style.color = style.textColor;
@@ -518,8 +556,13 @@ function NWidgetsGetTextInputValue(input)
 	return input.value;
 }
 
-function NWidgetsCreateContainer(style)
+function NWidgetsCreateContainer(style, substyle)
 {
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
 	var container = document.createElement("div");
 	container.className = "container";
 	return container;

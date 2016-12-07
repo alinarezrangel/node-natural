@@ -30,5 +30,10 @@
 	"codeName": "Araguaney",
 	"buildNth": 1,
 	"publicHash": "none",
-	"locale": "es"
+	"locale": "es",
+	"desktopConfig": {
+		"backgroundImage": "node-natural-background-images/background-material-sheets-4.png",
+		"backgroundType": "cover",
+		"backgroundColor": "#FAFAFA"
+	}
 }

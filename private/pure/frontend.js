@@ -50,7 +50,51 @@ NaturalOnLoadevent = function()
 			NaturalLog("Locale.at " + PureLocaleStrings[PureLanguage][$(this).data("localeString")]);
 			this.appendChild(PureMakeTextNode(PureLocaleStrings[PureLanguage][$(this).data("localeString")]))
 		});
+
+		NaturalHighLevelSocketCall("api.session.background.json", 2, {}, function(err, data)
+		{
+			if(err)
+			{
+				NaturalLogErr(err);
+				alert("Error getting your background")
+				return;
+			}
+
+			NaturalLog("Getted background " + JSON.stringify(data));
+
+			var bkg = data.background;
+			var imgPath = "/images/backgrounds/" + bkg.backgroundImage;
+			var bkgType = bkg.backgroundType;
+			var bkgColor = bkg.backgroundColor;
+
+			var desk = $(".puredesktop-main-content").get(0);
+
+			desk.style.background = "url('" + imgPath + "')";
+			desk.style.backgroundColor = bkgColor;
+			desk.style.backgroundPosition = "center";
+			desk.style.backgroundAttachment = "fixed";
+			desk.style.backgroundRepeat = "no-repeat"; // repeat|no-repeat
+			desk.style.backgroundSize = "contains"; // cover|contains|X Y
+
+			switch(bkgType)
+			{
+				case "cover":
+					desk.style.backgroundRepeat = "no-repeat"; // repeat|no-repeat
+					desk.style.backgroundSize = "cover"; // cover|contains|X Y
+					break;
+				case "contains":
+					desk.style.backgroundRepeat = "no-repeat"; // repeat|no-repeat
+					desk.style.backgroundSize = "contains"; // cover|contains|X Y
+					break;
+				case "fills":
+					desk.style.backgroundRepeat = "repeat"; // repeat|no-repeat
+					desk.style.backgroundSize = "50px 50px"; // cover|contains|X Y
+					break;
+			}
+		});
+
 		PureBuiltinApps();
+
 		PureApplications.forEach(function(value, index)
 		{
 			var appitem = PureExecuteTemplate(
@@ -129,6 +173,7 @@ window.addEventListener("load", function()
 	};
 
 	NWidgetsPack($(".puredesktop-control-volume-slider").get(0), PureFrontEndControlVolume);
+	NWidgetsSetSliderValue(PureFrontEndControlVolume, PureSoundAudioVolume * 100);
 
 	PureFrontEndControlVolume.addEventListener("oninput", function()
 	{
@@ -159,7 +204,7 @@ window.addEventListener("load", function()
 				{
 					if(err)
 					{
-						console.error(err);
+						NaturalLogErr(err);
 						alert("Error login out " + err);
 						return;
 					}

@@ -44,4 +44,22 @@ module.exports = function(socket, configuration)
 			socket.emit("authenticated", {"task": task, "valid": false, "pid": pid});
 		}
 	});
+
+	socket.on("api.session.background.json", function(data)
+	{
+		var token = data.token || "";
+		var pid = data.pid || 0;
+		var task = "api.session.background.json";
+		if(tokens.ValidateToken(token))
+		{
+			// socket.emit("error-response", {"task": task, "code": 0, "msg": "", "pid": pid});
+			// socket.emit("response", {"task": task, ..., "pid": pid});
+			console.log("The user " + tokens.GetUserFromToken(token) + " request it's background");
+			socket.emit("response", {"task": task, "background": configuration.desktopConfig, "pid": pid});
+		}
+		else
+		{
+			socket.emit("authenticated", {"task": task, "valid": false, "pid": pid});
+		}
+	});
 };

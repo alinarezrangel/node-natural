@@ -79,6 +79,16 @@ limitations under the License.
 
 		var snack = NWidgetsCreateSnack(style, "I am a snack");
 
+		var button1 = NWidgetsCreateButton(style, "Button 1");
+		var button2 = NWidgetsCreateButton(style, "Button 2", {
+			textColor: "#CCC",
+			buttonColor: "#2C2C2C"
+		});
+		var button3 = NWidgetsCreateButton(style, "Button 3", {
+			textColor: "#000",
+			buttonColor: "#5A1"
+		});
+
 		NWidgetsPack(winbody, menubar);
 		NWidgetsPack(winbody, container);
 
@@ -86,6 +96,9 @@ limitations under the License.
 		NWidgetsPack(container, combobox);
 		NWidgetsPack(container, slider);
 		NWidgetsPack(container, snack);
+		NWidgetsPack(container, button1);
+		NWidgetsPack(container, button2);
+		NWidgetsPack(container, button3);
 
 		NWidgetsPack(menubar, menu1);
 		NWidgetsPack(menubar, menu2);

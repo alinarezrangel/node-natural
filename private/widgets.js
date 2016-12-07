@@ -32,7 +32,8 @@ function NWidgetsCreateAppStyle()
 		"successColor": "#5A1",
 		"menuColor": "#AAA",
 		"snackColor": "#222",
-		"snackTextColor": "#EE0"
+		"snackTextColor": "#EE0",
+		"buttonColor": "#ABABAB"
 	};
 }
 
@@ -420,4 +421,51 @@ function NWidgetsCreateNumberInput(style, editable, startValue)
 	});
 
 	return number;
+}
+
+function NWidgetsGetNumberInputValue(number)
+{
+	return parseInt(number.dataset["naturalWidgetsNumberValue"]);
+}
+
+function NWidgetsSetNumberInputValue(number, value)
+{
+	number.dataset["naturalWidgetsNumberValue"] = value;
+	var input = number.childNodes[1];
+	if(input.classList.contains("input"))
+	{
+		input.value = value;
+	}
+	else
+	{
+		while(input.firstChild)
+			input.removeChild(input.firstChild);
+		input.appendChild(document.createTextNode(value));
+	}
+}
+
+function NWidgetsCreateButton(style, textualContent, substyle)
+{
+	var button = document.createElement("button");
+	button.className = "button";
+	button.style.color = style.textColor;
+	button.style.backgroundColor = style.buttonColor;
+
+	if(typeof substyle !== "undefined")
+	{
+		button.style.color = substyle.textColor;
+		button.style.backgroundColor = substyle.buttonColor;
+	}
+
+	button.type = "button";
+	button.appendChild(document.createTextNode(textualContent));
+
+	return button;
+}
+
+function NWidgetsSetButtonText(button, text)
+{
+	while(button.firstChild)
+		button.removeChild(button.firstChild);
+	button.appendChild(document.createTextNode(text));
 }

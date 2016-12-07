@@ -22,7 +22,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
-var PureFrontEndControlVolume = NWidgetsCreateSlider(NWidgetsCreateAppStyle(), 0);
+var PureFrontEndControlVolume = NWidgetsCreateSlider(NWidgetsCreateAppStyle(), PureSoundAudioVolume);
 var PureFrontEndCurrentBackgroundImageData = null;
 
 PureCreateApplication("__purehelloworld", "Hello World", function(args)
@@ -176,7 +176,6 @@ window.addEventListener("load", function()
 	};
 
 	NWidgetsPack($(".puredesktop-control-volume-slider").get(0), PureFrontEndControlVolume);
-	NWidgetsSetSliderValue(PureFrontEndControlVolume, PureSoundAudioVolume * 100);
 
 	PureFrontEndControlVolume.addEventListener("oninput", function()
 	{

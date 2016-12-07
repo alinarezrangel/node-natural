@@ -502,13 +502,13 @@ function PureOpenWindow(window, args)
 			PureStylePanels();
 			if($(window).hasClass("hidden"))
 			{
-				// $(window).removeClass("hidden");
+				$(window).removeClass("hidden");
 				PureEmitEvent(window, "focus", {});
 				PureEmitEvent(window, "deiconify", {});
 			}
 			else
 			{
-				// $(window).addClass("hidden");
+				$(window).addClass("hidden");
 				PureEmitEvents(PureWindows, "windowPriorityChanged", {
 					"from": window
 				});

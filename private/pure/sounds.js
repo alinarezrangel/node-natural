@@ -24,7 +24,7 @@ limitations under the License.
 
 var PureSoundTheme = "sound-theme-freedesktop";
 var PureSoundCanPlay = true;
-var PureSoundAudioVolume = 1;
+var PureSoundAudioVolume = 1.0;
 var PureAllSounds = [
 	{
 		"name": "Freedesktop",

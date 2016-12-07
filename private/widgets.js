@@ -301,12 +301,13 @@ function NWidgetsCreateSlider(style, initialValue, substyle)
 
 	var container = document.createElement("div");
 	container.className = "nwslider";
-	container.style.borderColor = style.bordertColor;
+	container.style.borderColor = style.borderColor;
 	var slided = document.createElement("div");
 	slided.className = "nwslided";
 	slided.style.borderColor = slided.style.backgroundColor = style.sliderColor;
 
 	container.dataset["naturalWidgetsSliderValue"] = initialValue;
+	slided.style.left = initialValue + "%";
 	container.dataset["naturalWidgetsSliderDown"] = "false";
 
 	container.addEventListener("mousedown", function()
@@ -352,8 +353,7 @@ function NWidgetsGetSliderValue(slider)
 function NWidgetsSetSliderValue(slider, value)
 {
 	slider.dataset["naturalWidgetsSliderValue"] = value;
-	var a = slider.offsetWidth;
-	slider.firstChild.style.left = ((value / 100) * a) + "px";
+	slider.getElementsByClassName("nwslided")[0].style.left = value + "%";
 }
 
 function NWidgetsCreateNumberInput(style, editable, startValue, substyle)
@@ -565,5 +565,57 @@ function NWidgetsCreateContainer(style, substyle)
 
 	var container = document.createElement("div");
 	container.className = "container";
+	container.style.color = style.textColor;
+	container.style.backgroundColor = style.mainColor;
+
 	return container;
+}
+
+function NWidgetsCreateFrame(style, substyle)
+{
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
+	var container = document.createElement("div");
+	container.className = "container border";
+	container.style.borderColor = style.borderColor;
+	container.style.color = style.textColor;
+	container.style.backgroundColor = style.mainColor;
+
+	return container;
+}
+
+function NWidgetsCreateAccordion(style, substyle)
+{
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
+	var accordion = document.createElement("div");
+	accordion.className = "container no-padding border";
+	accordion.style.borderColor = style.borderColor;
+	accordion.style.color = style.textColor;
+	accordion.style.backgroundColor = style.mainColor;
+
+	return accordion;
+}
+
+function NWidgetsCreateAccordionSection(style, title, substyle)
+{
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
+	var section = document.createElement("div");
+	var titlebar = document.createElement("div");
+	var content = document.createElement("div");
+	section.className = "container no-margin no-padding";
+	section.style.backgroundColor = style.mainColor;
+	section.style.color = style.textColor;
+
+	return section;
 }

@@ -117,11 +117,11 @@ limitations under the License.
 			borderColor: "#0FF"
 		});
 		var slider1 = NWidgetsCreateSlider(style, 0);
-		var slider2 = NWidgetsCreateSlider(style, 0, {
+		var slider2 = NWidgetsCreateSlider(style, 50, {
 			borderColor: "#FAA",
 			sliderColor: "#AFF"
 		});
-		var slider3 = NWidgetsCreateSlider(style, 0, {
+		var slider3 = NWidgetsCreateSlider(style, 100, {
 			borderColor: "#000",
 			sliderColor: "#CCC"
 		});

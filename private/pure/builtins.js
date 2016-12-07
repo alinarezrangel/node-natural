@@ -130,7 +130,7 @@ function PureBuiltinApps()
 		};
 		var makeNumber = function(win, initial, id)
 		{
-			var n = NWidgetsCreateNumberInput(style, false, initial);
+			var n = NWidgetsCreateNumberInput(style, true, initial);
 			n.id = PureGenerateID(win, id);
 			return n;
 		};
@@ -176,7 +176,7 @@ function PureBuiltinApps()
 
 		submit.addEventListener("click", function()
 		{
-			PureGlobalAnimationDuration = parseInt(globalAnimationI.value + "");
+			PureGlobalAnimationDuration = NWidgetsGetNumberInputValue(globalAnimationI);
 			PureSoundTheme = NWidgetsGetComboboxValue(soundThemeI);
 			PureLanguage = NIntLocaleName = NWidgetsGetComboboxValue(languageI);
 		});

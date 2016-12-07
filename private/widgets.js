@@ -435,6 +435,11 @@ function NWidgetsCreateNumberInput(style, editable, startValue, substyle)
 		input = document.createElement("input");
 		input.className = "input box no-border padding-2 o2 f1";
 		input.value = startValue;
+
+		input.addEventListener("keyup", function()
+		{
+			number.dataset["naturalWidgetsNumberValue"] = this.value;
+		});
 	}
 	else
 	{

@@ -128,3 +128,7 @@ html, body {
 .puredesktop-window-content {
 	overflow: auto !important;
 }
+
+.puredesktop-applications-searchbox {
+	min-height: 15% !important;
+}

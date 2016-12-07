@@ -463,9 +463,64 @@ function NWidgetsCreateButton(style, textualContent, substyle)
 	return button;
 }
 
-function NWidgetsSetButtonText(button, text)
+function NWidgetsSetButtonValue(button, text)
 {
 	while(button.firstChild)
 		button.removeChild(button.firstChild);
 	button.appendChild(document.createTextNode(text));
+}
+
+function NWidgetsCreateLabel(style, textualContent, substyle)
+{
+	var label = document.createElement("span");
+	label.className = "label";
+	label.style.color = style.textColor;
+
+	if(typeof substyle !== "undefined")
+	{
+		label.style.color = substyle.textColor;
+	}
+
+	label.appendChild(document.createTextNode(textualContent));
+
+	return label;
+}
+
+function NWidgetsSetLabelValue(label, text)
+{
+	while(label.firstChild)
+		label.removeChild(label.firstChild);
+	label.appendChild(document.createTextNode(text));
+}
+
+function NWidgetsCreateTextInput(style, textualContent)
+{
+	var input = document.createElement("input");
+	input.type = "text";
+	input.className = "input inputtext width-block padding-2";
+
+	input.style.backgroundColor = style.mainColor;
+	input.style.color = style.textColor;
+	input.style.borderColor = style.borderColor;
+
+	input.value = textualContent;
+
+	return input;
+}
+
+function NWidgetsSetTextInputValue(input, text)
+{
+	input.value = text;
+}
+
+function NWidgetsGetTextInputValue(input)
+{
+	return input.value;
+}
+
+function NWidgetsCreateContainer(style)
+{
+	var container = document.createElement("div");
+	container.className = "container";
+	return container;
 }

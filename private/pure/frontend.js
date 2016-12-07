@@ -23,6 +23,7 @@ limitations under the License.
 ***************************************************************************/
 
 var PureFrontEndControlVolume = NWidgetsCreateSlider(NWidgetsCreateAppStyle(), 0);
+var PureFrontEndCurrentBackgroundImageData = null;
 
 PureCreateApplication("__purehelloworld", "Hello World", function(args)
 {
@@ -91,6 +92,8 @@ NaturalOnLoadevent = function()
 					desk.style.backgroundSize = "50px 50px"; // cover|contains|X Y
 					break;
 			}
+
+			PureFrontEndCurrentBackgroundImageData = data.background;
 		});
 
 		PureBuiltinApps();

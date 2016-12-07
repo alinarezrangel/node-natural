@@ -63,6 +63,15 @@ var PureLocaleStrings = {
 				"mutedlabel": "Sonidos omitidos",
 				"volume": "Volumen",
 				"mute": "Sin audio"
+			},
+			"background": {
+				"title": "Fondo de escritorio",
+				"current": "Ruta al fondo de escritorio:",
+				"select": "Ingrese el tipo de fondo:",
+				"update": "Actualizar",
+				"cb_cover": "Cubrir toda la pantalla",
+				"cb_contains": "Ver el fondo completo",
+				"cb_fills": "Rellenar repitiendo el fondo"
 			}
 		}
 	},
@@ -94,6 +103,15 @@ var PureLocaleStrings = {
 				"mutedlabel": "Muted sounds",
 				"volume": "Volumen",
 				"mute": "Muted"
+			},
+			"background": {
+				"title": "Desktop background",
+				"current": "Path to the desktop background:",
+				"select": "Select the background type:",
+				"update": "Update",
+				"cb_cover": "Cover all the screen",
+				"cb_contains": "See the complete background",
+				"cb_fills": "Fills the screen repeating the image"
 			}
 		}
 	}

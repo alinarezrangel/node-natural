@@ -284,4 +284,90 @@ function PureBuiltinApps()
 
 		winb.appendChild(ct);
 	});
+
+	PureCreateApplication("__puredesktopbackground", ApplicationsLocale()["background"]["title"], function(args)
+	{
+		var window = PureMakeDefaultWindowLayout(
+			"__puredesktopbackground",
+			{
+				"title": ApplicationsLocale()["background"]["title"],
+				"bkgcolor": "color-natural-white",
+				"color": "color-natural-deeporange",
+				"bdcolor": "border-color-natural-deeporange",
+				"border": "bs-1"
+			}
+		);
+		var mainAreaGeo = PureGetWindowAreaGeometry();
+
+		PureSetWindowSize(window, 600, 250, false);
+		PureSetWindowPosition(
+			window,
+			((mainAreaGeo.width - mainAreaGeo.left) / 2) - 300,
+			((mainAreaGeo.height - mainAreaGeo.top) / 2) - 125
+		);
+		PureOpenWindow(window);
+
+		var style = NWidgetsCreateAppStyle();
+
+		var winb = PureGetWindowBody(window);
+		var container = NWidgetsCreateContainer(style);
+
+		var currentLabel = NWidgetsCreateLabel(style, ApplicationsLocale()["background"]["current"]);
+		var changeInput = NWidgetsCreateTextInput(
+			style,
+			PureFrontEndCurrentBackgroundImageData.backgroundImage
+		);
+		var changeLabel = NWidgetsCreateLabel(style, ApplicationsLocale()["background"]["select"]);
+		var typeInput = NWidgetsCreateCombobox(
+			style,
+			false,
+			[
+				{"name": ApplicationsLocale()["background"]["cb_cover"], "value": "cover"},
+				{"name": ApplicationsLocale()["background"]["cb_contains"], "value": "contains"},
+				{"name": ApplicationsLocale()["background"]["cb_fills"], "value": "fills"}
+			],
+			(v) => v.value == PureFrontEndCurrentBackgroundImageData.backgroundType
+		);
+		var changeBtn = NWidgetsCreateButton(style, ApplicationsLocale()["background"]["update"]);
+
+		NWidgetsPack(container, currentLabel);
+		NWidgetsPack(container, changeInput);
+		NWidgetsPack(container, changeLabel);
+		NWidgetsPack(container, typeInput);
+		NWidgetsPack(container, changeBtn);
+		NWidgetsPack(winb, container);
+
+		changeBtn.addEventListener("click", function()
+		{
+			var desk = document.getElementsByClassName("puredesktop-main-content")[0];
+			var imgPath = NWidgetsGetTextInputValue(changeInput);
+			var bkgType = PureFrontEndCurrentBackgroundImageData.backgroundType = NWidgetsGetComboboxValue(typeInput);
+			var bkgColor = PureFrontEndCurrentBackgroundImageData.backgroundColor;
+
+			desk.style.background = "url('/images/backgrounds/" + imgPath + "')";
+			desk.style.backgroundColor = bkgColor;
+			desk.style.backgroundPosition = "center";
+			desk.style.backgroundAttachment = "fixed";
+			desk.style.backgroundRepeat = "no-repeat"; // repeat|no-repeat
+			desk.style.backgroundSize = "contains"; // cover|contains|X Y
+
+			switch(bkgType)
+			{
+				case "cover":
+					desk.style.backgroundRepeat = "no-repeat"; // repeat|no-repeat
+					desk.style.backgroundSize = "cover"; // cover|contains|X Y
+					break;
+				case "contains":
+					desk.style.backgroundRepeat = "no-repeat"; // repeat|no-repeat
+					desk.style.backgroundSize = "contains"; // cover|contains|X Y
+					break;
+				case "fills":
+					desk.style.backgroundRepeat = "repeat"; // repeat|no-repeat
+					desk.style.backgroundSize = "50px 50px"; // cover|contains|X Y
+					break;
+			}
+
+			PureFrontEndCurrentBackgroundImageData.backgroundImage = imgPath;
+		});
+	});
 }

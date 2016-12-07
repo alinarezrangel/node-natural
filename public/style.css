@@ -194,7 +194,7 @@ template {
 	position: fixed;
 	max-width: 70%;
 	max-height: 12.5%;
-	padding: 2em;
+	padding: 24px 48px;
 	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 	font-size: 1.2em;
 	font-weight: bold;

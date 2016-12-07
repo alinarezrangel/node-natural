@@ -29,7 +29,10 @@ function NWidgetsCreateAppStyle()
 		"textColor": "#000",
 		"sliderColor": "#008080",
 		"borderColor": "#000",
-		"successColor": "#5A1"
+		"successColor": "#5A1",
+		"menuColor": "#AAA",
+		"snackColor": "#222",
+		"snackTextColor": "#EE0"
 	};
 }
 
@@ -42,7 +45,7 @@ function NWidgetsCreateMenuBar(style)
 {
 	var menubar = document.createElement("div");
 	menubar.className = "top-navigation";
-	menubar.style.backgroundColor = style.mainColor;
+	menubar.style.backgroundColor = style.menuColor;
 	menubar.style.color = style.color;
 	return menubar;
 }
@@ -51,7 +54,7 @@ function NWidgetsCreateMenu(style, text)
 {
 	var menu = document.createElement("div");
 	menu.className = "link";
-	menu.style.backgroundColor = style.mainColor;
+	menu.style.backgroundColor = style.menuColor;
 	menu.style.color = style.textColor;
 	menu.appendChild(document.createTextNode(text));
 	return menu;
@@ -63,8 +66,8 @@ function NWidgetsCreateSnack(style, textualContent)
 	var text = document.createElement("div");
 	var closebtn = document.createElement("span");
 	snack.className = "snack";
-	snack.style.backgroundColor = style.mainColor;
-	snack.style.color = style.textColor;
+	snack.style.backgroundColor = style.snackColor;
+	snack.style.color = style.snackTextColor;
 	snack.style.display = "none";
 	text.style.cssFloat = "left";
 	closebtn.className = "nic text-ultra-big text-color-red";
@@ -110,6 +113,9 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 		input.className = "user-can-select input no-padding no-margin no-border f1 o2";
 		input.style.border = "0px !important";
 		input.style.color = style.textColor;
+		input.type = "text";
+		input.value = "";
+		input.name = "";
 	}
 	else
 	{
@@ -125,7 +131,7 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 	var darrow_text_it = document.createTextNode("o");
 	var dropdown = document.createElement("div");
 
-	combobox.className = "user-cant-select box width-block padding-2 margin-8 flexible direction-row no-wrap justify-space-around border-bottom";
+	combobox.className = "user-cant-select box width-block no-padding margin-8 flexible direction-row no-wrap justify-space-around border-bottom";
 	combobox.style.width = "80% !important";
 	combobox.style.marginLeft = "auto !important";
 	combobox.style.marginRight = "auto !important";
@@ -138,7 +144,7 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction)
 
 	combobox.style.backgroundColor = style.mainColor;
 	combobox.style.color = style.textColor;
-	combobox.style.borderBottom = style.borderColor;
+	combobox.style.borderColor = style.borderColor;
 	/*darrow.style.backgroundColor = style.mainColor;
 	darrow.style.color = style.textColor;
 	dropdown.style.backgroundColor = style.mainColor;
@@ -345,6 +351,7 @@ function NWidgetsCreateNumberInput(style, editable, startValue)
 
 	number.className = "flexible box margin-8 padding-2 box border-bottom bs-1";
 	number.style.color = style.textColor;
+	number.style.width = "auto";
 	number.style.backgroundColor = style.mainColor;
 	buttons.className = "o1 box no-margin padding-1 border-right";
 	buttons.style.borderColor = style.borderColor;

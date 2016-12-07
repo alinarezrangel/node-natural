@@ -299,7 +299,7 @@ function PureBuiltinApps()
 		);
 		var mainAreaGeo = PureGetWindowAreaGeometry();
 
-		PureSetWindowSize(window, 600, 250, false);
+		PureSetWindowSize(window, 560, 470, false);
 		PureSetWindowPosition(
 			window,
 			((mainAreaGeo.width - mainAreaGeo.left) / 2) - 300,
@@ -311,6 +311,8 @@ function PureBuiltinApps()
 
 		var winb = PureGetWindowBody(window);
 		var container = NWidgetsCreateContainer(style);
+		var allbkg = NWidgetsCreateContainer(style);
+		var mypid = PureGetWindowAtom(window, "pid");
 
 		var currentLabel = NWidgetsCreateLabel(style, ApplicationsLocale()["background"]["current"]);
 		var changeInput = NWidgetsCreateTextInput(
@@ -335,6 +337,7 @@ function PureBuiltinApps()
 		NWidgetsPack(container, changeLabel);
 		NWidgetsPack(container, typeInput);
 		NWidgetsPack(container, changeBtn);
+		NWidgetsPack(container, allbkg);
 		NWidgetsPack(winb, container);
 
 		changeBtn.addEventListener("click", function()
@@ -368,6 +371,49 @@ function PureBuiltinApps()
 			}
 
 			PureFrontEndCurrentBackgroundImageData.backgroundImage = imgPath;
+		});
+
+		NaturalHighLevelSocketCall("ls", parseInt(mypid), {
+			cwd: "./public/images/backgrounds/node-natural-background-images/"
+		}, function(err, data)
+		{
+			if(err)
+			{
+				NaturalLogErr("Error getting backgrounds: " + err);
+				return;
+			}
+
+			var i = 0;
+			var j = data.files.length;
+			for(i = 0; i < j; i++)
+			{
+				var file = data.files[i];
+				var c = file.filename.split(".");
+
+				if((!file.isDirectory) && (c[c.length - 1] == "png"))
+				{
+					var preview = document.createElement("img");
+					preview.className = "box border margin-8 card";
+					preview.alt = "Background [" + file.filename + "]";
+					preview.src = "/images/backgrounds/node-natural-background-images/" + file.filename;
+					preview.width = 70;
+					preview.height = 70;
+					preview.style.cssFloat = "left";
+					preview.style.cursor = "pointer";
+
+					preview.addEventListener("click", function()
+					{
+						NWidgetsSetTextInputValue(
+							changeInput,
+							"node-natural-background-images/" + this.dataset["file"]
+						);
+					});
+
+					preview.dataset["file"] = file.filename;
+
+					allbkg.appendChild(preview);
+				}
+			}
 		});
 	});
 }

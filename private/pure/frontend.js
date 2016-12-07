@@ -22,7 +22,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
-var PureFrontEndControlVolume = NWidgetsCreateSlider(NWidgetsCreateAppStyle(), PureSoundAudioVolume);
+var PureFrontEndControlVolume = NWidgetsCreateSlider(NWidgetsCreateAppStyle(), PureSoundAudioVolume * 100);
 var PureFrontEndCurrentBackgroundImageData = null;
 
 PureCreateApplication("__purehelloworld", "Hello World", function(args)

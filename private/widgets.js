@@ -22,6 +22,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
+var NWidgetsSnacksAnimation = 800;
+
 function NWidgetsCreateAppStyle()
 {
 	return {
@@ -100,7 +102,13 @@ function NWidgetsCreateSnack(style, textualContent, substyle)
 	closebtn.addEventListener("click", function(ev)
 	{
 		//snack.style.display = "none";
-		$(snack).hide("slow");
+		// TODO: Remove jQuery calls
+		$(snack).animate({
+			bottom: "-13%"
+		}, NWidgetsSnacksAnimation, function()
+		{
+			$(snack).css({display: "none"});
+		});
 	});
 
 	return snack;
@@ -109,10 +117,61 @@ function NWidgetsCreateSnack(style, textualContent, substyle)
 function NWidgetsShowSnack(snack)
 {
 	var parent = snack.parentElement;
-	snack.style.bottom = "0%";
+	snack.style.bottom = "-13%";
 	snack.style.transform = "translateX(-50%)";
 	snack.style.left = "50%";
-	$(snack).show("slow");
+	// TODO: Remove jQuery calls
+	$(snack).css({display: "block"}).animate({
+		bottom: "0%"
+	}, NWidgetsSnacksAnimation);
+	//snack.style.display = "block";
+}
+
+function NWidgetsCreateToast(style, textualContent, substyle)
+{
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
+	var snack = document.createElement("div");
+	var text = document.createElement("div");
+	snack.className = "snack";
+	snack.style.backgroundColor = style.snackColor;
+	snack.style.color = style.snackTextColor;
+	snack.style.display = "none";
+	text.style.cssFloat = "left";
+	text.style.textAlign = "center";
+	text.style.width = "100%";
+	snack.style.width = "70%";
+	snack.style.cursor = "pointer";
+	text.appendChild(document.createTextNode(textualContent));
+	snack.appendChild(text);
+
+	snack.addEventListener("click", function(ev)
+	{
+		//snack.style.display = "none";
+		// TODO: Remove jQuery calls
+		$(snack).animate({
+			bottom: "-13%"
+		}, NWidgetsSnacksAnimation, function()
+		{
+			$(snack).css({display: "none"});
+		});
+	});
+
+	return snack;
+}
+
+function NWidgetsShowToast(snack)
+{
+	var parent = snack.parentElement;
+	snack.style.bottom = "-13%";
+	snack.style.left = "15%";
+	// TODO: Remove jQuery calls
+	$(snack).css({display: "block"}).animate({
+		bottom: "0%"
+	}, NWidgetsSnacksAnimation);
 	//snack.style.display = "block";
 }
 

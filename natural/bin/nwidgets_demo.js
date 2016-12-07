@@ -136,6 +136,16 @@ limitations under the License.
 			snackTextColor: "#000"
 		});
 
+		var toast1 = NWidgetsCreateToast(style, "I am a toast");
+		var toast2 = NWidgetsCreateToast(style, "I am a toast", {
+			snackColor: "#CCC",
+			snackTextColor: "#000"
+		});
+		var toast3 = NWidgetsCreateToast(style, "I am a toast", {
+			snackColor: "#1A5",
+			snackTextColor: "#000"
+		});
+
 		var button1 = NWidgetsCreateButton(style, "Button 1");
 		var button2 = NWidgetsCreateButton(style, "Button 2", {
 			textColor: "#CCC",
@@ -183,6 +193,9 @@ limitations under the License.
 		NWidgetsPack(container, snack1);
 		NWidgetsPack(container, snack2);
 		NWidgetsPack(container, snack3);
+		NWidgetsPack(container, toast1);
+		NWidgetsPack(container, toast2);
+		NWidgetsPack(container, toast3);
 		NWidgetsPack(container, button1);
 		NWidgetsPack(container, button2);
 		NWidgetsPack(container, button3);
@@ -210,6 +223,19 @@ limitations under the License.
 		menu3.addEventListener("click", function()
 		{
 			NWidgetsShowSnack(snack3);
+		});
+
+		button1.addEventListener("click", function()
+		{
+			NWidgetsShowToast(toast1);
+		});
+		button2.addEventListener("click", function()
+		{
+			NWidgetsShowToast(toast2);
+		});
+		button3.addEventListener("click", function()
+		{
+			NWidgetsShowToast(toast3);
 		});
 	});
 }());

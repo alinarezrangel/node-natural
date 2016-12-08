@@ -38,7 +38,9 @@ function NWidgetsCreateAppStyle()
 		"menuColor": "#AAA",
 		"snackColor": "#222",
 		"snackTextColor": "#EE0",
-		"buttonColor": "#ABABAB"
+		"buttonColor": "#ABABAB",
+		"accordionColor": "#232323",
+		"accordionTextColor": "#CCC"
 	};
 }
 
@@ -686,8 +688,8 @@ function NWidgetsCreateAccordion(style, substyle)
 	var accordion = document.createElement("div");
 	accordion.className = "container no-padding border";
 	accordion.style.borderColor = style.borderColor;
-	accordion.style.color = style.textColor;
-	accordion.style.backgroundColor = style.mainColor;
+	accordion.style.color = style.accordionTextColor;
+	accordion.style.backgroundColor = style.accordionColor;
 
 	return accordion;
 }
@@ -703,8 +705,8 @@ function NWidgetsCreateAccordionSection(style, title, innerc, substyle)
 	var titlebar = document.createElement("div");
 	var content = document.createElement("div");
 	section.className = "container no-margin no-padding";
-	section.style.backgroundColor = style.mainColor;
-	section.style.color = style.textColor;
+	section.style.backgroundColor = style.accordionColor;
+	section.style.color = style.accordionTextColor;
 	titlebar.className = "container no-margin padding-8";
 	titlebar.appendChild(document.createTextNode(title));
 	content.className = "container no-margin padding-4";
@@ -712,9 +714,13 @@ function NWidgetsCreateAccordionSection(style, title, innerc, substyle)
 	section.appendChild(titlebar);
 	section.appendChild(content);
 
+	// TODO: Remove jQuery calls
+	$(content).hide();
+
 	titlebar.addEventListener("click", function()
 	{
-		//
+		// TODO: Remove jQuery calls
+		$(content).slideToggle("slow");
 	});
 
 	return section;

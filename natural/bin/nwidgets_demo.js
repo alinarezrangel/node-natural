@@ -122,7 +122,7 @@ limitations under the License.
 			borderColor: "#FAA",
 			sliderColor: "#AFF"
 		});
-		var slider3 = NWidgetsCreateSlider(style, 100, {
+		var slider3 = NWidgetsCreateSlider(style, 90, {
 			borderColor: "#000",
 			sliderColor: "#CCC"
 		});
@@ -179,6 +179,32 @@ limitations under the License.
 			borderColor: "#5FF"
 		});
 
+		var accordion = NWidgetsCreateAccordion(style);
+		NWidgetsPack(
+			accordion,
+			NWidgetsCreateAccordionSection(
+				style,
+				"Section A",
+				document.createTextNode("Hello World")
+			)
+		);
+		NWidgetsPack(
+			accordion,
+			NWidgetsCreateAccordionSection(
+				style,
+				"Section B",
+				document.createTextNode("Good bye world")
+			)
+		);
+		NWidgetsPack(
+			accordion,
+			NWidgetsCreateAccordionSection(
+				style,
+				"Section C",
+				document.createTextNode("World!!!!")
+			)
+		);
+
 		NWidgetsPack(winbody, menubar);
 		NWidgetsPack(winbody, container);
 
@@ -204,6 +230,7 @@ limitations under the License.
 		NWidgetsPack(container, textInput1);
 		NWidgetsPack(container, textInput2);
 		NWidgetsPack(container, textInput3);
+		NWidgetsPack(container, accordion);
 
 		NWidgetsPack(menubar, menu1);
 		NWidgetsPack(menubar, menu2);

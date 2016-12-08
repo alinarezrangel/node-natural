@@ -23,6 +23,7 @@ limitations under the License.
 ***************************************************************************/
 
 var PureFrontEndControlVolume = NWidgetsCreateSlider(NWidgetsCreateAppStyle(), PureSoundAudioVolume * 100);
+var PureFrontEndMMediaAccordion = NWidgetsCreateAccordion(NWidgetsCreateAppStyle());
 var PureFrontEndCurrentBackgroundImageData = null;
 
 PureCreateApplication("__purehelloworld", "Hello World", function(args)
@@ -51,6 +52,15 @@ NaturalOnLoadevent = function()
 			NaturalLog("Locale.at " + PureLocaleStrings[PureLanguage][$(this).data("localeString")]);
 			this.appendChild(PureMakeTextNode(PureLocaleStrings[PureLanguage][$(this).data("localeString")]))
 		});
+
+		NWidgetsPack(
+			PureFrontEndMMediaAccordion,
+			NWidgetsCreateAccordionSection(
+				NWidgetsCreateAppStyle(),
+				PureLocaleStrings[PureLanguage]["volumemenu"],
+				PureFrontEndControlVolume
+			)
+		);
 
 		NaturalHighLevelSocketCall("api.session.background.json", 2, {}, function(err, data)
 		{
@@ -191,11 +201,32 @@ window.addEventListener("load", function()
 		}
 	};
 
-	NWidgetsPack($(".puredesktop-control-volume-slider").get(0), PureFrontEndControlVolume);
+	NWidgetsPack(
+		$(".puredesktop-multimedia-container").get(0),
+		PureFrontEndMMediaAccordion
+	);
 
 	PureFrontEndControlVolume.addEventListener("oninput", function()
 	{
-		PureSoundAudioVolume = NWidgetsGetSliderValue(PureFrontEndControlVolume) / 100;
+		var total = NWidgetsGetSliderValue(PureFrontEndControlVolume);
+		PureSoundAudioVolume = total / 100;
+		var level = 0;
+
+		if(total >= 5) // 40 50
+			level = 1;
+		if(total >= 15) // 60 75
+			level = 2;
+		if(total >= 32) // 80 100
+			level = 3;
+		if(total >= 65) // 100
+			level = 4;
+		if(total >= 90) //
+			level = 5;
+
+		$(".puredesktop-volume-image").each(function()
+		{
+			this.src = "/images/misc/pure/volume-" + level + "5.svg";
+		});
 	});
 
 	$(".puredesktop-left-menubar > .link").click(function()

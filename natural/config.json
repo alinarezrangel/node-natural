@@ -30,10 +30,10 @@
 	"codeName": "Araguaney",
 	"buildNth": 1,
 	"publicHash": "none",
-	"locale": "es",
+	"locale": "en",
 	"desktopConfig": {
 		"backgroundImage": "node-natural-background-images/background-material-sheets-10.png",
 		"backgroundType": "contains",
-		"backgroundColor": "#FAFAFA"
+		"backgroundColor": "#5E5E5E"
 	}
 }

@@ -53,6 +53,24 @@ limitations under the License.
 			}
 		]
 	};
+
+	var ApplicationPO = {
+		"es": {
+			"updir": "Subir un directorio",
+			"unathor": "Permiso denegado",
+			"unmsg": "No posees los permisos necesarios para ver este directorio",
+			"error": "Algo va mal!",
+			"errmsg": "Algún error inesperado sucedio mientras se leia el directorio. Asegurate de tener los permisos necesarios para la acción. Error: "
+		},
+		"en": {
+			"updir": "Up a directory",
+			"unathor": "Permission denied",
+			"unmsg": "You don't have the permissions required for access to this directory",
+			"error": "Something is wrong!",
+			"errmsg": "A unexpected error has detected. Verify that you have the permissions for execute the action. Error: "
+		}
+	};
+
 	function MakeTreeView()
 	{
 		var treeview = document.createElement("div");
@@ -99,6 +117,7 @@ limitations under the License.
 		var textel = document.createElement("p");
 		textel.appendChild(document.createTextNode(text));
 		NGraphGetWindowBody(modal).appendChild(textel);
+		NGraphWindowSetFocus(modal);
 		return modal;
 	}
 	function AddFileToArea(area, img, name, onclick)
@@ -120,6 +139,7 @@ limitations under the License.
 	}
 	NGraphCreateApplication("nfiles", "NFiles", function(args)
 	{
+		var po = ApplicationPO[NIntLocaleName];
 		var window = NGraphCreateWindow("nfiles", "NFiles");
 		var mypid = NGraphLoadDataFromWindow(window, "pid");
 		NGraphStoraDataInWindow(window, "path", "/");
@@ -128,7 +148,7 @@ limitations under the License.
 		toolbar.className = "navigation color-light-aqua";
 		var dirUpLink = document.createElement("span");
 		dirUpLink.className = "link";
-		dirUpLink.appendChild(document.createTextNode("Subir un directorio"));
+		dirUpLink.appendChild(document.createTextNode(po["updir"]));
 		toolbar.appendChild(dirUpLink);
 		var layout = document.createElement("section");
 		layout.className = "flexible direction-row justify-start align-stretch no-wrap width-block";
@@ -158,11 +178,11 @@ limitations under the License.
 					if(err.code == 403)
 					{
 						// Unauthorized
-						ShowModal("Permiso denegado", "No posees los permisos necesarios para ver este directorio");
+						ShowModal(po["unathor"], po["unmsg"]);
 						dirUp();
 						return;
 					}
-					ShowModal("Algo va mal!", "Algún error inesperado sucedio mientras se leia el directorio. Asegurate de tener los permisos necesarios para la acción. Error: " + err.msg);
+					ShowModal(po["error"], po["errmsg"] + err.msg);
 					return;
 				}
 				var i = 0;

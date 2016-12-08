@@ -70,6 +70,7 @@ limitations under the License.
 			textColor: "#F0F",
 			menuColor: "#0F0"
 		});
+		var menu4 = NWidgetsCreateMenu(style, "Menu 4");
 
 		var number1 = NWidgetsCreateNumberInput(style, true, 0);
 		var number2 = NWidgetsCreateNumberInput(style, true, 0, {
@@ -207,6 +208,7 @@ limitations under the License.
 		NWidgetsPack(menubar, menu1);
 		NWidgetsPack(menubar, menu2);
 		NWidgetsPack(menubar, menu3);
+		NWidgetsPack(menubar, menu4);
 
 		NWidgetsPack(subContainer, label1);
 		NWidgetsPack(subContainer, label2);
@@ -223,6 +225,10 @@ limitations under the License.
 		menu3.addEventListener("click", function()
 		{
 			NWidgetsShowSnack(snack3);
+		});
+		menu4.addEventListener("click", function()
+		{
+			NGraphDesktopNotify("Hello World", "this is a DesktopNotification", 0);
 		});
 
 		button1.addEventListener("click", function()

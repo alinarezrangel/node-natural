@@ -35,6 +35,8 @@ var PureResizeAlign = []; // [ox, oy]
 var PureResizeTimeout = false;
 var PureGlobalAnimationDuration = 250;
 var PureCanAnimatePanels = false;
+var PureDesktopNotifies = 0;
+var PureDesktopNotifiesIndex = 0;
 
 function PureMakeTextNode(text)
 {
@@ -678,6 +680,54 @@ function PureGetPID()
 	return PureWindowGWID;
 }
 
+function PureDesktopNotify(title, message, p)
+{
+	var osd = document.createElement("div");
+	osd.className = "user-cant-select puredesktop-notify-box box color-everblack padding-16 margin-16 text-big overflow-auto";
+	osd.style.color = "#EE0";
+	osd.style.position = "absolute";
+	osd.style.right = "16px";
+	osd.style.bottom = "-30%";
+	osd.style.width = "20%";
+	osd.style.maxHeight = "20%";
+	osd.style.cursor = "pointer";
+	osd.appendChild(document.createTextNode(title));
+	var msg = document.createElement("div");
+	msg.className = "box no-margin no-padding no-border";
+	msg.appendChild(document.createTextNode(message));
+	osd.appendChild(msg);
+
+	$(".puredesktop-main-content").get(0).appendChild(osd);
+
+	$(osd).show().animate({
+		"bottom": PureDesktopNotifies + "px"
+	}, PureGlobalAnimationDuration);
+
+	PureDesktopNotifies += $(osd).height() + 48;
+	PureDesktopNotifiesIndex += 1;
+
+	$(osd).data("puredesktopNotifyIndex", PureDesktopNotifiesIndex);
+
+	osd.addEventListener("click", function()
+	{
+		PureDesktopNotifiesIndex -= 1;
+		PureDesktopNotifies -= $(osd).height() + 48;
+		$(osd).animate({
+			"right": "-100%"
+		}, PureGlobalAnimationDuration);
+		$(".puredesktop-notify-box").each(function(index)
+		{
+			if(parseInt($(this).data("puredesktopNotifyIndex")) > parseInt($(osd).data("puredesktopNotifyIndex")))
+			{
+				var bt = $(osd).height() + 48;
+				$(this).animate({
+					"bottom": "-=" + bt + "px"
+				}, PureGlobalAnimationDuration);
+			}
+		});
+	});
+}
+
 // Animations
 
 function PureSlideHMenu__Show(menu, callback, lm, lw, ox)
@@ -806,6 +856,16 @@ function NGraphWindowSetAtom(window, name, value)
 function NGraphWindowGetAtom(window, name)
 {
 	return PureGetWindowAtom(window, name);
+}
+
+function NGraphWindowSetFocus(window)
+{
+	return PureWindowSetFocus(window);
+}
+
+function NGraphDesktopNotify(title, message, priority)
+{
+	return PureDesktopNotify(title, message, priority);
 }
 
 // End

@@ -132,3 +132,7 @@ html, body {
 .puredesktop-applications-searchbox {
 	min-height: 15% !important;
 }
+
+.puredesktop-notify-box {
+	z-index: 3998 !important;
+}

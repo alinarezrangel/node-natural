@@ -25,6 +25,7 @@ limitations under the License.
 var NWidgetsSnacksAnimation = 800;
 var NWidgetsSnacksDuration = 5000;
 var NWidgetsToastsDuration = 8000;
+var NWidgetsSnacksNthOpened = 2000;
 
 function NWidgetsCreateAppStyle()
 {
@@ -110,6 +111,7 @@ function NWidgetsCreateSnack(style, textualContent, substyle)
 		}, NWidgetsSnacksAnimation, function()
 		{
 			$(snack).css({display: "none"});
+			NWidgetsSnacksNthOpened -= 1;
 		});
 	});
 
@@ -122,21 +124,12 @@ function NWidgetsShowSnack(snack)
 	snack.style.bottom = "-13%";
 	snack.style.transform = "translateX(-50%)";
 	snack.style.left = "50%";
+	snack.style.zIndex = NWidgetsSnacksNthOpened;
+	NWidgetsSnacksNthOpened += 1;
 	// TODO: Remove jQuery calls
 	$(snack).css({display: "block"}).animate({
 		bottom: "0%"
 	}, NWidgetsSnacksAnimation);
-
-	setTimeout(function()
-	{
-		// TODO: Remove jQuery calls
-		$(snack).animate({
-			bottom: "-13%"
-		}, NWidgetsSnacksAnimation, function()
-		{
-			$(snack).css({display: "none"});
-		});
-	}, NWidgetsSnacksDuration);
 	//snack.style.display = "block";
 }
 
@@ -161,6 +154,8 @@ function NWidgetsCreateToast(style, textualContent, substyle)
 	text.appendChild(document.createTextNode(textualContent));
 	snack.appendChild(text);
 
+	snack.dataset["naturalWidgetsToastbarTimeout"] = "";
+
 	snack.addEventListener("click", function(ev)
 	{
 		//snack.style.display = "none";
@@ -170,7 +165,15 @@ function NWidgetsCreateToast(style, textualContent, substyle)
 		}, NWidgetsSnacksAnimation, function()
 		{
 			$(snack).css({display: "none"});
+			NWidgetsSnacksNthOpened -= 1;
 		});
+		if(snack.dataset["naturalWidgetsToastbarTimeout"] != "")
+		{
+			clearTimeout(parseInt(
+				snack.dataset["naturalWidgetsToastbarTimeout"]
+			));
+			snack.dataset["naturalWidgetsToastbarTimeout"] = "";
+		}
 	});
 
 	return snack;
@@ -181,12 +184,14 @@ function NWidgetsShowToast(snack)
 	var parent = snack.parentElement;
 	snack.style.bottom = "-13%";
 	snack.style.left = "15%";
+	snack.style.zIndex = NWidgetsSnacksNthOpened;
+	NWidgetsSnacksNthOpened += 1;
 	// TODO: Remove jQuery calls
 	$(snack).css({display: "block"}).animate({
 		bottom: "0%"
 	}, NWidgetsSnacksAnimation);
 
-	setTimeout(function()
+	snack.dataset["naturalWidgetsToastbarTimeout"] = setTimeout(function()
 	{
 		// TODO: Remove jQuery calls
 		$(snack).animate({
@@ -194,6 +199,8 @@ function NWidgetsShowToast(snack)
 		}, NWidgetsSnacksAnimation, function()
 		{
 			$(snack).css({display: "none"});
+			NWidgetsSnacksNthOpened -= 1;
+			snack.dataset["naturalWidgetsToastbarTimeout"] = "";
 		});
 	}, NWidgetsToastsDuration);
 	//snack.style.display = "block";

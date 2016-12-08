@@ -23,7 +23,7 @@ limitations under the License.
 ***************************************************************************/
 
 var NWidgetsSnacksAnimation = 800;
-var NWidgetsSnacksDuration = 6000;
+var NWidgetsSnacksDuration = 5000;
 var NWidgetsToastsDuration = 8000;
 
 function NWidgetsCreateAppStyle()
@@ -253,12 +253,6 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction, subst
 	combobox.style.backgroundColor = style.mainColor;
 	combobox.style.color = style.textColor;
 	combobox.style.borderColor = style.borderColor;
-	/*darrow.style.backgroundColor = style.mainColor;
-	darrow.style.color = style.textColor;
-	dropdown.style.backgroundColor = style.mainColor;
-	dropdown.style.color = style.textColor;
-	input.style.backgroundColor = style.mainColor;
-	input.style.color = style.textColor;*/
 
 	combobox.appendChild(darrow);
 	combobox.appendChild(input);
@@ -691,7 +685,7 @@ function NWidgetsCreateAccordion(style, substyle)
 	return accordion;
 }
 
-function NWidgetsCreateAccordionSection(style, title, substyle)
+function NWidgetsCreateAccordionSection(style, title, innerc, substyle)
 {
 	if(typeof substyle !== "undefined")
 	{
@@ -704,6 +698,17 @@ function NWidgetsCreateAccordionSection(style, title, substyle)
 	section.className = "container no-margin no-padding";
 	section.style.backgroundColor = style.mainColor;
 	section.style.color = style.textColor;
+	titlebar.className = "container no-margin padding-8";
+	titlebar.appendChild(document.createTextNode(title));
+	content.className = "container no-margin padding-4";
+	content.appendChild(innerc);
+	section.appendChild(titlebar);
+	section.appendChild(content);
+
+	titlebar.addEventListener("click", function()
+	{
+		//
+	});
 
 	return section;
 }

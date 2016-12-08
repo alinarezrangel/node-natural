@@ -390,7 +390,7 @@ function PureBuiltinApps()
 				var file = data.files[i];
 				var c = file.filename.split(".");
 
-				if((!file.isDirectory) && (c[c.length - 1] == "png"))
+				if((!file.isDirectory) && (c[c.length - 1] == "png") && (c[c.length - 2] == "min"))
 				{
 					var preview = document.createElement("img");
 					preview.className = "box border margin-8 card";
@@ -403,9 +403,21 @@ function PureBuiltinApps()
 
 					preview.addEventListener("click", function()
 					{
+						var nomin = this.dataset["file"];
+						var c = 0;
+						var w = data.files.length;
+						for(c = 0; c < w; c++)
+						{
+							var fl = data.files[c];
+							var j = fl.filename;
+							if(j == this.dataset["file"].replace(".min", ""))
+							{
+								nomin = j;
+							}
+						}
 						NWidgetsSetTextInputValue(
 							changeInput,
-							"node-natural-background-images/" + this.dataset["file"]
+							"node-natural-background-images/" + nomin
 						);
 					});
 

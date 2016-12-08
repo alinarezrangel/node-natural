@@ -32,8 +32,8 @@
 	"publicHash": "none",
 	"locale": "es",
 	"desktopConfig": {
-		"backgroundImage": "node-natural-background-images/background-material-sheets-4.png",
-		"backgroundType": "cover",
+		"backgroundImage": "node-natural-background-images/background-material-sheets-10.png",
+		"backgroundType": "contains",
 		"backgroundColor": "#FAFAFA"
 	}
 }

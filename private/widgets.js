@@ -23,6 +23,8 @@ limitations under the License.
 ***************************************************************************/
 
 var NWidgetsSnacksAnimation = 800;
+var NWidgetsSnacksDuration = 6000;
+var NWidgetsToastsDuration = 8000;
 
 function NWidgetsCreateAppStyle()
 {
@@ -124,6 +126,17 @@ function NWidgetsShowSnack(snack)
 	$(snack).css({display: "block"}).animate({
 		bottom: "0%"
 	}, NWidgetsSnacksAnimation);
+
+	setTimeout(function()
+	{
+		// TODO: Remove jQuery calls
+		$(snack).animate({
+			bottom: "-13%"
+		}, NWidgetsSnacksAnimation, function()
+		{
+			$(snack).css({display: "none"});
+		});
+	}, NWidgetsSnacksDuration);
 	//snack.style.display = "block";
 }
 
@@ -172,6 +185,17 @@ function NWidgetsShowToast(snack)
 	$(snack).css({display: "block"}).animate({
 		bottom: "0%"
 	}, NWidgetsSnacksAnimation);
+
+	setTimeout(function()
+	{
+		// TODO: Remove jQuery calls
+		$(snack).animate({
+			bottom: "-13%"
+		}, NWidgetsSnacksAnimation, function()
+		{
+			$(snack).css({display: "none"});
+		});
+	}, NWidgetsToastsDuration);
 	//snack.style.display = "block";
 }
 

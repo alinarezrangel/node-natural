@@ -31,7 +31,9 @@ var PureAllSounds = [
 		"value": "sound-theme-freedesktop"
 	}
 ];
-var PureSoundMuted = [];
+var PureSoundMuted = [
+	"window-inactive-click"
+];
 
 // Sound and multimedia
 

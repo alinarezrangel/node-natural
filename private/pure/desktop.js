@@ -488,6 +488,7 @@ function PureOpenWindow(window, args)
 	};
 	PureEmitEvent(window, "opened", {});
 	PureEmitEvent(window, "focus", {});
+	PureSoundLibPlay("window-new");
 	$(".puredesktop-main-content").get(0).appendChild(window);
 	if(!args.preventFromTopbar)
 	{
@@ -642,6 +643,7 @@ function PureDestroyAllWindow(window)
 
 function PureWindowSetFocus(window)
 {
+	PureSoundLibPlay("window-attention-inactive");
 	PureEmitEvent(window, "focus", {});
 }
 

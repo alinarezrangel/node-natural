@@ -178,10 +178,12 @@ limitations under the License.
 					if(err.code == 403)
 					{
 						// Unauthorized
+						NMediaPlayFreedesktopSound("dialog-information");
 						ShowModal(po["unathor"], po["unmsg"]);
 						dirUp();
 						return;
 					}
+					NMediaPlayFreedesktopSound("dialog-error");
 					ShowModal(po["error"], po["errmsg"] + err.msg);
 					return;
 				}

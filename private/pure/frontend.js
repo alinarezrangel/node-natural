@@ -160,6 +160,14 @@ window.addEventListener("load", function()
 				{
 					PureShowingMenu = showing;
 					PureMenuIndex = myMenuIndex;
+					if(showing)
+					{
+						PureSoundLibPlay("window-slide-in");
+					}
+					else
+					{
+						PureSoundLibPlay("window-slide-out");
+					}
 					f(showing);
 				});
 			});
@@ -170,6 +178,14 @@ window.addEventListener("load", function()
 			{
 				PureShowingMenu = showing;
 				PureMenuIndex = myMenuIndex;
+				if(showing)
+				{
+					PureSoundLibPlay("window-slide-in");
+				}
+				else
+				{
+					PureSoundLibPlay("window-slide-out");
+				}
 				f(showing);
 			});
 		}
@@ -180,6 +196,11 @@ window.addEventListener("load", function()
 	PureFrontEndControlVolume.addEventListener("oninput", function()
 	{
 		PureSoundAudioVolume = NWidgetsGetSliderValue(PureFrontEndControlVolume) / 100;
+	});
+
+	$(".puredesktop-left-menubar > .link").click(function()
+	{
+		PureSoundLibPlay("menu-click");
 	});
 
 	$(".puredesktop-logout-button-yes").click(function()
@@ -303,6 +324,7 @@ window.addEventListener("load", function()
 		var searchOut = $searchOut.get(0);
 		var $apps = $(".puredesktop-applications-container");
 		var apps = $apps.get(0);
+		var results = false;
 
 		var words = value.split(" ");
 
@@ -337,10 +359,20 @@ window.addEventListener("load", function()
 						$(".puredesktop-applications-search-box").focus();
 					});
 					searchOut.appendChild(appitem);
+					results = true;
 				}
 			});
 		});
 		$(".puredesktop-applications-search-box").focus();
+
+		if(results)
+		{
+			PureSoundLibPlay("search-results");
+		}
+		else
+		{
+			PureSoundLibPlay("search-results-empty");
+		}
 	});
 
 	$(".puredesktop-applications-cancel-button").click(function()

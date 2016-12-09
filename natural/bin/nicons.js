@@ -29,8 +29,8 @@ limitations under the License.
 		"appid": "nicons",
 		"pkg": "essencials",
 		"source": {
-			"humanReadable": "http://packages.naturalserver.io/essencials/nicons",
-			"machineReadable": "http://bin.naturalserver.io/essencials/"
+			"humanReadable": "nodenatural.essencials.nicons",
+			"machineReadable": "bin.nodenatural.essencials.nicons"
 		},
 		"authors": [
 			{
@@ -48,7 +48,7 @@ limitations under the License.
 		"see": [
 			{
 				"type": "help",
-				"url": "http://packages.naturalserver.io/essencials/nicons"
+				"url": "http://naturalserver.sourceforge.net/apps/nicons/"
 			}
 		]
 	};
@@ -62,7 +62,7 @@ limitations under the License.
 		icons.className = "container padding-16 no-margin nic text-ultra-big";
 		icons.style.wordBreak = "break-word";
 		tryItEditor.className = "container padding-16 no-margin nic text-ultra-big color-light-aqua";
-		tryItEditor.contentEditable = true;
+		tryItEditor.contentEditable = "true";
 		tryItEditor.style.userSelect = "all";
 		tryItEditor.style.mozUserSelect = "all";
 		tryItEditor.style.msUserSelect = "all";

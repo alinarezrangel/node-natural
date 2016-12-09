@@ -29,8 +29,8 @@ limitations under the License.
 		"appid": "nwidgets_demo",
 		"pkg": "essencials",
 		"source": {
-			"humanReadable": "http://packages.naturalserver.io/essencials/nwidgets_demo",
-			"machineReadable": "http://bin.naturalserver.io/essencials/"
+			"humanReadable": "nodenatural.essencials.nwidgets_demo",
+			"machineReadable": "bin.nodenatural.essencials.nwidgets_demo"
 		},
 		"authors": [
 			{
@@ -49,7 +49,7 @@ limitations under the License.
 		"see": [
 			{
 				"type": "help",
-				"url": "http://packages.naturalserver.io/essencials/nwidgets_demo"
+				"url": "http://naturalserver.sourceforge.net/apps/nwidgets_demo/"
 			}
 		]
 	};

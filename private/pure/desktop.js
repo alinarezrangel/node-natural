@@ -839,7 +839,7 @@ function NGraphOpenApplication(name, args)
 	return PureOpenApplication(name, args);
 }
 
-function NGraphStoraDataInWindow(window, key, value)
+function NGraphStoreDataInWindow(window, key, value)
 {
 	$(window).data(key, value);
 	return window;

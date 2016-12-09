@@ -29,8 +29,8 @@ limitations under the License.
 		"appid": "nfiles",
 		"pkg": "essencials",
 		"source": {
-			"humanReadable": "http://packages.naturalserver.io/essencials/nfiles",
-			"machineReadable": "http://bin.naturalserver.io/essencials/"
+			"humanReadable": "nodenatural.essencials.nfiles",
+			"machineReadable": "bin.nodenatural.essencials.nfiles"
 		},
 		"authors": [
 			{
@@ -49,7 +49,7 @@ limitations under the License.
 		"see": [
 			{
 				"type": "help",
-				"url": "http://packages.naturalserver.io/essencials/nfiles"
+				"url": "http://naturalserver.sourceforge.net/apps/nfiles/"
 			}
 		]
 	};
@@ -142,8 +142,8 @@ limitations under the License.
 		var po = ApplicationPO[NIntLocaleName];
 		var window = NGraphCreateWindow("nfiles", "NFiles");
 		var mypid = NGraphLoadDataFromWindow(window, "pid");
-		NGraphStoraDataInWindow(window, "path", "/");
-		NGraphStoraDataInWindow(window, "showhidden", "false");
+		NGraphStoreDataInWindow(window, "path", "/");
+		NGraphStoreDataInWindow(window, "showhidden", "false");
 		var toolbar = document.createElement("div");
 		toolbar.className = "navigation color-light-aqua";
 		var dirUpLink = document.createElement("span");
@@ -209,7 +209,7 @@ limitations under the License.
 						var path = NGraphLoadDataFromWindow(window, "path");
 						if(file.isDirectory)
 						{
-							NGraphStoraDataInWindow(window, "path", path + file.filename + "/");
+							NGraphStoreDataInWindow(window, "path", path + file.filename + "/");
 							//alert(path + file.filename + "/");
 							changedir();
 						}
@@ -227,7 +227,7 @@ limitations under the License.
 			var path = NGraphLoadDataFromWindow(window, "path").split("/");
 			var newpath = path.slice(0, path.length - 2).join("/");
 			//alert(newpath);
-			NGraphStoraDataInWindow(window, "path", newpath + "/");
+			NGraphStoreDataInWindow(window, "path", newpath + "/");
 			//alert(path + file.filename + "/");
 			changedir();
 		};

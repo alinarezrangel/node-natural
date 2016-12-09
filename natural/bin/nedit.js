@@ -29,8 +29,8 @@ limitations under the License.
 		"appid": "nedit",
 		"pkg": "essencials",
 		"source": {
-			"humanReadable": "http://packages.naturalserver.io/essencials/nedit",
-			"machineReadable": "http://bin.naturalserver.io/essencials/"
+			"humanReadable": "nodenatural.essencials.nedit",
+			"machineReadable": "bin.nodenatural.essencials.nedit"
 		},
 		"authors": [
 			{
@@ -49,7 +49,7 @@ limitations under the License.
 		"see": [
 			{
 				"type": "help",
-				"url": "http://packages.naturalserver.io/essencials/nedit"
+				"url": "http://naturalserver.sourceforge.net/apps/nedit/"
 			}
 		]
 	};

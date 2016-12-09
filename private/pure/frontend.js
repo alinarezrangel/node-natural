@@ -258,6 +258,21 @@ window.addEventListener("load", function()
 		PureSoundLibPlay("menu-click");
 	});
 
+	$(".puredesktop-button-tools").click(function()
+	{
+		PureOpenApplication("__puredesktopconfig");
+	});
+
+	$(".puredesktop-button-help").click(function()
+	{
+		PureOpenApplication("nhelp");
+	});
+
+	$(".puredesktop-button-logout").click(function()
+	{
+		PureEmitEvent(document.getElementById("closesession"), "click", {});
+	});
+
 	$(".puredesktop-logout-button-yes").click(function()
 	{
 		// Show logout menu and play sound

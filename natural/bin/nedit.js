@@ -1,6 +1,6 @@
 /* **************************************
 *********************
-*** NFiles: the Natural file browser
+*** NEdit: The Natural File Editor
 *** Works with the NMG API.
 *** By Alejandro Linarez Rangel
 *********************
@@ -53,22 +53,93 @@ limitations under the License.
 			}
 		]
 	};
+
+	var ApplicationPO = {
+		"es": {
+			"denied": "Acceso denegado al archivo"
+		},
+		"en": {
+			"denied": "Access denied to the file"
+		}
+	};
+
+	function CreateIconMenu(style, text, substyle)
+	{
+		var menu = NWidgetsCreateMenu(style, text, substyle);
+		menu.classList.add("nic", "text-ultra-big");
+		return menu;
+	}
+
+	function OpenFile(errtoast, name, pid, callback)
+	{
+		NaturalHighLevelSocketCall("api.file.readAll", pid, {
+			"path": name,
+			"readAs": "stringUTF8"
+		}, function(err, data)
+		{
+			if(err)
+			{
+				NWidgetsShowToast(errtoast);
+				callback(err);
+			}
+			else
+			{
+				callback(null, data);
+			}
+		});
+	}
+
 	NGraphCreateApplication("nedit", "NEdit", function(args)
 	{
+		args = args || [];
+
 		var window = NGraphCreateWindow("nedit", "NEdit");
 		var mypid = NGraphLoadDataFromWindow(window, "pid");
 		var winbody = NGraphGetWindowBody(window);
 		var style = NWidgetsCreateAppStyle();
-		var snack = NWidgetsCreateSnack(style, "Hello World");
-		var button = document.createElement("button");
-		button.type = "button";
-		button.className = "button color-green";
-		button.appendChild(document.createTextNode("Say hello"));
-		winbody.appendChild(button);
-		winbody.appendChild(snack);
-		button.addEventListener("click", function(ev)
+		var flexbox = NWidgetsCreateContainer(style);
+		var menu = NWidgetsCreateMenuBar(style);
+		var errordeniedtoast = NWidgetsCreateToast(style, ApplicationPO[NIntLocaleName]["denied"]);
+
+		flexbox.classList.add("flexible", "direction-column", "no-wrap", "no-magin", "no-padding", "width-block");
+		flexbox.classList.remove("container");
+		flexbox.style.height = "90%";
+		menu.classList.add("o1");
+
+		var context = CreateIconMenu(style, NaturalIconSetMap["bars"]);
+		var reload = CreateIconMenu(style, NaturalIconSetMap["loadboard"]);
+		var config = CreateIconMenu(style, NaturalIconSetMap["gear"]);
+		var info = CreateIconMenu(style, NaturalIconSetMap["infocircle"]);
+		var trash = CreateIconMenu(style, NaturalIconSetMap["trash"]);
+
+		var textarea = document.createElement("textarea");
+		textarea.className = "o2 f1 textarea width-block no-margin padding-4";
+		textarea.style.resize = "none";
+		textarea.style.backgroundColor = style.mainColor;
+		textarea.style.color = style.textColor;
+
+		NWidgetsPack(winbody, flexbox);
+		NWidgetsPack(winbody, errordeniedtoast);
+		NWidgetsPack(flexbox, menu);
+		NWidgetsPack(flexbox, textarea);
+		NWidgetsPack(menu, context);
+		NWidgetsPack(menu, reload);
+		NWidgetsPack(menu, config);
+		NWidgetsPack(menu, info);
+		NWidgetsPack(menu, trash);
+
+		if(args.length == 1)
 		{
-			NWidgetsShowSnack(snack);
-		});
+			OpenFile(errordeniedtoast, args[0].toString(), mypid, function(err, file)
+			{
+				if(err)
+				{
+					NaturalLogErr(err);
+					return;
+				}
+
+				textarea.appendChild(document.createTextNode(file.filecontent));
+			});
+		}
 	});
 }());

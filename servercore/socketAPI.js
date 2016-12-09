@@ -28,4 +28,5 @@ module.exports = function(socket, configuration)
 	require("./socketAPI/locale")(socket, configuration);
 	require("./socketAPI/session")(socket, configuration);
 	require("./socketAPI/mimedb")(socket, configuration);
+	require("./socketAPI/file")(socket, configuration);
 };

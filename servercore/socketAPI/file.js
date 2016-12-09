@@ -2,7 +2,7 @@
 ***********************************
 *** Natural: A remote desktop for embed systems.
 *** By Alejandro Linarez Rangel.
-*** Returns the mimetype of a file based on it's extensions
+*** Read, write and handle files via SocketAPI
 ***********************************
 ****************************************************************** */
 
@@ -22,33 +22,60 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
-var mime = require("mime");
 var group = require("../group");
 var tokens = require("../tokens");
+var fs = require("fs");
 
 module.exports = function(socket, configuration)
 {
-	socket.on("api.mime.db.lookup", function(data)
+	socket.on("api.file.readAll", function(data)
 	{
 		var token = data.token || "";
 		var pid = data.pid || 0;
-		var task = "api.mime.db.lookup";
-		var filename = data.filename || "";
+		var task = "api.file.readAll";
+		var path = data.path || ""; // can be relative
+		var readAs = data.readAs || "binaryblob";
 		if(tokens.ValidateToken(token))
 		{
-			if(filename.startsWith("$NATURAL"))
+			if(path.startsWith("$NATURAL"))
 			{
-				filename = natural + filename.slice(filename.indexOf("$NATURAL") + 8);
+				path = natural + path.slice(path.indexOf("$NATURAL") + 8);
 			}
+			var uname = tokens.GetUserFromToken(token);
+			group.UserCanRead(uname, path, function(err, can)
+			{
+				if(err)
+				{
+					console.error(err);
+					socket.emit("error-response", {"task": task, "code": 500, "msg": "Internal Server Error", "pid": pid});
+					return;
+				}
+
+				if(!can)
+				{
+					socket.emit("error-response", {"task": task, "code": 403, "msg": "Unauthorized", "pid": pid});
+					return;
+				}
+
+				fs.readFile(path, "utf8", function(err, data)
+				{
+					if(err)
+					{
+						console.error(err);
+						socket.emit("error-response", {"task": task, "code": 500, "msg": "Internal Server Error", "pid": pid});
+						return;
+					}
+
+					if(readAs == "stringUTF8")
+					{
+						data = data.toString("utf-8");
+					}
+
+					socket.emit("response", {"task": task, "filecontent": data, "pid": pid});
+				});
+			});
 			// socket.emit("error-response", {"task": task, "code": 0, "msg": "", "pid": pid});
 			// socket.emit("response", {"task": task, ..., "pid": pid});
-			mime.default_type = "x-nodenatural/x-default";
-
-			socket.emit("response", {
-				"task": task,
-				"mimetype": mime.lookup(filename),
-				"pid": pid
-			});
 		}
 		else
 		{

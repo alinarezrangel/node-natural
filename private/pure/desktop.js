@@ -796,6 +796,11 @@ function PureSlideHMenuRight(menu, callback)
 
 // NGraph Minimal API / Natural Universal Graphical API (NGraph)
 
+function NGraphRequestPID(name, title)
+{
+	return PureGetPID();
+}
+
 function NGraphCreateWindow(name, title)
 {
 	var win = PureMakeDefaultWindowLayout(

@@ -25,6 +25,8 @@ limitations under the License.
 var PureFrontEndControlVolume = NWidgetsCreateSlider(NWidgetsCreateAppStyle(), PureSoundAudioVolume * 100);
 var PureFrontEndMMediaAccordion = NWidgetsCreateAccordion(NWidgetsCreateAppStyle());
 var PureFrontEndCurrentBackgroundImageData = null;
+var PureDesktopUserName = "";
+var PureDesktopUserLongName = "";
 
 PureCreateApplication("__purehelloworld", "Hello World", function(args)
 {
@@ -60,6 +62,28 @@ NaturalOnLoadevent = function()
 				PureLocaleStrings[PureLanguage]["volumemenu"],
 				PureFrontEndControlVolume
 			)
+		);
+
+		NaturalHighLevelSocketCall(
+			"api.session.user.name",
+			3,
+			{},
+			function(err, data)
+			{
+				if(err)
+				{
+					NaturalLogErr(err);
+					alert("Error getting your username")
+					return;
+				}
+
+				PureDesktopUserName = data.username;
+				PureDesktopUserLongName = data.longname;
+
+				$(".puredesktop-username").get(0).appendChild(PureMakeTextNode(PureDesktopUserName));
+				$(".puredesktop-userlongname").get(0).appendChild(PureMakeTextNode(PureDesktopUserLongName));
+				$(".puredesktop-usertoken").get(0).appendChild(PureMakeTextNode(NaturalToken));
+			}
 		);
 
 		NaturalHighLevelSocketCall("api.session.background.json", 2, {}, function(err, data)
@@ -289,6 +313,11 @@ window.addEventListener("load", function()
 	{
 		var menu = $(".puredesktop-mmedia-menu");
 		menuSlide(menu, 3, function(s) {});
+	});
+	$("#usermenu").click(function()
+	{
+		var menu = $(".puredesktop-user-menu");
+		menuSlide(menu, 4, function(s) {});
 	});
 
 	$(".puredesktop-main-content, .puredesktop-resize-preview").mousemove(function(ev)

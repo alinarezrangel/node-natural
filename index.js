@@ -258,13 +258,13 @@ app.post("/login", function(req, res)
 		if(error)
 		{
 			console.error(error);
-			res.redirect("/?error=enouser");
+			res.redirect("/?error=enopass");
 			return;
 		}
 		if(us != "userExist")
 		{
 			console.error(new Error("The user not exist"));
-			res.redirect("/?error=enouser");
+			res.redirect("/?error=enopass");
 			return;
 		}
 		passwd.checkPass(username, password, function(error, rs) // Y la contraseña es correcta

@@ -62,4 +62,27 @@ module.exports = function(socket, configuration)
 			socket.emit("authenticated", {"task": task, "valid": false, "pid": pid});
 		}
 	});
+
+	socket.on("api.session.user.name", function(data)
+	{
+		var token = data.token || "";
+		var pid = data.pid || 0;
+		var task = "api.session.user.name";
+		if(tokens.ValidateToken(token))
+		{
+			// socket.emit("error-response", {"task": task, "code": 0, "msg": "", "pid": pid});
+			// socket.emit("response", {"task": task, ..., "pid": pid});
+			console.log("The user " + tokens.GetUserFromToken(token) + " request it's username");
+			socket.emit("response", {
+				"task": task,
+				"username": tokens.GetUserFromToken(token),
+				"longname": group.GetUserlongFromUserName(tokens.GetUserFromToken(token)),
+				"pid": pid
+			});
+		}
+		else
+		{
+			socket.emit("authenticated", {"task": task, "valid": false, "pid": pid});
+		}
+	});
 };

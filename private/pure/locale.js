@@ -45,6 +45,9 @@ var PureLocaleStrings = {
 		"logoutmessage_no": "No (continuar en Natural)",
 		"volumemenu": "Volumen",
 		"mmedia": "Multimedia",
+		"usermenu": "Usuario",
+		"welcomeuser": "Bienvenido",
+		"usertoken": "Token de seguridad de NodeNatural:",
 		"applications": {
 			"buttons": {
 				"ready": "Listo"
@@ -86,6 +89,9 @@ var PureLocaleStrings = {
 		"logoutmessage_no": "No (continue in Natural)",
 		"volumemenu": "Volume",
 		"mmedia": "Multimedia",
+		"usermenu": "User",
+		"welcomeuser": "Welcome",
+		"usertoken": "Security token of NodeNatural:",
 		"applications": {
 			"buttons": {
 				"ready": "Ready"

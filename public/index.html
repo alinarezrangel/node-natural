@@ -9,6 +9,8 @@
 		<link href="/generation/css/pallete_natural.css" rel="stylesheet" />
 		<link href="/style.css" rel="stylesheet" />
 		<script src="/generation/js/generation.js" type="text/javascript"></script>
+		<script src="/jquery.js" type="text/javascript"></script>
+		<script src="/clearForms.js" type="text/javascript"></script>
 		<link rel="icon" type="text/svg+xml" href="/images/logicon.svg" />
 	</head>
 	<body class="color-everblack flexible center no-wrap direction-column justify-space-around">
@@ -42,7 +44,7 @@ limitations under the License.
 				<h1>Servidor Natural</h1>
 				<h2>Administra tu distro embebida</h2>
 			</header>
-			<form class="form border bs-1 border-color-earth padding-16 border-round" action="/login" method="post">
+			<form class="form border bs-1 border-color-earth padding-16 border-round" action="/login" method="post" autocomplete="off">
 				<label class="label margin-4" for="username">Nombre de usuario:</label>
 				<input class="input" id="username" name="username" value="" type="text" autocomplete="off" />
 				<label class="label margin-4" for="password">Contraseña:</label>

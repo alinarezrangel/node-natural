@@ -47,6 +47,50 @@ function GetUsernameFromUserID(userid)
 }
 
 /*
+Devuelve el nombre real del usuario con el userid especificado.
+Para ello el lee /etc/passwd
+*/
+function GetUserlongFromUserID(userid)
+{
+	var etcpasswd = fs.readFileSync("/etc/passwd", "utf8");
+	var lines = etcpasswd.split("\n");
+	var i = 0;
+	var j = 0;
+	var s1 = lines.length;
+	for(i = 0; i < s1; i++)
+	{
+		var line = lines[i].split(":");
+		if(line[2] == userid)
+		{
+			return line[4].split(",")[0];
+		}
+	}
+	return "";
+}
+
+/*
+Devuelve el nombre real del usuario con el username especificado.
+Para ello el lee /etc/passwd
+*/
+function GetUserlongFromUserName(username)
+{
+	var etcpasswd = fs.readFileSync("/etc/passwd", "utf8");
+	var lines = etcpasswd.split("\n");
+	var i = 0;
+	var j = 0;
+	var s1 = lines.length;
+	for(i = 0; i < s1; i++)
+	{
+		var line = lines[i].split(":");
+		if(line[0] == username)
+		{
+			return line[4].split(",")[0];
+		}
+	}
+	return "";
+}
+
+/*
 Devuelve el nombre de un grupo en base a su groupid
 */
 function GetGroupnameFromGroupID(groupid)
@@ -193,6 +237,8 @@ function UserCanExec(username, dirorfile, callback)
 module.exports = {
 	GetUsernameFromUserID: GetUsernameFromUserID,
 	GetGroupnameFromGroupID: GetGroupnameFromGroupID,
+	GetUserlongFromUserName: GetUserlongFromUserName,
+	GetUserlongFromUserID: GetUserlongFromUserID,
 	IsUserInGroup: IsUserInGroup,
 	UserCan: UserCan,
 	UserCanWrite: UserCanWrite,

@@ -227,7 +227,7 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction, subst
 	if(editable)
 	{
 		input = document.createElement("input");
-		input.className = "user-can-select input no-padding no-margin no-border f1 o2";
+		input.className = "user-can-select input color-transparent no-padding no-margin no-border f1 o2";
 		input.style.border = "0px !important";
 		input.style.color = style.textColor;
 		input.type = "text";
@@ -460,7 +460,7 @@ function NWidgetsCreateNumberInput(style, editable, startValue, substyle)
 	if(editable)
 	{
 		input = document.createElement("input");
-		input.className = "input box no-border padding-2 o2 f1";
+		input.className = "input color-transparent box no-border padding-2 o2 f1";
 		input.value = startValue;
 
 		input.addEventListener("keyup", function()

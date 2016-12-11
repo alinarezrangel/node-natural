@@ -139,10 +139,61 @@ limitations under the License.
 	}
 	NGraphCreateApplication("nfiles", "NFiles", function(args)
 	{
+		args = args || [];
+
+		var apptitle = "NFiles";
+		var openwith = "nfileopen";
+		var embed = false;
+		var closeafterselectfile = false;
+		var startpath = "/";
+		var showhidden = "false";
+		var i = 0;
+
+		for(i = 0; i < args.length; i++)
+		{
+			var a = args[i].trim();
+			var eq = a.split("=");
+
+			if(a == "")
+				continue;
+
+			if((i == 0) && (a.charAt(0) != "-"))
+			{
+				startpath = a;
+				continue;
+			}
+
+			if(a == "--embed")
+			{
+				embed = true;
+				continue;
+			}
+			if(a == "--close-after-select-file")
+			{
+				closeafterselectfile = true;
+				continue;
+			}
+			if(eq[0] == "--title")
+			{
+				apptitle = eq[1];
+				continue;
+			}
+			if(eq[0] == "--open-with")
+			{
+				openwith = eq[1];
+				continue;
+			}
+			if(eq[0] == "--show-hidden")
+			{
+				showhidden = eq[1];
+				continue;
+			}
+		}
+
 		var po = ApplicationPO[NIntLocaleName];
-		var window = NGraphCreateWindow("nfiles", "NFiles");
+		var window = NGraphCreateWindow("nfiles", apptitle);
 		var mypid = NGraphLoadDataFromWindow(window, "pid");
-		NGraphStoreDataInWindow(window, "path", "/");
+		NGraphStoreDataInWindow(window, "path", startpath);
 		NGraphStoreDataInWindow(window, "showhidden", "false");
 		var toolbar = document.createElement("div");
 		toolbar.className = "navigation color-light-aqua";
@@ -216,7 +267,12 @@ limitations under the License.
 						else
 						{
 							// Open the file with the default app for it
-							NGraphOpenApplication("nfileopen", [NGraphLoadDataFromWindow(window, "path") + file.filename]);
+							NGraphOpenApplication(openwith, [NGraphLoadDataFromWindow(window, "path") + file.filename]);
+
+							if(closeafterselectfile)
+							{
+								NGraphDestroyWindow(window);
+							}
 						}
 					}.bind(this, file));
 				}

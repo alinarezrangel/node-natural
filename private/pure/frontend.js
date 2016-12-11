@@ -348,8 +348,8 @@ window.addEventListener("load", function()
 			$(".puredesktop-resize-preview").removeClass("hidden").css({
 				left: PureResizeStart[0] + "px",
 				top: PureResizeStart[1] + "px",
-				width: x - PureResizeStart[0],
-				height: y - PureResizeStart[1],
+				width: x - PureResizeStart[0] + 3,
+				height: y - PureResizeStart[1] + 3,
 				zIndex: 2000
 			});
 			PureResizeEnd[0] = $(".puredesktop-resize-preview").width();

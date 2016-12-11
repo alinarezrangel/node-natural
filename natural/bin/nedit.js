@@ -100,7 +100,6 @@ limitations under the License.
 		var flexbox = NWidgetsCreateContainer(style);
 		var menu = NWidgetsCreateMenuBar(style);
 		var errordeniedtoast = NWidgetsCreateToast(style, ApplicationPO[NIntLocaleName]["denied"]);
-		var cursor = 0;
 		var filesize = 0;
 
 		flexbox.classList.add("flexible", "direction-column", "no-wrap", "no-magin", "no-padding", "width-block");
@@ -108,7 +107,7 @@ limitations under the License.
 		flexbox.style.height = "90%";
 		menu.classList.add("o1");
 
-		var context = CreateIconMenu(style, NaturalIconSetMap["bars"]);
+		var open = CreateIconMenu(style, NaturalIconSetMap["dir"]);
 		var reload = CreateIconMenu(style, NaturalIconSetMap["loadboard"]);
 		var config = CreateIconMenu(style, NaturalIconSetMap["gear"]);
 		var info = CreateIconMenu(style, NaturalIconSetMap["infocircle"]);
@@ -116,6 +115,7 @@ limitations under the License.
 
 		var textarea = document.createElement("pre");
 		textarea.className = "o2 f1 textarea width-block no-margin padding-4 font-monospace overflow-scroll prelike user-can-select-text";
+		textarea.contentEditable = "true";
 		textarea.style.resize = "none";
 		textarea.style.backgroundColor = style.mainColor;
 		textarea.style.color = style.textColor;
@@ -124,29 +124,20 @@ limitations under the License.
 		NWidgetsPack(winbody, errordeniedtoast);
 		NWidgetsPack(flexbox, menu);
 		NWidgetsPack(flexbox, textarea);
-		NWidgetsPack(menu, context);
+		NWidgetsPack(menu, open);
 		NWidgetsPack(menu, reload);
 		NWidgetsPack(menu, config);
 		NWidgetsPack(menu, info);
 		NWidgetsPack(menu, trash);
 
-		textarea.addEventListener("keydown", function(ev)
+		open.addEventListener("click", function()
 		{
-			ev.keyCode = ev.keyCode || ev.which;
-
-			switch(ev.keycode)
-			{
-				case 37: // Keys.LEFT
-					cursor = Math.max(cursor - 1, 0);
-					break;
-				case 38: // Keys.UP
-					break;
-				case 39: // Keys.RIGHT
-					cursor = Math.max(cursor + 1, filesize);
-					break;
-				case 40: // Keys.DOWN
-					break;
-			}
+			NGraphOpenApplication("nfiles", [
+				"--embed",
+				"--title=NEdit Open File",
+				"--open-with=nedit",
+				"--close-after-select-file"
+			]);
 		});
 
 		if(args.length == 1)

@@ -116,6 +116,7 @@ limitations under the License.
 			PureApplications.forEach((app, index) =>
 			{
 				var appbtn = NWidgetsCreateButton(style, app.title);
+				appbtn.classList.add("margin-8");
 				appbtn.addEventListener("click", function(app)
 				{
 					appname = app.name;

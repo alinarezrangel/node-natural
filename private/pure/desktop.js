@@ -274,6 +274,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	win.addEventListener("mousedown", function(ev)
 	{
+		NaturalLog("Window Mouse Down Event");
 		if($(this).data("focused") == "false")
 		{
 			PureSoundLibPlay("window-inactive-click");
@@ -292,6 +293,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	win.addEventListener("mouseup", function(ev)
 	{
+		NaturalLog("Window Mouse Up Event");
 		if($(this).data("movable") == "true")
 		{
 			$(this).data("mousedown", "false");
@@ -304,6 +306,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	win.addEventListener("mousemove", function(ev)
 	{
+		NaturalLog("Window Mouse Move Event");
 		if(($(this).data("mousedown") == "true") && ($(this).data("movable") == "true"))
 		{
 			var left = $(this).data("clickX");
@@ -323,6 +326,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	win.addEventListener("click", function(ev)
 	{
+		NaturalLog("Window Mouse Click Event");
 		if($(this).data("focused") == "false")
 		{
 			PureSoundLibPlay("window-inactive-click");
@@ -347,6 +351,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	titlebar.addEventListener("mousedown", function()
 	{
+		NaturalLog("Title Mouse Down Event");
 		if($(win).data("preventTitlebarMove") == "true")
 			return;
 		PureSoundLibPlay("window-move-start");
@@ -357,6 +362,7 @@ function PureMakeDefaultWindowLayout(name, args)
 
 	titlebar.addEventListener("mouseup", function()
 	{
+		NaturalLog("Title Mouse Up Event");
 		if($(win).data("preventTitlebarMove") == "true")
 			return;
 		PureSoundLibPlay("window-move-end");

@@ -95,7 +95,7 @@ limitations under the License.
 		NWidgetsPack(container, btncontainer);
 		NWidgetsPack(container, btndone);
 
-		mainWindow.addEventListener("exit", function()
+		NGraphWindowAddEventListener(mainWindow, "exit", function()
 		{
 			if(!cl)
 				selected(false);

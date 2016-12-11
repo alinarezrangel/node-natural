@@ -100,6 +100,8 @@ limitations under the License.
 		var flexbox = NWidgetsCreateContainer(style);
 		var menu = NWidgetsCreateMenuBar(style);
 		var errordeniedtoast = NWidgetsCreateToast(style, ApplicationPO[NIntLocaleName]["denied"]);
+		var cursor = 0;
+		var filesize = 0;
 
 		flexbox.classList.add("flexible", "direction-column", "no-wrap", "no-magin", "no-padding", "width-block");
 		flexbox.classList.remove("container");
@@ -112,8 +114,8 @@ limitations under the License.
 		var info = CreateIconMenu(style, NaturalIconSetMap["infocircle"]);
 		var trash = CreateIconMenu(style, NaturalIconSetMap["trash"]);
 
-		var textarea = document.createElement("textarea");
-		textarea.className = "o2 f1 textarea width-block no-margin padding-4";
+		var textarea = document.createElement("pre");
+		textarea.className = "o2 f1 textarea width-block no-margin padding-4 font-monospace overflow-scroll prelike user-can-select-text";
 		textarea.style.resize = "none";
 		textarea.style.backgroundColor = style.mainColor;
 		textarea.style.color = style.textColor;
@@ -128,6 +130,25 @@ limitations under the License.
 		NWidgetsPack(menu, info);
 		NWidgetsPack(menu, trash);
 
+		textarea.addEventListener("keydown", function(ev)
+		{
+			ev.keyCode = ev.keyCode || ev.which;
+
+			switch(ev.keycode)
+			{
+				case 37: // Keys.LEFT
+					cursor = Math.max(cursor - 1, 0);
+					break;
+				case 38: // Keys.UP
+					break;
+				case 39: // Keys.RIGHT
+					cursor = Math.max(cursor + 1, filesize);
+					break;
+				case 40: // Keys.DOWN
+					break;
+			}
+		});
+
 		if(args.length == 1)
 		{
 			OpenFile(errordeniedtoast, args[0].toString(), mypid, function(err, file)
@@ -138,7 +159,13 @@ limitations under the License.
 					return;
 				}
 
-				textarea.appendChild(document.createTextNode(file.filecontent));
+				var multilinecontent = file.filecontent.replace(/\r?\n/gmi, "\r\n");
+				filesize = multilinecontent.length;
+
+				while(textarea.firstChild)
+					textarea.removeChild(textarea.firstChild);
+
+				textarea.appendChild(document.createTextNode(multilinecontent));
 			});
 		}
 	});

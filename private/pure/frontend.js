@@ -467,6 +467,69 @@ window.addEventListener("load", function()
 		$(".puredesktop-applications-search-box").focus();
 	});
 
+	document.addEventListener("touchstart", function(ev)
+	{
+		var tc = ev.changedTouches;
+		var i = 0;
+		var j = tc.length;
+
+		NaturalLog("Touch started");
+
+		for(i = 0; i < j; i++)
+		{
+			var t = tc[i];
+
+			NaturalLog("Touch start (" + i + ") at " + t.clientX + "," + t.clientY + " MOUSEDOWN");
+			var et = new MouseEvent("mousedown", {
+				clientX: t.clientX,
+				clientY: t.clientY,
+				cancelable: true
+			});
+			ev.target.dispatchEvent(et);
+		}
+	});
+	document.addEventListener("touchmove", function(ev)
+	{
+		var tc = ev.changedTouches;
+		var i = 0;
+		var j = tc.length;
+
+		NaturalLog("Touch moved");
+
+		for(i = 0; i < j; i++)
+		{
+			var t = tc[i];
+
+			NaturalLog("Touch moved (" + i + ") at " + t.clientX + "," + t.clientY + " MOUSEMOVE");
+			var et = new MouseEvent("mousemove", {
+				clientX: t.clientX,
+				clientY: t.clientY,
+				cancelable: true
+			});
+			ev.target.dispatchEvent(et);
+		}
+	});
+	document.addEventListener("touchend", function(ev)
+	{
+		var tc = ev.changedTouches;
+		var i = 0;
+		var j = tc.length;
+		NaturalLog("Touch ended");
+
+		for(i = 0; i < j; i++)
+		{
+			var t = tc[i];
+
+			NaturalLog("Touch ended (" + i + ") at " + t.clientX + "," + t.clientY + " MOUSEUP");
+			var et = new MouseEvent("mouseup", {
+				clientX: t.clientX,
+				clientY: t.clientY,
+				cancelable: true
+			});
+			ev.target.dispatchEvent(et);
+		}
+	});
+
 	PureStylePanels();
 
 	NaturalLoadNext();

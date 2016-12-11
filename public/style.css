@@ -156,6 +156,13 @@ template {
 	user-select: all;
 }
 
+.user-can-select-text {
+	-moz-user-select: text;
+	-webkit-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
+}
+
 .user-cant-select {
 	-moz-user-select: none;
 	-webkit-user-select: none;
@@ -267,4 +274,8 @@ template {
 
 .nwslided:hover {
 	box-shadow: 0px 0px 20px #008080;
+}
+
+.prelike {
+	white-space: pre !important;
 }

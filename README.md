@@ -137,7 +137,24 @@ file.
 Node Natural (or Natural, for short) is licensed under the Apache 2.0
 license. See the [LICENSE][license] file.
 
+Node Natural uses other resources and they may be using another license:
+
+* `public/sounds/sound-theme-freedesktop/` [node-natural-sounds][naturalsounds]
+(forked from [sound-theme-freedesktop][sound-theme-freedesktop]:
+It have multiples licenses: CC-BY-SA, GPLv2+ and CC-BY Attribution 3.0 Unported. Please,
+for the legal notice, see it's [CREDITS file][naturalsoundscredits].
+* `public/images/backgrounds/node-natural-background-images/` [node-natural-background-images][naturalbkg]:
+CC-BY-SA 4.0 (please, for the legal notice, see [the license][naturalbkgcredits]).
+* `natural/share/ace/` [Ace Cloud9 Editor][ace]: Copyright (c) 2010, Ajax.org B.V.
+All rights reserved.
+
 [socketio]: http://socket.io/
 [generation]: https://github.com/alinarezrangel/generation
 [license]: ./LICENSE
 [csp]: https://content-security-policy.com/
+[naturalsounds]: https://github.com/alinarezrangel/node-natural-sounds
+[naturalsoundscredits]: https://github.com/alinarezrangel/node-natural-sounds/CREDITS
+[naturalbkg]: https://github.com/alinarezrangel/node-natural-background-images
+[naturalbkgcredits]: https://github.com/alinarezrangel/node-natural-background-images/LICENSE
+[sound-theme-freedesktop]: https://www.freedesktop.org/wiki/Specifications/sound-theme-spec/
+[ace]: https://github.com/ajaxorg/ace-builds/blob/master/LICENSE

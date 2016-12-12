@@ -50,6 +50,8 @@ var natural = __dirname + "/natural"; // Directorio con los datos de la instalac
 
 var configuration = JSON.parse(fs.readFileSync(natural + "/config.json", "utf8"));
 
+configuration.__natural = natural;
+
 /*
 Inicializa la API de socket.
 */
@@ -359,6 +361,9 @@ app.use("/private/", function(req, res) // Acceso a recursos privados.
 	}
 });
 
+// In /filesystem/ we not validate that the path is inside the $NATURAL
+// directory, this is for enable to open other javascript files as modules
+// in other dirs (like ~/.natural/modules/ or ~/.natural/bin/)
 app.get("/filesystem/:type", function(req, res)
 {
 	if((req.session) && (req.session.logged))
@@ -367,6 +372,13 @@ app.get("/filesystem/:type", function(req, res)
 		{
 			var file = req.query.file || "";
 			var token = req.query.token || "";
+
+			if(!tokens.ValidateToken(token))
+			{
+				console.error("Invalid token for filesystem app " + file);
+				res.send("");
+				return;
+			}
 
 			group.UserCanRead(tokens.GetUserFromToken(token), natural + "/bin/" + file, function(err, can)
 			{
@@ -379,6 +391,41 @@ app.get("/filesystem/:type", function(req, res)
 				if(can)
 				{
 					fs.readFile(natural + "/bin/" + file, "utf8", function(err, data)
+					{
+						if(err)
+						{
+							console.error(err);
+							res.send("");
+							return;
+						}
+						res.send(data);
+					});
+				}
+			});
+		}
+		else if(req.params["type"] == "module")
+		{
+			var file = req.query.file || "";
+			var token = req.query.token || "";
+
+			if(!tokens.ValidateToken(token))
+			{
+				console.error("Invalid token for filesystem app " + file);
+				res.send("");
+				return;
+			}
+
+			group.UserCanRead(tokens.GetUserFromToken(token), natural + "/" + file, function(err, can)
+			{
+				if(err)
+				{
+					console.error(err);
+					res.send("");
+					return;
+				}
+				if(can)
+				{
+					fs.readFile(natural + "/" + file, "utf8", function(err, data)
 					{
 						if(err)
 						{

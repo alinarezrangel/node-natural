@@ -30,7 +30,8 @@ var NaturalError = []; // Errores al inicializar
 var NaturalOnLoadevent = function(){}; // Para los manejadores de escritorio
 var NaturalExports = {}; // Datos de un modulo o aplicacion despues de ser importado
 var NaturalSocketEvents = []; // Los eventos para respuestas del socket,
-// recuerda que los resultados
+// recuerda los resultados
+var NaturalImportedMods = []; // Arreglo que contiene los modulos importados.
 // Mapa clave-valor para el NaturalIconSet
 var NaturalIconSetMap = {
 	"bars": "a",
@@ -286,6 +287,30 @@ function NaturalLoadPrograms(each, end)
 	});
 }
 
+// Importa un archivo JS en el directorio actual de manera asincrona
+function NaturalRequireJS(modname, path, onloaded)
+{
+	var i = 0;
+	var j = NaturalImportedMods.length;
+	for(i = 0; i < j; i++)
+	{
+		if(NaturalImportedMods[i] == modname)
+		{
+			onloaded(true);
+			return;
+		}
+	}
+	var scriptTag = document.createElement("script");
+	scriptTag.src = "/filesystem/module?file=" + encodeURIComponent(path) + "&token=" + encodeURIComponent(NaturalToken);
+	scriptTag.async = true;
+	scriptTag.addEventListener("load", function()
+	{
+		onloaded(false);
+	});
+	document.body.appendChild(scriptTag);
+	NaturalImportedMods.push(modname);
+}
+
 // Actualiza la imagen e incrementa el indice de carga
 function NaturalLoadNext()
 {
@@ -307,6 +332,45 @@ function NaturalHighLevelSocketCall(task, pid, data, callback)
 
 	NaturalAddTaskToQueue(task, pid, callback);
 	NaturalSocket.emit(task, data);
+}
+
+// Importa un **modulo** javascript de manera asincrona
+function NaturalImportJS(pid, path, onloaded)
+{
+	if(path.charAt(path.length - 1) == "/")
+		path = path.substr(0, path.length - 2);
+
+	NaturalLog("Importing " + path + ":$NATURAL/" + path + "/natural.json");
+
+	NaturalHighLevelSocketCall("api.file.readAll", pid, {
+		"path": "$NATURAL/" + path + "/natural.json",
+		"readAs": "stringUTF8"
+	}, function(err, data)
+	{
+		NaturalLog("Loaded?");
+		if(err)
+		{
+			NaturalLog("No " + err);
+			return onloaded(err);
+		}
+
+		NaturalLog("Yes " + data.filecontent);
+		var obj = JSON.parse(data.filecontent);
+
+		if(obj.type !== "module")
+		{
+			NaturalLog("But isnt a module");
+			return onloaded(
+				new Error("NaturalImportJS Error: The imported resource is NOT a natural module")
+			);
+		}
+
+		NaturalRequireJS(obj.name, path + "/" + obj.name + ".js", function(imported)
+		{
+			NaturalLog("Imported done");
+			onloaded(null, imported);
+		})
+	})
 }
 
 NaturalSocket.on("ready", function(data) // Cuando el servidor pueda manejar nuestras solicitudes:

@@ -93,14 +93,15 @@ limitations under the License.
 	{
 		args = args || [];
 
-		var window = NGraphCreateWindow("nedit", "NEdit");
-		var mypid = NGraphLoadDataFromWindow(window, "pid");
-		var winbody = NGraphGetWindowBody(window);
+		var mwindow = NGraphCreateWindow("nedit", "NEdit");
+		var mypid = NGraphLoadDataFromWindow(mwindow, "pid");
+		var winbody = NGraphGetWindowBody(mwindow);
 		var style = NWidgetsCreateAppStyle();
 		var flexbox = NWidgetsCreateContainer(style);
 		var menu = NWidgetsCreateMenuBar(style);
 		var errordeniedtoast = NWidgetsCreateToast(style, ApplicationPO[NIntLocaleName]["denied"]);
 		var filesize = 0;
+		var caps = false;
 
 		flexbox.classList.add("flexible", "direction-column", "no-wrap", "no-magin", "no-padding", "width-block");
 		flexbox.classList.remove("container");
@@ -113,9 +114,9 @@ limitations under the License.
 		var info = CreateIconMenu(style, NaturalIconSetMap["infocircle"]);
 		var trash = CreateIconMenu(style, NaturalIconSetMap["trash"]);
 
-		var textarea = document.createElement("pre");
-		textarea.className = "o2 f1 textarea width-block no-margin padding-4 font-monospace overflow-scroll prelike user-can-select-text";
-		textarea.contentEditable = "true";
+		var textarea = document.createElement("textarea");
+		textarea.className = "o2 f1 textarea width-block no-margin padding-4 font-monospace overflow-scroll prelike user-can-select-text font-monospace";
+		textarea.value = "";
 		textarea.style.resize = "none";
 		textarea.style.backgroundColor = style.mainColor;
 		textarea.style.color = style.textColor;
@@ -156,8 +157,19 @@ limitations under the License.
 				while(textarea.firstChild)
 					textarea.removeChild(textarea.firstChild);
 
-				textarea.appendChild(document.createTextNode(multilinecontent));
+				textarea.value = multilinecontent;
 			});
 		}
+
+		NaturalImportJS(mypid, "share/taboverride", function(err, imported)
+		{
+			if(err)
+			{
+				NaturalLogErr(err);
+				return;
+			}
+
+			window.tabOverride.set(textarea);
+		});
 	});
 }());

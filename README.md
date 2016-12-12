@@ -145,8 +145,7 @@ It have multiples licenses: CC-BY-SA, GPLv2+ and CC-BY Attribution 3.0 Unported.
 for the legal notice, see it's [CREDITS file][naturalsoundscredits].
 * `public/images/backgrounds/node-natural-background-images/` [node-natural-background-images][naturalbkg]:
 CC-BY-SA 4.0 (please, for the legal notice, see [the license][naturalbkgcredits]).
-* `natural/share/ace/` [Ace Cloud9 Editor][ace]: Copyright (c) 2010, Ajax.org B.V.
-All rights reserved.
+* `natural/share/taboverride/` [TabOverride][taboverride]: Copyright (c) 2015 Bill Bryant.
 
 [socketio]: http://socket.io/
 [generation]: https://github.com/alinarezrangel/generation
@@ -157,4 +156,4 @@ All rights reserved.
 [naturalbkg]: https://github.com/alinarezrangel/node-natural-background-images
 [naturalbkgcredits]: https://github.com/alinarezrangel/node-natural-background-images/LICENSE
 [sound-theme-freedesktop]: https://www.freedesktop.org/wiki/Specifications/sound-theme-spec/
-[ace]: https://github.com/ajaxorg/ace-builds/blob/master/LICENSE
+[taboverride]: https://github.com/wjbryant/taboverride/blob/master/LICENSE.txt

@@ -39,7 +39,7 @@ module.exports = function(socket, configuration)
 		{
 			if(path.startsWith("$NATURAL"))
 			{
-				path = natural + path.slice(path.indexOf("$NATURAL") + 8);
+				path = configuration.__natural + path.slice(path.indexOf("$NATURAL") + 8);
 			}
 			var uname = tokens.GetUserFromToken(token);
 			group.UserCanRead(uname, path, function(err, can)

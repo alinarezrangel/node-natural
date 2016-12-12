@@ -256,7 +256,16 @@ function PureMakeDefaultWindowLayout(name, args)
 	{
 		var iz = parseInt(this.style.zIndex);
 		if(iz > 1)
+		{
 			this.style.zIndex = (iz - 1) + "";
+			$(this)
+				.children(".sw-0, .sw-c, .sw-1, .sw-2, .sw-3, .sw-4, .sw-5, .sw-6, .sw-7, .sw-8, .sw-9, .sw-10, .sw-11, .sw-12")
+				.each(function(index)
+				{
+					var oldZ = parseInt(this.style.zIndex);
+					this.style.zIndex = (oldZ - 1) + "";
+				});
+		}
 		$(this).data("focused", "false");
 	});
 
@@ -268,6 +277,13 @@ function PureMakeDefaultWindowLayout(name, args)
 				"from": this
 			});
 			this.style.zIndex = PureMaxZIndex;
+			$(this)
+				.children(".sw-0, .sw-c, .sw-1, .sw-2, .sw-3, .sw-4, .sw-5, .sw-6, .sw-7, .sw-8, .sw-9, .sw-10, .sw-11, .sw-12")
+				.each(function(index)
+				{
+					var oldZ = parseInt(this.style.zIndex);
+					this.style.zIndex = (oldZ + 1) + "";
+				});
 			$(this).data("focused", "true");
 		}
 	});
@@ -692,7 +708,8 @@ function PureGetPID()
 function PureDesktopNotify(title, message, p)
 {
 	var osd = document.createElement("div");
-	osd.className = "user-cant-select puredesktop-notify-box box color-everblack padding-16 margin-16 text-big overflow-auto";
+	osd.className =
+		"user-cant-select puredesktop-notify-box box color-everblack padding-16 margin-16 text-big overflow-auto sw-4";
 	osd.style.color = "#EE0";
 	osd.style.position = "absolute";
 	osd.style.right = "16px";
@@ -702,7 +719,7 @@ function PureDesktopNotify(title, message, p)
 	osd.style.cursor = "pointer";
 	osd.appendChild(document.createTextNode(title));
 	var msg = document.createElement("div");
-	msg.className = "box no-margin no-padding no-border";
+	msg.className = "box no-margin no-padding no-border border-top bs-2";
 	msg.appendChild(document.createTextNode(message));
 	osd.appendChild(msg);
 

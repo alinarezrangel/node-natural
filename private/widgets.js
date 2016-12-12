@@ -35,6 +35,23 @@ var NWidgetsListType = {
 	DEFINITION_TERM: 3,
 	DEFINITION_BODY: 4
 };
+var NWidgetsShadowSpec = {
+	LABEL: 0,
+	TEXT: 0,
+	LIST: 0,
+	FRAME: 1,
+	BUTTON: 1,
+	TEXTINPUT: 0,
+	NUMBERINPUT: 0,
+	SLIDER: 0,
+	COMBOBOX: 0,
+	TEXTAREA: 0,
+	ACCORDION: 1,
+	SNACK: 10,
+	TOAST: 10,
+	DIALOG: 11,
+	MENUBAR: 0,
+};
 
 function NWidgetsCreateAppStyle()
 {
@@ -58,6 +75,60 @@ function NWidgetsPack(container, widget)
 	container.appendChild(widget);
 }
 
+function NWidgetsSetWidgetShadow(widget, shadow)
+{
+	if((shadow < 0) || (shadow > 13))
+	{
+		return false;
+	}
+
+	var className = "sw-";
+
+	if(shadow == 0)
+	{
+		className += "0";
+	}
+	else if(shadow == 1)
+	{
+		className += "c";
+	}
+	else
+	{
+		className += (shadow - 1) + "";
+	}
+
+	widget.classList.add(className);
+
+	return true;
+}
+
+function NWidgetsUnsetWidgetShadow(widget, shadow)
+{
+	if((shadow < 0) || (shadow > 13))
+	{
+		return false;
+	}
+
+	var className = "sw-";
+
+	if(shadow == 0)
+	{
+		className += "0";
+	}
+	else if(shadow == 1)
+	{
+		className += "c";
+	}
+	else
+	{
+		className += (shadow - 1) + "";
+	}
+
+	widget.classList.remove(className);
+
+	return true;
+}
+
 function NWidgetsCreateMenuBar(style, substyle)
 {
 	if(typeof substyle !== "undefined")
@@ -66,9 +137,11 @@ function NWidgetsCreateMenuBar(style, substyle)
 	}
 
 	var menubar = document.createElement("div");
-	menubar.className = "top-navigation";
+	menubar.className = "top-navigation user-cant-select";
 	menubar.style.backgroundColor = style.menuColor;
 	menubar.style.color = style.color;
+
+	NWidgetsSetWidgetShadow(menubar, NWidgetsShadowSpec.MENUBAR);
 
 	return menubar;
 }
@@ -112,6 +185,8 @@ function NWidgetsCreateSnack(style, textualContent, substyle)
 	text.appendChild(document.createTextNode(textualContent));
 	snack.appendChild(text);
 	snack.appendChild(closebtn);
+
+	NWidgetsSetWidgetShadow(snack, NWidgetsShadowSpec.SNACK);
 
 	closebtn.addEventListener("click", function(ev)
 	{
@@ -164,6 +239,8 @@ function NWidgetsCreateToast(style, textualContent, substyle)
 	snack.style.cursor = "pointer";
 	text.appendChild(document.createTextNode(textualContent));
 	snack.appendChild(text);
+
+	NWidgetsSetWidgetShadow(snack, NWidgetsShadowSpec.TOAST);
 
 	snack.dataset["naturalWidgetsToastbarTimeout"] = "";
 
@@ -277,6 +354,8 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction, subst
 	darrow.appendChild(darrow_text);
 	darrow_text.appendChild(darrow_text_it);
 	darrow.appendChild(dropdown);
+
+	NWidgetsSetWidgetShadow(combobox, NWidgetsShadowSpec.COMBOBOX);
 
 	darrow.addEventListener("mouseenter", function()
 	{
@@ -405,6 +484,8 @@ function NWidgetsCreateSlider(style, initialValue, substyle)
 	slided.style.left = initialValue + "%";
 	container.dataset["naturalWidgetsSliderDown"] = "false";
 
+	NWidgetsSetWidgetShadow(container, NWidgetsShadowSpec.SLIDER);
+
 	container.addEventListener("mousedown", function()
 	{
 		this.dataset["naturalWidgetsSliderDown"] = "true";
@@ -514,6 +595,8 @@ function NWidgetsCreateNumberInput(style, editable, startValue, substyle)
 	btnDownLabel.appendChild(document.createTextNode("j"));
 	number.appendChild(input);
 
+	NWidgetsSetWidgetShadow(number, NWidgetsShadowSpec.NUMBERINPUT);
+
 	number.dataset["naturalWidgetsNumberValue"] = startValue;
 
 	btnUp.addEventListener("click", function()
@@ -593,6 +676,8 @@ function NWidgetsCreateButton(style, textualContent, substyle)
 	button.type = "button";
 	button.appendChild(document.createTextNode(textualContent));
 
+	NWidgetsSetWidgetShadow(button, NWidgetsShadowSpec.BUTTON);
+
 	return button;
 }
 
@@ -615,6 +700,8 @@ function NWidgetsCreateLabel(style, textualContent, substyle)
 	label.style.color = style.textColor;
 
 	label.appendChild(document.createTextNode(textualContent));
+
+	NWidgetsSetWidgetShadow(label, NWidgetsShadowSpec.LABEL);
 
 	return label;
 }
@@ -642,6 +729,8 @@ function NWidgetsCreateTextInput(style, textualContent, substyle)
 	input.style.borderColor = style.borderColor;
 
 	input.value = textualContent;
+
+	NWidgetsSetWidgetShadow(input, NWidgetsShadowSpec.TEXTINPUT);
 
 	return input;
 }
@@ -684,6 +773,8 @@ function NWidgetsCreateFrame(style, substyle)
 	container.style.color = style.textColor;
 	container.style.backgroundColor = style.mainColor;
 
+	NWidgetsSetWidgetShadow(container, NWidgetsShadowSpec.FRAME);
+
 	return container;
 }
 
@@ -699,6 +790,8 @@ function NWidgetsCreateAccordion(style, substyle)
 	accordion.style.borderColor = style.borderColor;
 	accordion.style.color = style.accordionTextColor;
 	accordion.style.backgroundColor = style.accordionColor;
+
+	NWidgetsSetWidgetShadow(accordion, NWidgetsShadowSpec.ACCORDION);
 
 	return accordion;
 }
@@ -761,6 +854,8 @@ function NWidgetsCreateList(style, type, haveDecorators, substyle)
 	list.className = "list " + (haveDecorators? "" : "no-style");
 	list.style.backgroundColor = style.mainColor;
 	list.style.color = style.textColor;
+
+	NWidgetsSetWidgetShadow(list, NWidgetsShadowSpec.LIST);
 
 	return list;
 }

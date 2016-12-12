@@ -537,6 +537,7 @@ function PureOpenWindow(window, args)
 		});
 		tp.appendChild(item);
 	}
+	PureWindowSetFocus(window);
 }
 
 function PureGetWindowBody(window)

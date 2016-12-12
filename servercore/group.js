@@ -178,20 +178,17 @@ function UserCan(d, username, dirorfile, callback)
 			return;
 		}
 		d = 0 + d;
-		var ownerCan = stats["mode"] & (d * 100);
-		var groupCan = stats["mode"] & (d * 10);
+		var ownerCan = stats["mode"] & (d * 64);
+		var groupCan = stats["mode"] & (d * 8);
 		var othersCan = stats["mode"] & d;
 		var gid = stats["gid"];
 		var uid = stats["uid"];
-		if(othersCan)
-		{
-			callback(null, true);
-			return;
-		}
+		console.log("Group: I can do " + d);
 		if(username == GetUsernameFromUserID(uid))
 		{
+			console.log("I am the owner: " + (ownerCan));
 			// I am the owner
-			callback(null, true);
+			callback(null, ownerCan);
 			return;
 		}
 		IsUserInGroup(username, GetGroupnameFromGroupID(gid), function(err, isin)
@@ -202,7 +199,18 @@ function UserCan(d, username, dirorfile, callback)
 				callback(err);
 				return;
 			}
-			callback(null, isin);
+			// I am in the groud
+			if(isin)
+			{
+				console.log("I am in the group: " + (ownerCan));
+				callback(null, groupCan);
+			}
+			else
+			{
+				console.log("Anybody else can: " + (ownerCan));
+				// Any can
+				callback(null, othersCan);
+			}
 		})
 	});
 }

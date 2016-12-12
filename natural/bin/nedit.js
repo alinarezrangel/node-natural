@@ -134,12 +134,16 @@ limitations under the License.
 
 		open.addEventListener("click", function()
 		{
-			NGraphOpenApplication("nfiles", [
+			var win = NGraphOpenApplication("nfiles", [
 				"--embed",
 				"--title=NEdit Open File",
 				"--open-with=nedit",
 				"--close-after-select-file"
-			]);
+			]).mainWindow;
+			setTimeout(function()
+			{
+				NGraphWindowSetFocus(win);
+			}, 100);
 		});
 
 		if(args.length == 1)

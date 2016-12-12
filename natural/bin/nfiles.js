@@ -296,5 +296,7 @@ limitations under the License.
 		layout.appendChild(structureArea);
 		NGraphGetWindowBody(window).appendChild(toolbar);
 		NGraphGetWindowBody(window).appendChild(layout);
+		if(embed)
+			return {"mainWindow": window};
 	});
 }());

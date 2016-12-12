@@ -57,6 +57,8 @@ module.exports = function(socket, configuration)
 					return;
 				}
 
+				console.log("Reading file from " + path);
+
 				fs.readFile(path, "utf8", function(err, data)
 				{
 					if(err)

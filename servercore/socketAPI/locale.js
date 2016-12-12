@@ -36,6 +36,7 @@ module.exports = function(socket, configuration)
 		{
 			// socket.emit("error-response", {"task": task, "code": 0, "msg": "", "pid": pid});
 			// socket.emit("response", {"task": task, ..., "pid": pid});
+			console.log("The user " + tokens.GetUserFromToken(token) + " is requesting it's locale");
 			socket.emit("response", {"task": task, "locale": configuration.locale, "pid": pid});
 		}
 		else

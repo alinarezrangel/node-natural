@@ -85,10 +85,11 @@ limitations under the License.
 		var style = NWidgetsCreateAppStyle();
 		var container = NWidgetsCreateContainer(style);
 		var ttl1 = NWidgetsCreateLabel(style, msg);
-		var btncontainer = NWidgetsCreateContainer(style);
+		var btncontainer = NWidgetsCreateList(style, NWidgetsListType.UNORDERED, false);
 		var btndone = NWidgetsCreateButton(style, donemsg);
 		var appname = "";
 		var cl = false;
+		var allbtns = [];
 
 		NWidgetsPack(NGraphGetWindowBody(mainWindow), container);
 		NWidgetsPack(container, ttl1);
@@ -115,11 +116,20 @@ limitations under the License.
 			// it
 			PureApplications.forEach((app, index) =>
 			{
-				var appbtn = NWidgetsCreateButton(style, app.title);
-				appbtn.classList.add("margin-8");
+				var appbtn = NWidgetsCreateListItem(style, NWidgetsListType.UNORDERED);
+				appbtn.classList.add("hoverable", "padding-8", "no-margin");
+				allbtns.push(appbtn);
+
+				NWidgetsPack(appbtn, NWidgetsCreateTextNode(app.title));
+
 				appbtn.addEventListener("click", function(app)
 				{
 					appname = app.name;
+					for(var i = 0; i < allbtns.length; i++)
+					{
+						allbtns[i].classList.remove("color-natural-deepgreen");
+					}
+					this.classList.add("color-natural-deepgreen");
 				}.bind(appbtn, app));
 				NWidgetsPack(btncontainer, appbtn);
 			});

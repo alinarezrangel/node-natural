@@ -79,7 +79,7 @@ limitations under the License.
 		{
 			if(err)
 			{
-				NWidgetsShowToast(errtoast);
+				NWidgetsShowSnack(errtoast);
 				callback(err);
 			}
 			else
@@ -95,11 +95,12 @@ limitations under the License.
 
 		var mwindow = NGraphCreateWindow("nedit", "NEdit");
 		var mypid = NGraphLoadDataFromWindow(mwindow, "pid");
+		var importpid = NGraphRequestPID("nedit", "NEdit");
 		var winbody = NGraphGetWindowBody(mwindow);
 		var style = NWidgetsCreateAppStyle();
 		var flexbox = NWidgetsCreateContainer(style);
 		var menu = NWidgetsCreateMenuBar(style);
-		var errordeniedtoast = NWidgetsCreateToast(style, ApplicationPO[NIntLocaleName]["denied"]);
+		var errordeniedtoast = NWidgetsCreateSnack(style, ApplicationPO[NIntLocaleName]["denied"]);
 		var filesize = 0;
 		var caps = false;
 
@@ -161,7 +162,7 @@ limitations under the License.
 			});
 		}
 
-		NaturalImportJS(mypid, "share/taboverride", function(err, imported)
+		NaturalImportJS(importpid, "share/taboverride", function(err, imported)
 		{
 			if(err)
 			{

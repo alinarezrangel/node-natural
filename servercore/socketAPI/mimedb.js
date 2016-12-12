@@ -38,11 +38,13 @@ module.exports = function(socket, configuration)
 		{
 			if(filename.startsWith("$NATURAL"))
 			{
-				filename = natural + filename.slice(filename.indexOf("$NATURAL") + 8);
+				filename = configuration.__natural + filename.slice(filename.indexOf("$NATURAL") + 8);
 			}
 			// socket.emit("error-response", {"task": task, "code": 0, "msg": "", "pid": pid});
 			// socket.emit("response", {"task": task, ..., "pid": pid});
 			mime.default_type = "x-nodenatural/x-default";
+
+			console.log("lookup mimetype of " + filename + " which is " + mime.lookup(filename));
 
 			socket.emit("response", {
 				"task": task,

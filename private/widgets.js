@@ -26,6 +26,15 @@ var NWidgetsSnacksAnimation = 800;
 var NWidgetsSnacksDuration = 5000;
 var NWidgetsToastsDuration = 8000;
 var NWidgetsSnacksNthOpened = 2000;
+var NWidgetsListType = {
+	ITEM_TYPE: "number",
+
+	ORDERED: 0,
+	UNORDERED: 1,
+	DEFINITION: 2,
+	DEFINITION_TERM: 3,
+	DEFINITION_BODY: 4
+};
 
 function NWidgetsCreateAppStyle()
 {
@@ -724,4 +733,61 @@ function NWidgetsCreateAccordionSection(style, title, innerc, substyle)
 	});
 
 	return section;
+}
+
+function NWidgetsCreateList(style, type, haveDecorators, substyle)
+{
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
+	var tp = "ul";
+
+	switch(type)
+	{
+		case NWidgetsListType.ORDERED:
+			tp = "ol";
+			break;
+		case NWidgetsListType.UNORDERED:
+			tp = "ul";
+			break;
+		case NWidgetsListType.DEFINITION:
+			tp = "dl";
+			break;
+	}
+
+	var list = document.createElement(tp);
+	list.className = "list " + (haveDecorators? "" : "no-style");
+	list.style.backgroundColor = style.mainColor;
+	list.style.color = style.textColor;
+
+	return list;
+}
+
+function NWidgetsCreateListItem(style, type, substyle)
+{
+	if(typeof substyle !== "undefined")
+	{
+		style = substyle;
+	}
+
+	var tagName = "li";
+
+	if(type == NWidgetsListType.DEFINITION_BODY)
+		tagName = "dd";
+	if(type == NWidgetsListType.DEFINITION_TERM)
+		tagName = "dt";
+
+	var el = document.createElement(tagName);
+	el.style.borderColor = style.borderColor;
+	el.style.color = style.textColor;
+	el.style.backgroundColor = style.mainColor;
+
+	return el;
+}
+
+function NWidgetsCreateTextNode(text)
+{
+	return document.createTextNode(text);
 }

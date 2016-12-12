@@ -36,6 +36,7 @@ module.exports = function(socket, configuration)
 		{
 			// socket.emit("error-response", {"task": task, "code": 0, "msg": "", "pid": pid});
 			// socket.emit("response", {"task": task, ..., "pid": pid});
+			console.log("ping!");
 			socket.emit("response", {"task": task, "message": "pong", "pid": pid});
 		}
 		else

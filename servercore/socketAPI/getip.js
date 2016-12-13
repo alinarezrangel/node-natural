@@ -2,7 +2,7 @@
 ***********************************
 *** Natural: A remote desktop for embed systems.
 *** By Alejandro Linarez Rangel.
-*** Natural Socket API inc file.
+*** Enables to get the server IP
 ***********************************
 ****************************************************************** */
 
@@ -22,12 +22,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ***************************************************************************/
 
+var group = require("../group");
+var tokens = require("../tokens");
+
 module.exports = function(socket, configuration)
 {
-	require("./socketAPI/ping")(socket, configuration);
-	require("./socketAPI/locale")(socket, configuration);
-	require("./socketAPI/session")(socket, configuration);
-	require("./socketAPI/mimedb")(socket, configuration);
-	require("./socketAPI/file")(socket, configuration);
-	require("./socketAPI/getip")(socket, configuration);
+	socket.on("api.server.ip.address", function(data)
+	{
+		var token = data.token || "";
+		var pid = data.pid || 0;
+		var task = "api.server.ip.address";
+		if(tokens.ValidateToken(token))
+		{
+			// socket.emit("error-response", {"task": task, "code": 0, "msg": "", "pid": pid});
+			// socket.emit("response", {"task": task, ..., "pid": pid});
+			console.log("IP adress getted");
+			socket.emit("response", {"task": task, "ip": configuration.__nodenatural.ip.address, "pid": pid});
+		}
+		else
+		{
+			socket.emit("authenticated", {"task": task, "valid": false, "pid": pid});
+		}
+	});
 };

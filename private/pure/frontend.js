@@ -265,7 +265,7 @@ window.addEventListener("load", function()
 
 	$(".puredesktop-button-help").click(function()
 	{
-		PureOpenApplication("nhelp");
+		PureOpenApplication("help");
 	});
 
 	$(".puredesktop-button-logout").click(function()

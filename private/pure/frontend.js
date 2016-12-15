@@ -316,13 +316,21 @@ window.addEventListener("load", function()
 			if(showing)
 			{
 				$(".puredesktop-applications-search-box").focus();
+				$(".puredesktop-applications-container").scrollTop(0);
+				$(".puredesktop-applications-container-search-output").scrollTop(0);
 			}
 		});
 	});
 	$("#seeappsmenu").click(function()
 	{
 		var menu = $(".puredesktop-windows-menu");
-		menuSlide(menu, 2, function(s) {});
+		menuSlide(menu, 2, function(showing)
+		{
+			if(showing)
+			{
+				$(".puredesktop-windows-menu").scrollTop(0);
+			}
+		});
 	});
 	$("#volumemenu").click(function()
 	{
@@ -448,6 +456,8 @@ window.addEventListener("load", function()
 		{
 			PureSoundLibPlay("search-results-empty");
 		}
+
+		$searchOut.scrollTop(0);
 	});
 
 	$(".puredesktop-applications-cancel-button").click(function()
@@ -465,6 +475,8 @@ window.addEventListener("load", function()
 		$apps.removeClass("hidden");
 		$searchOut.addClass("hidden");
 		$(".puredesktop-applications-search-box").focus();
+		$(".puredesktop-applications-container").scrollTop(0);
+		$(".puredesktop-applications-container-search-output").scrollTop(0);
 	});
 
 	document.addEventListener("touchstart", function(ev)

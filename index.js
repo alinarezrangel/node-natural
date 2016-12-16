@@ -45,6 +45,7 @@ var sha256 = require("./servercore/sha256");
 var tokens = require("./servercore/tokens");
 var framewrapper = require("./servercore/framewrapper");
 var docswrapper = require("./servercore/docswrapper");
+var fakedata = require("./servercore/fakedata");
 var socketAPI = require("./servercore/socketAPI");
 
 var natural = __dirname + "/natural"; // Directorio con los datos de la instalacion y configuración.
@@ -59,6 +60,7 @@ configuration.__nodenatural = {
 };
 
 docswrapper = docswrapper(configuration);
+fakedata = fakedata(configuration);
 
 /*
 Inicializa la API de socket.
@@ -195,14 +197,18 @@ app.use(session({
 app.use(function(req, res, next) // CSP headers
 {
 	//var myip = ip.address();
+	var csp = "default-src 'self'; script-src 'self'; connect-src 'self' ws: wss:; child-src: 'self'; img-src: 'self'; style-src: 'self' 'unsafe-inline'";
 	res.setHeader("Strict-Transport-Security", "max-age=31536000 ; includeSubDomains");
 	res.setHeader("X-XSS-Protection", "0");
 	res.setHeader("X-Frame-Options", "SAMEORIGIN");
-	res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; connect-src 'self' ws: wss:");
+	res.setHeader("Content-Security-Policy", csp);
+	res.setHeader("X-Content-Security-Policy", csp);
+	res.setHeader("X-Webkit-CSP", csp);
 	return next();
 });
 app.use("/embed/web/", framewrapper);
 app.use("/embed/docs/", docswrapper);
+app.use("/embed/data/", fakedata);
 
 console.log("Welcome to Natural " + configuration.codeName + " v" + configuration.naturalVersion);
 console.log("Client locale " + configuration.locale);

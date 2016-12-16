@@ -73,6 +73,11 @@ module.exports = function(socket, configuration)
 						data = data.toString("utf-8");
 					}
 
+					if(readAs == "base64")
+					{
+						data = data.toString("base64");
+					}
+
 					socket.emit("response", {"task": task, "filecontent": data, "pid": pid});
 				});
 			});

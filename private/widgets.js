@@ -377,6 +377,7 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction, subst
 		NaturalLog("Hovered " + x + "px :" + y + "px");
 		dropdown.style.left = x + "px";
 		dropdown.style.top = y + "px";
+		dropdown.style.visibility = "visible";
 		NaturalLog("Res " + dropdown.style.left + " : " + dropdown.style.top);
 	});
 
@@ -424,6 +425,7 @@ function NWidgetsCreateCombobox(style, editable, options, defaultFunction, subst
 				value: this.dataset["naturalWidgetsComboboxValue"]
 			});
 			combobox.dispatchEvent(ev);
+			dropdown.style.visibility = "hidden";
 			if(editable)
 			{
 				input.value = this.dataset["naturalWidgetsComboboxValue"];

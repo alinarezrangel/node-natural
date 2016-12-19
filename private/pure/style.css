@@ -85,10 +85,6 @@ html, body {
 	display: flex;
 }
 
-.hidden {
-	display: none !important;
-}
-
 .puredesktop-left-menubar-menu {
 	position: absolute !important;
 	background-color: rgba(127, 127, 127, 0.7) !important;
@@ -135,4 +131,16 @@ html, body {
 
 .puredesktop-notify-box {
 	z-index: 3998 !important;
+}
+
+.hidden {
+	display: none !important;
+}
+
+.puredesktop-panel-hhidden {
+	display: none !important;
+}
+
+.puredesktop-panel-vhidden {
+	display: none !important;
 }

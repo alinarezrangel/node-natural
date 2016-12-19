@@ -35,6 +35,7 @@ var PureResizeAlign = []; // [ox, oy]
 var PureResizeTimeout = false;
 var PureGlobalAnimationDuration = 250;
 var PureCanAnimatePanels = false;
+var PureHidePanelsOnAction = false;
 var PureDesktopNotifies = 0;
 var PureDesktopNotifiesIndex = 0;
 
@@ -86,22 +87,58 @@ function PureExecuteTemplate(template, args)
 	return t.children().get(0);
 }
 
+function PureHidePanels()
+{
+	if(!$(".puredesktop-top-menubar").hasClass("puredesktop-panel-vhidden"))
+	{
+		$(".puredesktop-top-menubar").addClass("puredesktop-panel-vhidden");
+	}
+	if(!$(".puredesktop-left-menubar").hasClass("puredesktop-panel-hhidden"))
+	{
+		$(".puredesktop-left-menubar").addClass("puredesktop-panel-hhidden");
+	}
+}
+
+function PureShowPanels()
+{
+	if($(".puredesktop-top-menubar").hasClass("puredesktop-panel-vhidden"))
+	{
+		$(".puredesktop-top-menubar").removeClass("puredesktop-panel-vhidden");
+	}
+	if($(".puredesktop-left-menubar").hasClass("puredesktop-panel-hhidden"))
+	{
+		$(".puredesktop-left-menubar").removeClass("puredesktop-panel-hhidden");
+	}
+}
+
 function PureStylePanels()
 {
 	if(!PureCanAnimatePanels)
 		return;
 
-	if(PureWindows.length == 0)
+	PureShowPanels();
+	PureHidePanelsOnAction = false;
+
+	/* if($("body").width() > 400)
 	{
-		// Add transparency to the panels
-		$(".puredesktop-top-menubar").addClass("puredesktop-transparent");
-		$(".puredesktop-left-menubar").addClass("puredesktop-transparent");
-	}
-	else
+		return;
+	} */
+
+	PureHidePanelsOnAction = true;
+
+	var allLMenuHiddens = true;
+
+	$(".puredesktop-left-menubar-menu").each(function(index)
+	{
+		allLMenuHiddens = allLMenuHiddens && $(this).hasClass("hidden");
+	});
+
+	if((PureWindows.length > 0) && (allLMenuHiddens))
 	{
 		// Remove transparency from the panels
-		$(".puredesktop-top-menubar").removeClass("puredesktop-transparent");
-		$(".puredesktop-left-menubar").removeClass("puredesktop-transparent");
+		// $(".puredesktop-top-menubar").removeClass("color-natural-white");
+		// $(".puredesktop-left-menubar").removeClass("color-natural-white");
+		PureHidePanels();
 	}
 }
 
@@ -126,16 +163,18 @@ function PureMakeDefaultWindowLayout(name, args)
 	$(win).data("mousedown", "false");
 	$(win).data("movable", "false");
 	$(win).data("focused", "false");
-	$(win).data("instantRemove", "true");
-	$(win).data("preventTitlebarMove", "false");
+	$(win).data("instantRemove", "true"); // Atom.InstantRemove
+	$(win).data("preventTitlebarMove", "false"); // Atom.PreventTitlebarMove
 	$(win).data("maximized", "false");
-	$(win).data("defaultTop", $(".puredesktop-top-menubar").height() + 2);
-	$(win).data("defaultLeft", $(".puredesktop-left-menubar").width() + 2);
-	$(win).data("defaultWidth", 300);
-	$(win).data("defaultHeight", 300);
-	$(win).data("title", args.title);
-	$(win).data("pid", pid);
+	$(win).data("defaultTop", $(".puredesktop-top-menubar").height() + 2); // Atom.Top
+	$(win).data("defaultLeft", $(".puredesktop-left-menubar").width() + 2); // Atom.Left
+	$(win).data("defaultWidth", 300); // Atom.Width
+	$(win).data("defaultHeight", 300); // Atom.Height
+	$(win).data("title", args.title); // Atom.Title
+	$(win).data("pid", pid); // Atom.WinPID
 	$(win).data("animateResize", "false");
+
+	// titlebarcolor = bordercolor = Atom.TitlebarColor
 
 	var resize = function(win, to, setdef, animate, optfcn1)
 	{
@@ -586,35 +625,34 @@ function PureOpenApplication(name, args)
 	return null;
 }
 
-function PureSetWindowAtom(window, name, value)
-{
-	$(window).data(name.toString(), value.toString());
-}
-
-function PureGetWindowAtom(window, name)
-{
-	if($(window).data(name) === undefined)
-	{
-		return null;
-	}
-	return $(window).data(name);
-}
-
 function PureSetWindowTitle(window, title)
 {
 	var ttl = $(window).find(".puredesktop-title-text").get(0);
 	while(ttl.firstChild)
 		ttl.removeChild(ttl.firstChild);
 	ttl.appendChild(PureMakeTextNode(title));
+	$(window).data("title", title);
+}
+
+function PureGetWindowTitle(window)
+{
+	return $(window).data("title");
 }
 
 function PureSetWindowTitlebarColor(window, colorClass)
 {
 	var ttl = $(window).find(".puredesktop-window-titlebar");
+	var bd = $(window).find(".puredesktop-window-content");
 	var dt = JSON.parse($(window).data("__pureTemplateConstructorDo"));
 	ttl.removeClass(dt["color"]).addClass(colorClass);
-	dt["color"] = colorClass;
+	bd.removeClass(dt["border"]).addClass(colorClass);
+	dt["color"] = dt["border"] = colorClass;
 	$(window).data("__pureTemplateConstructorDo", JSON.stringify(dt));
+}
+
+function PureGetWindowTitlebarColor(window)
+{
+	return JSON.parse($(window).data("__pureTemplateConstructorDo"))["color"];
 }
 
 function PureSetWindowSize(window, width, height, animate)
@@ -622,6 +660,14 @@ function PureSetWindowSize(window, width, height, animate)
 	animate = ((typeof animate) === "undefined")? true : animate;
 
 	window.__pureResizeFcn(window, [width, height], true, animate);
+}
+
+function PureGetWindowSize(window)
+{
+	return {
+		"width": parseInt($(window).data("defaultWidth")),
+		"height": parseInt($(window).data("defaultHeight"))
+	};
 }
 
 function PureSetWindowPosition(window, xpos, ypos, animate)
@@ -646,6 +692,14 @@ function PureSetWindowPosition(window, xpos, ypos, animate)
 		.data("defaultTop", $(".puredesktop-top-menubar").height() + 2 + ypos)
 		.data("defaultLeft", $(".puredesktop-left-menubar").width() + 2 + xpos);
 	}
+}
+
+function PureGetWindowPosition(window)
+{
+	return {
+		"top": parseInt($(window).data("defaultTop")),
+		"left": parseInt($(window).data("defaultLeft"))
+	};
 }
 
 function PureDestroyWindow(window, force)
@@ -709,7 +763,7 @@ function PureDesktopNotify(title, message, p)
 {
 	var osd = document.createElement("div");
 	osd.className =
-		"user-cant-select puredesktop-notify-box box color-everblack padding-16 margin-16 text-big overflow-auto sw-4";
+		"user-cant-select puredesktop-notify-box box color-everblack padding-16 margin-16 overflow-auto sw-4";
 	osd.style.color = "#EE0";
 	osd.style.position = "absolute";
 	osd.style.right = "16px";
@@ -717,10 +771,14 @@ function PureDesktopNotify(title, message, p)
 	osd.style.width = "20%";
 	osd.style.maxHeight = "20%";
 	osd.style.cursor = "pointer";
-	osd.appendChild(document.createTextNode(title));
+	var titlebe = document.createElement("div");
+	titlebe.className = "box text-big no-margin padding-4";
+	titlebe.appendChild(document.createTextNode(title));
 	var msg = document.createElement("div");
-	msg.className = "box no-margin no-padding no-border border-top bs-2";
+	msg.className =
+		"box no-margin padding-4 no-border-left no-border-right no-border-bottom border-top bs-2 border-color-black";
 	msg.appendChild(document.createTextNode(message));
+	osd.appendChild(titlebe);
 	osd.appendChild(msg);
 
 	$(".puredesktop-main-content").get(0).appendChild(osd);
@@ -752,6 +810,97 @@ function PureDesktopNotify(title, message, p)
 			}
 		});
 	});
+}
+
+function PureSetWindowAtom(window, name, value)
+{
+	switch(name)
+	{
+		case "Atom.InstantRemove":
+			$(window).data("instantRemove", value.toString());
+			break;
+		case "Atom.Top":
+			return PureSetWindowPosition(window, parseInt(value), PureGetWindowPosition(window).top, true);
+			break;
+		case "Atom.Left":
+			return PureSetWindowPosition(window, PureGetWindowPosition(window).left, parseInt(value), true);
+			break;
+		case "Atom.Position":
+			return PureSetWindowPosition(window, parseInt(value.split(",")[0]), parseInt(value.split(",")[1]), true);
+			break;
+		case "Atom.Width":
+			return PureSetWindowSize(window, parseInt(value), PureGetWindowSize(window).height, true);
+			break;
+		case "Atom.Height":
+			return PureSetWindowSize(window, PureGetWindowSize(window).width, parseInt(value), true);
+			break;
+		case "Atom.Size":
+		case "Atom.Geometry":
+			return PureSetWindowSize(window, parseInt(value.split(",")[0]), parseInt(value.split(",")[1]), true);
+			break;
+		case "Atom.PreventTitlebarMove":
+			$(window).data("preventTitlebarMove", value.toString());
+			break;
+		case "Atom.TitlebarColor":
+			return PureSetWindowTitlebarColor(window, value.toString());
+			break;
+		case "Atom.Title":
+			return PureSetWindowTitle(window, value.toString());
+			break;
+		case "Atom.WinPID":
+		case "Atom.PID":
+			NaturalLogErr("PureDE error: Invalid attempt to set the window PID using PureSetWindowAtom");
+			return null;
+			break;
+	}
+}
+
+function PureGetWindowAtom(window, name)
+{
+	var res = "";
+	switch(name)
+	{
+		case "Atom.InstantRemove":
+			res = "instantRemove";
+			break;
+		case "Atom.Top":
+			res = "defaultTop";
+			break;
+		case "Atom.Left":
+			res = "defaultLeft";
+			break;
+		case "Atom.Width":
+			res = "defaultWidth";
+			break;
+		case "Atom.Height":
+			res = "defaultHeight";
+			break;
+		case "Atom.PreventTitlebarMove":
+			res = "preventTitlebarMove";
+			break;
+		case "Atom.Title":
+			res = "title";
+			break;
+		case "Atom.WinPID":
+		case "Atom.PID":
+			res = "pid";
+			break;
+		case "Atom.Position":
+			return PureGetWindowPosition(window).left + "," + PureGetWindowPosition(window).top;
+			break;
+		case "Atom.Size":
+		case "Atom.Geometry":
+			return PureGetWindowSize(window).width + "," + PureGetWindowSize(window).height;
+			break;
+		case "Atom.TitlebarColor":
+			return PureGetWindowTitlebarColor(window);
+			break;
+	}
+	if($(window).data(res) === undefined)
+	{
+		return null;
+	}
+	return $(window).data(res);
 }
 
 // Animations

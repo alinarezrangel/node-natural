@@ -37,4 +37,4 @@ For further reading, see the tutorial.html file.
 
 ## License
 
-Generation is under the [MIT license](https://opensource.org/licenses/MIT).
+See the [LICENSE.txt](LICENSE.txt) file.

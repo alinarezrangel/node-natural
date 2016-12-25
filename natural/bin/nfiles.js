@@ -24,13 +24,16 @@ limitations under the License.
 
 (function()
 {
+	var APPNAME = "NFiles";
+	var APPID = "nfiles";
+
 	NaturalExports = {
-		"appname": "NFiles",
-		"appid": "nfiles",
+		"appname": APPNAME,
+		"appid": APPID,
 		"pkg": "essencials",
 		"source": {
-			"humanReadable": "nodenatural.essencials.nfiles",
-			"machineReadable": "bin.nodenatural.essencials.nfiles"
+			"humanReadable": "nodenatural.essencials." + APPID,
+			"machineReadable": "bin.nodenatural.essencials." + APPID
 		},
 		"authors": [
 			{
@@ -49,7 +52,7 @@ limitations under the License.
 		"see": [
 			{
 				"type": "help",
-				"url": "http://naturalserver.sourceforge.net/apps/nfiles/"
+				"url": "http://naturalserver.sourceforge.net/apps/" + APPID + "/"
 			}
 		]
 	};
@@ -71,12 +74,21 @@ limitations under the License.
 		}
 	};
 
+
+	function CreateIconMenu(style, text, substyle)
+	{
+		var menu = NWidgetsCreateMenu(style, text, substyle);
+		menu.classList.add("nic", "text-ultra-big");
+		return menu;
+	}
+
 	function MakeTreeView()
 	{
 		var treeview = document.createElement("div");
 		treeview.className = "treeview";
 		return treeview;
 	}
+
 	function MakeTreeNode(parent, child, onclick)
 	{
 		var treenode = document.createElement("div");
@@ -88,6 +100,7 @@ limitations under the License.
 		});
 		return treenode;
 	}
+
 	function MakeTreeNodeChild(image, text)
 	{
 		return function(treenode)
@@ -103,6 +116,7 @@ limitations under the License.
 			return cnt;
 		};
 	}
+
 	function Explode(pathexploded, treenode, onclick)
 	{
 		var subnode = MakeTreeNode(treenode, MakeTreeNodeChild("/images/misc/icons/dir.svg", pathexploded[0]), onclick);
@@ -111,6 +125,7 @@ limitations under the License.
 			Explode(pathexploded.slice(1), subnode, onclick);
 		treenode.appendChild(subnode);
 	}
+
 	function ShowModal(title, text)
 	{
 		var modal = NGraphCreateWindow("nfiles", "NFiles - Modal - " + title);
@@ -120,6 +135,7 @@ limitations under the License.
 		NGraphWindowSetFocus(modal);
 		return modal;
 	}
+
 	function AddFileToArea(area, img, name, onclick)
 	{
 		var file = document.createElement("div");
@@ -137,11 +153,12 @@ limitations under the License.
 		file.addEventListener("click", onclick);
 		area.appendChild(file);
 	}
-	NGraphCreateApplication("nfiles", "NFiles", function(args)
+
+	NGraphCreateApplication(APPID, APPNAME, function(args)
 	{
 		args = args || [];
 
-		var apptitle = "NFiles";
+		var apptitle = APPNAME;
 		var openwith = "nfileopen";
 		var embed = false;
 		var closeafterselectfile = false;
@@ -191,36 +208,45 @@ limitations under the License.
 		}
 
 		var po = ApplicationPO[NIntLocaleName];
-		var window = NGraphCreateWindow("nfiles", apptitle);
+		var window = NGraphCreateWindow(APPID, apptitle);
 		var mypid = NGraphWindowGetAtom(window, "Atom.PID");
+
 		NGraphStoreDataInWindow(window, "path", startpath);
 		NGraphStoreDataInWindow(window, "showhidden", "false");
-		var toolbar = document.createElement("div");
-		toolbar.className = "navigation color-light-aqua";
-		var dirUpLink = document.createElement("span");
-		dirUpLink.className = "link";
-		dirUpLink.appendChild(document.createTextNode(po["updir"]));
-		toolbar.appendChild(dirUpLink);
+
+		var style = NWidgetsCreateAppStyle();
+		var toolbar = NWidgetsCreateMenuBar(style);
+
+		var dirUpLink = CreateIconMenu(style, NaturalIconSetMap["baretop"]);
+		NWidgetsPack(toolbar, dirUpLink);
+
 		var layout = document.createElement("section");
 		layout.className = "flexible direction-row justify-start align-stretch no-wrap width-block";
 		layout.style.height = "80%";
+
 		var fileArea = document.createElement("div");
 		fileArea.className = "f3 o1 container color-light-grey overflow-auto";
 		fileArea.style.maxWidth = "80%";
 		fileArea.style.height = "100%";
+
 		var structureArea = document.createElement("div");
 		structureArea.className = "f1 o2 container color-grey border border-color-everred bs-2";
+
 		var treeView = MakeTreeView();
 		structureArea.appendChild(treeView);
+
 		var dirUp = null;
+
 		var changedir = function()
 		{
 			while(treeView.firstChild)
 				treeView.removeChild(treeView.firstChild);
+
 			Explode(NGraphLoadDataFromWindow(window, "path").split("/"), treeView, function(self, ev)
 			{
 				var text = self.dataset.innerText;
 			});
+
 			NaturalListDir(NGraphLoadDataFromWindow(window, "path"), mypid, function(err, files)
 			{
 				if(err)
@@ -240,8 +266,10 @@ limitations under the License.
 				}
 				var i = 0;
 				var j = files.length;
+
 				while(fileArea.firstChild)
 					fileArea.removeChild(fileArea.firstChild);
+
 				for(i = 0; i < j; i++)
 				{
 					var file = files[i];
@@ -249,15 +277,19 @@ limitations under the License.
 					var hidden = /^\./g.test(file.filename);
 					hidden = hidden || /~$/g.test(file.filename);
 					hidden = hidden || /^\.natural\.manifest\.json$/g.test(file.filename);
+
 					if(file.isDirectory)
 					{
 						icon = "/images/misc/icons/dir.svg";
 					}
+
 					if((NGraphLoadDataFromWindow(window, "showhidden") == "false") && (hidden))
 						continue;
+
 					AddFileToArea(fileArea, icon, file.filename, function(file, ev)
 					{
 						var path = NGraphLoadDataFromWindow(window, "path");
+
 						if(file.isDirectory)
 						{
 							NGraphStoreDataInWindow(window, "path", path + file.filename + "/");
@@ -278,6 +310,7 @@ limitations under the License.
 				}
 			});
 		};
+
 		dirUp = function()
 		{
 			var path = NGraphLoadDataFromWindow(window, "path").split("/");
@@ -287,11 +320,14 @@ limitations under the License.
 			//alert(path + file.filename + "/");
 			changedir();
 		};
+
 		dirUpLink.addEventListener("click", function(ev)
 		{
 			dirUp();
 		});
+
 		changedir();
+
 		layout.appendChild(fileArea);
 		layout.appendChild(structureArea);
 		NGraphGetWindowBody(window).appendChild(toolbar);

@@ -24,13 +24,16 @@ limitations under the License.
 
 (function()
 {
+	var APPNAME = "Help";
+	var APPID = "help";
+
 	NaturalExports = {
-		"appname": "Help",
-		"appid": "help",
+		"appname": APPNAME,
+		"appid": APPID,
 		"pkg": "essencials",
 		"source": {
-			"humanReadable": "nodenatural.essencials.help",
-			"machineReadable": "bin.nodenatural.essencials.help"
+			"humanReadable": "nodenatural.essencials." + APPID,
+			"machineReadable": "bin.nodenatural.essencials." + APPID
 		},
 		"authors": [
 			{
@@ -48,7 +51,7 @@ limitations under the License.
 		"see": [
 			{
 				"type": "help",
-				"url": "http://naturalserver.sourceforge.net/apps/help/"
+				"url": "http://naturalserver.sourceforge.net/apps/" + APPID + "/"
 			}
 		]
 	};
@@ -77,9 +80,13 @@ limitations under the License.
 		}
 	}
 
-	NGraphCreateApplication("help", "Help", function()
+	NGraphCreateApplication(APPID, APPNAME, function(args)
 	{
-		var mwindow = NGraphCreateWindow("help", "Help");
+		args = args || {
+			"book": "nodenatural"
+		};
+
+		var mwindow = NGraphCreateWindow(APPID, APPNAME);
 		var mypid = NGraphWindowGetAtom(mwindow, "Atom.PID");
 		var winbody = NGraphGetWindowBody(mwindow);
 		var style = NWidgetsCreateAppStyle();
@@ -88,7 +95,7 @@ limitations under the License.
 		var frame = document.createElement("iframe");
 		frame.className = "box no-margin no-padding no-border width-block f1 overflow-auto";
 		frame.allowFullscreen = false;
-		frame.src = "/embed/docs/nodenatural/index.html";
+		frame.src = "/embed/docs/" + args.book + "/index.html";
 
 		flexbox.classList.remove("container");
 		flexbox.classList.add(

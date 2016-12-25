@@ -24,13 +24,16 @@ limitations under the License.
 
 (function()
 {
+	var APPNAME = "NPixel";
+	var APPID = "npixel";
+
 	NaturalExports = {
-		"appname": "NPixel",
-		"appid": "npixel",
+		"appname": APPNAME,
+		"appid": APPID,
 		"pkg": "essencials",
 		"source": {
-			"humanReadable": "nodenatural.essencials.npixel",
-			"machineReadable": "bin.nodenatural.essencials.npixel"
+			"humanReadable": "nodenatural.essencials." + APPID,
+			"machineReadable": "bin.nodenatural.essencials." + APPID
 		},
 		"authors": [
 			{
@@ -49,7 +52,7 @@ limitations under the License.
 		"see": [
 			{
 				"type": "help",
-				"url": "http://naturalserver.sourceforge.net/apps/npixel/"
+				"url": "http://naturalserver.sourceforge.net/apps/" + APPID + "/"
 			}
 		]
 	};
@@ -101,11 +104,11 @@ limitations under the License.
 		});
 	}
 
-	NGraphCreateApplication("npixel", "NPixel", function(args)
+	NGraphCreateApplication(APPID, APPNAME, function(args)
 	{
 		args = args || [];
 
-		var mwindow = NGraphCreateWindow("npixel", "NPixel");
+		var mwindow = NGraphCreateWindow(APPID, APPNAME);
 		var mypid = NGraphWindowGetAtom(mwindow, "Atom.PID");
 		// var importpid = NGraphRequestPID("npixel", "NPixel");
 		var winbody = NGraphGetWindowBody(mwindow);

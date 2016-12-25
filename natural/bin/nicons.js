@@ -24,13 +24,16 @@ limitations under the License.
 
 (function()
 {
+	var APPNAME = "NIcons";
+	var APPID = "nicons";
+
 	NaturalExports = {
-		"appname": "NIcons",
-		"appid": "nicons",
+		"appname": APPNAME,
+		"appid": APPID,
 		"pkg": "essencials",
 		"source": {
-			"humanReadable": "nodenatural.essencials.nicons",
-			"machineReadable": "bin.nodenatural.essencials.nicons"
+			"humanReadable": "nodenatural.essencials." + APPID,
+			"machineReadable": "bin.nodenatural.essencials." + APPID
 		},
 		"authors": [
 			{
@@ -48,13 +51,14 @@ limitations under the License.
 		"see": [
 			{
 				"type": "help",
-				"url": "http://naturalserver.sourceforge.net/apps/nicons/"
+				"url": "http://naturalserver.sourceforge.net/apps/" + APPID + "/"
 			}
 		]
 	};
-	NGraphCreateApplication("nicons", "NIcons", function()
+
+	NGraphCreateApplication(APPID, APPNAME, function()
 	{
-		var window = NGraphCreateWindow("nicons", "NIcons Demonstration");
+		var window = NGraphCreateWindow(APPID, "NIcons Demonstration");
 		var mypid = NGraphWindowGetAtom(window, "Atom.PID");
 		var icons = document.createElement("div");
 		var innerText = "";

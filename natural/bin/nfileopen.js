@@ -24,13 +24,16 @@ limitations under the License.
 
 (function()
 {
+	var APPNAME = "NFileOpen";
+	var APPID = "nfileopen";
+
 	NaturalExports = {
-		"appname": "NFileOpen",
-		"appid": "nfileopen",
+		"appname": APPNAME,
+		"appid": APPID,
 		"pkg": "essencials",
 		"source": {
-			"humanReadable": "nodenatural.essencials.nfileopen",
-			"machineReadable": "bin.nodenatural.essencials.nfileopen"
+			"humanReadable": "nodenatural.essencials." + APPID,
+			"machineReadable": "bin.nodenatural.essencials." + APPID
 		},
 		"authors": [
 			{
@@ -49,7 +52,7 @@ limitations under the License.
 		"see": [
 			{
 				"type": "help",
-				"url": "http://naturalserver.sourceforge.net/apps/nfileopen/"
+				"url": "http://naturalserver.sourceforge.net/apps/" + APPID + "/"
 			}
 		]
 	};
@@ -57,9 +60,9 @@ limitations under the License.
 	var ApplicationPO = {
 		"es": {
 			"errorttl": "Argumentos insuficientes",
-			"errormsg": "NFileOpen fue diseñado para usarse como una aplication sin GUI/NUI, por favor, no abra este programa desde el escritorio",
+			"errormsg": APPNAME + " fue diseñado para usarse como una aplication sin GUI/NUI, por favor, no abra este programa desde el escritorio",
 			"unknowttl": "Archivo desconocido",
-			"unknowmsg": "NFileOpen no sabe como abrir este archivo",
+			"unknowmsg": APPNAME + " no sabe como abrir este archivo",
 			"openfilettl": "Abrir aplicacion",
 			"selectfile": "Selecciona una aplicacion",
 			"donebtn": "Abrir",
@@ -68,9 +71,9 @@ limitations under the License.
 		},
 		"en": {
 			"errorttl": "Expected more arguments",
-			"errormsg": "NFileOpen was designed without GUI/NUI, please, never open this application from the desktop",
+			"errormsg": APPNAME + " was designed without GUI/NUI, please, never open this application from the desktop",
 			"unknowttl": "Unknow file type",
-			"unknowmsg": "NFileOpen does not know how to open this file",
+			"unknowmsg": APPNAME + " does not know how to open this file",
 			"openfilettl": "Open application",
 			"selectfile": "Select an application",
 			"donebtn": "Open",
@@ -81,7 +84,7 @@ limitations under the License.
 
 	function ShowAppsModal(title, msg, donemsg, selected)
 	{
-		var mainWindow = NGraphCreateWindow("nfileopen", "NFileOpen - " + title);
+		var mainWindow = NGraphCreateWindow(APPID, APPNAME + " - " + title);
 		var style = NWidgetsCreateAppStyle();
 		var container = NWidgetsCreateContainer(style);
 		var ttl1 = NWidgetsCreateLabel(style, msg);
@@ -143,9 +146,9 @@ limitations under the License.
 		}
 	}
 
-	NGraphCreateApplication("nfileopen", "NFileOpen", function(args)
+	NGraphCreateApplication(APPID, APPNAME, function(args)
 	{
-		var pid = NGraphRequestPID("nfileopen", "NFileOpen");
+		var pid = NGraphRequestPID(APPID, APPNAME);
 		args = args || [];
 
 		if(args.length == 0)

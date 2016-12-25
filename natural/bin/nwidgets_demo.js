@@ -24,13 +24,16 @@ limitations under the License.
 
 (function()
 {
+	var APPNAME = "NWidgetsDemo";
+	var APPID = "nwidgets_demo";
+
 	NaturalExports = {
-		"appname": "NWidgetsDemo",
-		"appid": "nwidgets_demo",
+		"appname": APPNAME,
+		"appid": APPID,
 		"pkg": "essencials",
 		"source": {
-			"humanReadable": "nodenatural.essencials.nwidgets_demo",
-			"machineReadable": "bin.nodenatural.essencials.nwidgets_demo"
+			"humanReadable": "nodenatural.essencials." + APPID,
+			"machineReadable": "bin.nodenatural.essencials." + APPID
 		},
 		"authors": [
 			{
@@ -49,13 +52,13 @@ limitations under the License.
 		"see": [
 			{
 				"type": "help",
-				"url": "http://naturalserver.sourceforge.net/apps/nwidgets_demo/"
+				"url": "http://naturalserver.sourceforge.net/apps/" + APPID + "/"
 			}
 		]
 	};
-	NGraphCreateApplication("nwidgets_demo", "NWidgetsDemo", function(args)
+	NGraphCreateApplication(APPID, APPNAME, function(args)
 	{
-		var window = NGraphCreateWindow("nwidgets_demo", "NWidgetsDemo");
+		var window = NGraphCreateWindow(APPID, APPNAME);
 		var winbody = NGraphGetWindowBody(window);
 		var style = NWidgetsCreateAppStyle();
 		var container = NWidgetsCreateContainer(style);

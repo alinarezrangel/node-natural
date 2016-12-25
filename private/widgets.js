@@ -40,7 +40,7 @@ var NWidgetsShadowSpec = {
 	TEXT: 0,
 	LIST: 0,
 	FRAME: 1,
-	BUTTON: 1,
+	BUTTON: -1, // The buttons have a builtin shadow
 	TEXTINPUT: 0,
 	NUMBERINPUT: 0,
 	SLIDER: 0,
@@ -811,7 +811,8 @@ function NWidgetsCreateAccordionSection(style, title, innerc, substyle)
 	section.className = "container no-margin no-padding";
 	section.style.backgroundColor = style.accordionColor;
 	section.style.color = style.accordionTextColor;
-	titlebar.className = "container no-margin padding-8";
+	titlebar.className = "container no-margin padding-8 user-cant-select";
+	titlebar.style.cursor = "pointer";
 	titlebar.appendChild(document.createTextNode(title));
 	content.className = "container no-margin padding-4";
 	content.appendChild(innerc);

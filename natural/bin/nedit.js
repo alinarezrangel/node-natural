@@ -94,7 +94,7 @@ limitations under the License.
 		args = args || [];
 
 		var mwindow = NGraphCreateWindow("nedit", "NEdit");
-		var mypid = NGraphLoadDataFromWindow(mwindow, "pid");
+		var mypid = NGraphWindowGetAtom(mwindow, "Atom.PID");
 		var importpid = NGraphRequestPID("nedit", "NEdit");
 		var winbody = NGraphGetWindowBody(mwindow);
 		var style = NWidgetsCreateAppStyle();

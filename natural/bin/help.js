@@ -80,7 +80,7 @@ limitations under the License.
 	NGraphCreateApplication("help", "Help", function()
 	{
 		var mwindow = NGraphCreateWindow("help", "Help");
-		var mypid = NGraphLoadDataFromWindow(mwindow, "pid");
+		var mypid = NGraphWindowGetAtom(mwindow, "Atom.PID");
 		var winbody = NGraphGetWindowBody(mwindow);
 		var style = NWidgetsCreateAppStyle();
 		var menu = NWidgetsCreateMenuBar(style);

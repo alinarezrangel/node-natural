@@ -776,7 +776,7 @@ function PureDesktopNotify(title, message, p)
 	titlebe.appendChild(document.createTextNode(title));
 	var msg = document.createElement("div");
 	msg.className =
-		"box no-margin padding-4 no-border-left no-border-right no-border-bottom border-top bs-2 border-color-black";
+		"box no-margin padding-4 no-border";
 	msg.appendChild(document.createTextNode(message));
 	osd.appendChild(titlebe);
 	osd.appendChild(msg);
@@ -852,6 +852,8 @@ function PureSetWindowAtom(window, name, value)
 			NaturalLogErr("PureDE error: Invalid attempt to set the window PID using PureSetWindowAtom");
 			return null;
 			break;
+		default:
+			$(window).data(name, value);
 	}
 }
 
@@ -895,6 +897,8 @@ function PureGetWindowAtom(window, name)
 		case "Atom.TitlebarColor":
 			return PureGetWindowTitlebarColor(window);
 			break;
+		default:
+			res = name;
 	}
 	if($(window).data(res) === undefined)
 	{

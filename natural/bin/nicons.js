@@ -55,7 +55,7 @@ limitations under the License.
 	NGraphCreateApplication("nicons", "NIcons", function()
 	{
 		var window = NGraphCreateWindow("nicons", "NIcons Demonstration");
-		var mypid = NGraphLoadDataFromWindow(window, "pid");
+		var mypid = NGraphWindowGetAtom(window, "Atom.PID");
 		var icons = document.createElement("div");
 		var innerText = "";
 		var tryItEditor = document.createElement("div");

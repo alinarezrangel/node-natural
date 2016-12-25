@@ -106,7 +106,7 @@ limitations under the License.
 		args = args || [];
 
 		var mwindow = NGraphCreateWindow("npixel", "NPixel");
-		var mypid = NGraphLoadDataFromWindow(mwindow, "pid");
+		var mypid = NGraphWindowGetAtom(mwindow, "Atom.PID");
 		// var importpid = NGraphRequestPID("npixel", "NPixel");
 		var winbody = NGraphGetWindowBody(mwindow);
 		var style = NWidgetsCreateAppStyle();

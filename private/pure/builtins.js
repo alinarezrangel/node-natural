@@ -312,7 +312,7 @@ function PureBuiltinApps()
 		var winb = PureGetWindowBody(window);
 		var container = NWidgetsCreateContainer(style);
 		var allbkg = NWidgetsCreateContainer(style);
-		var mypid = PureGetWindowAtom(window, "pid");
+		var mypid = PureGetWindowAtom(window, "Atom.PID");
 
 		var currentLabel = NWidgetsCreateLabel(style, ApplicationsLocale()["background"]["current"]);
 		var changeInput = NWidgetsCreateTextInput(
@@ -373,7 +373,7 @@ function PureBuiltinApps()
 			PureFrontEndCurrentBackgroundImageData.backgroundImage = imgPath;
 		});
 
-		NaturalHighLevelSocketCall("ls", parseInt(mypid), {
+		NaturalHighLevelSocketCall("ls", mypid, {
 			cwd: "./public/images/backgrounds/node-natural-background-images/"
 		}, function(err, data)
 		{

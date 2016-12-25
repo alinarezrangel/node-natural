@@ -192,7 +192,7 @@ limitations under the License.
 
 		var po = ApplicationPO[NIntLocaleName];
 		var window = NGraphCreateWindow("nfiles", apptitle);
-		var mypid = NGraphLoadDataFromWindow(window, "pid");
+		var mypid = NGraphWindowGetAtom(window, "Atom.PID");
 		NGraphStoreDataInWindow(window, "path", startpath);
 		NGraphStoreDataInWindow(window, "showhidden", "false");
 		var toolbar = document.createElement("div");

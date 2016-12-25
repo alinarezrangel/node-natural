@@ -133,7 +133,7 @@ function NaturalOnLoaded()
 		if(ev !== null)
 			ev.handler(data, null);
 		else
-			console.error("Unexpected error at " + JSON.stringify(data));
+			NaturalLogErr("Unexpected error at " + JSON.stringify(data));
 	});
 	NaturalOnLoadevent();
 }

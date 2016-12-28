@@ -103,6 +103,7 @@ limitations under the License.
 		var errordeniedtoast = NWidgetsCreateSnack(style, ApplicationPO[NIntLocaleName]["denied"]);
 		var filesize = 0;
 		var caps = false;
+		var filename = "";
 
 		flexbox.classList.add("flexible", "direction-column", "no-wrap", "no-magin", "no-padding", "width-block");
 		flexbox.classList.remove("container");
@@ -111,6 +112,7 @@ limitations under the License.
 
 		var open = CreateIconMenu(style, NaturalIconSetMap["dir"]);
 		var reload = CreateIconMenu(style, NaturalIconSetMap["loadboard"]);
+		var save = CreateIconMenu(style, NaturalIconSetMap["writing"]);
 		var config = CreateIconMenu(style, NaturalIconSetMap["gear"]);
 		var info = CreateIconMenu(style, NaturalIconSetMap["infocircle"]);
 		var trash = CreateIconMenu(style, NaturalIconSetMap["trash"]);
@@ -127,6 +129,7 @@ limitations under the License.
 		NWidgetsPack(flexbox, menu);
 		NWidgetsPack(flexbox, textarea);
 		NWidgetsPack(menu, open);
+		NWidgetsPack(menu, save);
 		NWidgetsPack(menu, reload);
 		NWidgetsPack(menu, config);
 		NWidgetsPack(menu, info);
@@ -146,9 +149,29 @@ limitations under the License.
 			}, 100);
 		});
 
+		save.addEventListener("click", function()
+		{
+			var win = NGraphOpenApplication("nfiles", [
+				"--embed",
+				"--title=NEdit Save File",
+				"--close-after-select-file",
+				"--open-with-evt",
+				function(args)
+				{
+					var fname = args.filename;
+				}
+			]).mainWindow;
+			setTimeout(function()
+			{
+				NGraphWindowSetFocus(win);
+			}, 100);
+		});
+
 		if(args.length == 1)
 		{
-			OpenFile(errordeniedtoast, args[0].toString(), mypid, function(err, file)
+			var fn = args[0].toString();
+
+			OpenFile(errordeniedtoast, fn, mypid, function(err, file)
 			{
 				if(err)
 				{
@@ -156,6 +179,7 @@ limitations under the License.
 					return;
 				}
 
+				filename = fn;
 				var multilinecontent = file.filecontent.replace(/\r?\n/gmi, "\r\n");
 				filesize = multilinecontent.length;
 

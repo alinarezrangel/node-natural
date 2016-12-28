@@ -724,7 +724,7 @@ function NWidgetsCreateTextInput(style, textualContent, substyle)
 
 	var input = document.createElement("input");
 	input.type = "text";
-	input.className = "input inputtext width-block padding-4";
+	input.className = "input inputtext width-block padding-8";
 
 	input.style.backgroundColor = style.mainColor;
 	input.style.color = style.textColor;

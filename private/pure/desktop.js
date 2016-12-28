@@ -983,11 +983,11 @@ function NGraphCreateWindow(name, title)
 	var win = PureMakeDefaultWindowLayout(
 		name,
 		{
-			"color": "color-natural-indigo",
+			"color": "color-light-grey",
 			"title": title,
 			"bkgcolor": "color-natural-white",
 			"border": "bs-1",
-			"bdcolor": "border-color-natural-indigo"
+			"bdcolor": "border-color-dark-grey"
 		}
 	);
 	PureOpenWindow(win);

@@ -163,7 +163,8 @@ limitations under the License.
 		var embed = false;
 		var closeafterselectfile = false;
 		var startpath = "/";
-		var showhidden = "false";
+		var showhidden = false;
+		var openevt = null;
 		var i = 0;
 
 		for(i = 0; i < args.length; i++)
@@ -173,6 +174,12 @@ limitations under the License.
 
 			if(a == "")
 				continue;
+
+			if((a == "--open-with-evt") && ((i + 1) < args.length))
+			{
+				openevt = args[++i];
+				continue;
+			}
 
 			if((i == 0) && (a.charAt(0) != "-"))
 			{
@@ -219,6 +226,8 @@ limitations under the License.
 
 		var dirUpLink = CreateIconMenu(style, NaturalIconSetMap["baretop"]);
 		NWidgetsPack(toolbar, dirUpLink);
+		var showHiddenOPT = CreateIconMenu(style, NaturalIconSetMap["eye"]);
+		NWidgetsPack(toolbar, showHiddenOPT);
 
 		var layout = document.createElement("section");
 		layout.className = "flexible direction-row justify-start align-stretch no-wrap width-block";
@@ -278,12 +287,15 @@ limitations under the License.
 					hidden = hidden || /~$/g.test(file.filename);
 					hidden = hidden || /^\.natural\.manifest\.json$/g.test(file.filename);
 
+					if(showhidden)
+						hidden = false;
+
 					if(file.isDirectory)
 					{
 						icon = "/images/misc/icons/dir.svg";
 					}
 
-					if((NGraphLoadDataFromWindow(window, "showhidden") == "false") && (hidden))
+					if(hidden)
 						continue;
 
 					AddFileToArea(fileArea, icon, file.filename, function(file, ev)
@@ -298,8 +310,17 @@ limitations under the License.
 						}
 						else
 						{
-							// Open the file with the default app for it
-							NGraphOpenApplication(openwith, [NGraphLoadDataFromWindow(window, "path") + file.filename]);
+							if(openevt != null)
+							{
+								openevt({
+									"filename": NGraphLoadDataFromWindow(window, "path") + file.filename
+								});
+							}
+							else
+							{
+								// Open the file with the default app for it
+								NGraphOpenApplication(openwith, [NGraphLoadDataFromWindow(window, "path") + file.filename]);
+							}
 
 							if(closeafterselectfile)
 							{
@@ -324,6 +345,11 @@ limitations under the License.
 		dirUpLink.addEventListener("click", function(ev)
 		{
 			dirUp();
+		});
+		showHiddenOPT.addEventListener("click", function(ev)
+		{
+			showhidden = !showhidden;
+			changedir();
 		});
 
 		changedir();

@@ -82,9 +82,23 @@ limitations under the License.
 
 	NGraphCreateApplication(APPID, APPNAME, function(args)
 	{
-		args = args || {
-			"book": "nodenatural"
-		};
+		args = args || [
+			"--book=nodenatural"
+		];
+		var book = "nodenatural";
+
+		for(var w = 0; w < args.length; w++)
+		{
+			if(args[w] == "")
+				continue;
+
+			var j = args[w].split("=");
+
+			if(j[0] == "--book")
+			{
+				book = j[1];
+			}
+		}
 
 		var mwindow = NGraphCreateWindow(APPID, APPNAME);
 		var mypid = NGraphWindowGetAtom(mwindow, "Atom.PID");
@@ -95,7 +109,7 @@ limitations under the License.
 		var frame = document.createElement("iframe");
 		frame.className = "box no-margin no-padding no-border width-block f1 overflow-auto";
 		frame.allowFullscreen = false;
-		frame.src = "/embed/docs/" + args.book + "/index.html";
+		frame.src = "/embed/docs/" + book + "/index.html";
 
 		flexbox.classList.remove("container");
 		flexbox.classList.add(

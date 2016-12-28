@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="color-light-grey">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
@@ -8,10 +8,12 @@
 		<link rel="stylesheet" type="text/css" href="/generation/css/generation.css" />
 		<link rel="stylesheet" type="text/css" href="/generation/css/pallete_basics.css" />
 		<link rel="stylesheet" type="text/css" href="/generation/css/pallete_natural.css" />
+		<link rel="stylesheet" type="text/css" href="/Hover/Hover.css" />
+		<link rel="stylesheet" type="text/css" href="/style.css" />
 		<script type="application/javascript" href="/generation/js/generation.js"></script>
 	</head>
-	<body class="flexible direction-column no-wrap justify-space-around align-stretch">
-		<header class="container color-natural-darkgreen o1">
+	<body class="flexible direction-column no-wrap justify-space-around align-stretch color-light-grey overflow-auto">
+		<!-- <header class="container color-natural-darkgreen o1">
 			<h1 class="margin-8 text-jumbo">NodeNatural Documentation</h1>
 		</header>
 		<main class="main container color-natural-white o2 f1">
@@ -34,6 +36,59 @@
 				</a><br />
 				This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 			</p>
-		</footer>
+		</footer> -->
+		<header class="container od-1"> <!-- Title area -->
+			<h1 class="no-margin no-padding width-block text-center text-jumbo">Help</h1>
+		</header>
+		<section class="fcontainer center od-2"> <!-- Search form area -->
+			<input
+				class="input inputtext border border-color-dark-grey color-light-grey padding-16 animate-bkg-white"
+				type="text"
+				placeholder="Search" />
+		</section>
+		<main class="container no-margin od-3 fx-1"> <!-- Help links -->
+			<div class="grid">
+				<div class="row padding-16 justify-space-around align-center content-space-around wrap">
+					<a
+						href="applications.html"
+						class="box col od-1 hvr-glow text-center padding-16 no-link-style margin-auto">
+						<img class="block-left block-clear" src="/images/misc/pure/apps.svg" width="50" height="50" alt="" />
+						<span class="block-left block-clear img-caption caption padding-8 margin-8">Applications</span>
+					</a>
+					<a
+						href="loginout.html"
+						class="box col od-2 hvr-glow text-center padding-16 no-link-style margin-auto">
+						<img class="block-left block-clear" src="/images/misc/pure/logout.svg" width="50" height="50" alt="" />
+						<span class="block-left block-clear img-caption caption padding-8 margin-8">Log in and log out</span>
+					</a>
+					<a
+						href="tools.html"
+						class="box col od-3 hvr-glow text-center padding-16 no-link-style margin-auto">
+						<img class="block-left block-clear" src="/images/misc/pure/tools.svg" width="50" height="50" alt="" />
+						<span class="block-left block-clear img-caption caption padding-8 margin-8">Tools</span>
+					</a>
+				</div>
+				<div class="row padding-16 justify-space-around align-center content-space-around wrap">
+					<a
+						href="user.html"
+						class="box col od-1 hvr-glow text-center padding-16 no-link-style margin-auto">
+						<img class="block-left block-clear" src="/images/misc/pure/user.svg" width="50" height="50" alt="" />
+						<span class="block-left block-clear img-caption caption padding-8 margin-8">Users</span>
+					</a>
+					<a
+						href="system.html"
+						class="box col od-2 hvr-glow text-center padding-16 no-link-style margin-auto">
+						<img class="block-left block-clear" src="/images/misc/pure/logout.svg" width="50" height="50" alt="" />
+						<span class="block-left block-clear img-caption caption padding-8 margin-8">System and administrators</span>
+					</a>
+					<a
+						href="multimedia.html"
+						class="box col od-3 hvr-glow text-center padding-16 no-link-style margin-auto">
+						<img class="block-left block-clear" src="/images/misc/pure/volume-55.svg" width="50" height="50" alt="" />
+						<span class="block-left block-clear img-caption caption padding-8 margin-8">Multimedia</span>
+					</a>
+				</div>
+			</div>
+		</main>
 	</body>
 </html>

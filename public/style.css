@@ -279,3 +279,24 @@ template {
 .prelike {
 	white-space: pre !important;
 }
+
+.no-link-style {
+	text-decoration: none !important;
+}
+
+.margin-auto {
+	margin: auto !important;
+}
+
+.padding-auto {
+	padding: auto !important;
+}
+
+.animate-bkg-white {
+	transition: background-color 0.4s, color 0.4s !important;
+}
+
+.animate-bkg-white:focus {
+	background-color: white !important;
+	color: black !important;
+}
